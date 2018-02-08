@@ -385,13 +385,16 @@ body {
 .logo {
   font-size: 42px;
   font-family: "Chancery", cursive, LiSu, sans-serif;
-  color: #3a2f2f; }
+  color: #E02222; }
 
 img {
   max-width: 100%;
   height: auto;
   display: inline-block;
   vertical-align: middle; }
+
+i {
+  color: #E84D1C; }
 
 a {
   color: rgba(0, 0, 0, 0.75);
@@ -532,9 +535,10 @@ h6 {
     line-height: 1.4;
     font-size: 27px;
     font-weight: 400;
-    font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif; }
+    font-family: "Open Sans", "PingFang SC", "Hiragino Sans GB", "Microsoft Yahei", "Microsoft Jhenghei", sans-serif;
+    color: #E02222; }
   .post .post-header .post-link {
-    color: #0c1bca;
+    color: #E02222;
     display: inline-block;
     vertical-align: middle;
     transform: translateZ(0);
