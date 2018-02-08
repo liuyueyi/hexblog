@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="JavaWeb三大组件之Servlet学习"/>
+
+
+
+
+  <meta name="keywords" content="Java,JavaWeb,Servlet," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/01/24/JavaWeb三大组件之Servlet学习/"/>
+
+
+<meta name="description" content="JavaWeb三大组件之Servlet学习 平时直接用springmvc较多，都没怎么接触底层的Servlet，导致对一些基本的知识点了解都不够，所以今天专门的抽出时间来学习一下  带着问题出发，看下可以怎么玩  如何自定义一个Servlet 自定义的Serlvet如何工作 servlet的优先顺序怎么判定  servlet匹配是怎样的 (url-mapping…） 如何获取参数（get请求参数，">
+<meta name="keywords" content="Java,JavaWeb,Servlet">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaWeb三大组件之Servlet学习">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/01/24/JavaWeb三大组件之Servlet学习/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="JavaWeb三大组件之Servlet学习 平时直接用springmvc较多，都没怎么接触底层的Servlet，导致对一些基本的知识点了解都不够，所以今天专门的抽出时间来学习一下  带着问题出发，看下可以怎么玩  如何自定义一个Servlet 自定义的Serlvet如何工作 servlet的优先顺序怎么判定  servlet匹配是怎样的 (url-mapping…） 如何获取参数（get请求参数，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s17.mogucdn.com/mlcdn/c45406/180123_2ebh689d410dj1j8d4dd1hh8bccih_1223x656.gif">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-01-24T12:31:03.401Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaWeb三大组件之Servlet学习">
+<meta name="twitter:description" content="JavaWeb三大组件之Servlet学习 平时直接用springmvc较多，都没怎么接触底层的Servlet，导致对一些基本的知识点了解都不够，所以今天专门的抽出时间来学习一下  带着问题出发，看下可以怎么玩  如何自定义一个Servlet 自定义的Serlvet如何工作 servlet的优先顺序怎么判定  servlet匹配是怎样的 (url-mapping…） 如何获取参数（get请求参数，">
+<meta name="twitter:image" content="https://s17.mogucdn.com/mlcdn/c45406/180123_2ebh689d410dj1j8d4dd1hh8bccih_1223x656.gif">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> JavaWeb三大组件之Servlet学习 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          JavaWeb三大组件之Servlet学习
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-24
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="JavaWeb三大组件之Servlet学习"><a href="#JavaWeb三大组件之Servlet学习" class="headerlink" title="JavaWeb三大组件之Servlet学习"></a>JavaWeb三大组件之Servlet学习</h1><blockquote>
+<p>平时直接用springmvc较多，都没怎么接触底层的Servlet，导致对一些基本的知识点了解都不够，所以今天专门的抽出时间来学习一下</p>
+</blockquote>
+<p>带着问题出发，看下可以怎么玩</p>
+<ul>
+<li>如何自定义一个Servlet</li>
+<li>自定义的Serlvet如何工作</li>
+<li>servlet的优先顺序怎么判定 </li>
+<li>servlet匹配是怎样的 (url-mapping…）</li>
+<li>如何获取参数（get请求参数，post请求参数，上传文件）</li>
+<li>如何返回数据（返回页面，返回文件，返回二进制）</li>
+<li>请求头和返回头的设置</li>
+</ul>
+<a id="more"></a>
+<h2 id="I-基本知识点"><a href="#I-基本知识点" class="headerlink" title="I. 基本知识点"></a>I. 基本知识点</h2><h3 id="1-什么是Servlet"><a href="#1-什么是Servlet" class="headerlink" title="1. 什么是Servlet"></a>1. 什么是Servlet</h3><p>Servlet是JavaWeb的三大组件之一，它属于动态资源。Servlet的作用是处理请求，服务器会把接收到的请求交给Servlet来处理，在Servlet中通常需要：</p>
+<ul>
+<li>接受请求</li>
+<li>处理请求</li>
+<li>完成响应</li>
+</ul>
+<h3 id="2-怎么玩Servlet"><a href="#2-怎么玩Servlet" class="headerlink" title="2. 怎么玩Servlet"></a>2. 怎么玩Servlet</h3><p>一般来讲，创建一个自定义的Servlet有两个步骤，在web.xml中配置serverlt的声明；实现Servlet接口，实现自定义的Servlet逻辑</p>
+<p>一个简单的case如下</p>
+<p>web.xml中，添加配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>doc-servlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.yihui.study.DocServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>0<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>doc-servlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/study/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>实现自定义Servlet</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DocServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        resp.setCharacterEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">        PrintWriter writer = resp.getWriter();</span><br><span class="line">        writer.append(<span class="string">"这是一个自定义servlet"</span>)</span><br><span class="line">                .append(<span class="string">"emoj😄=="</span>).flush();</span><br><span class="line">        System.out.println(<span class="string">"hereher!!!!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这个Servlet，实现了拦截 /study 下的所有请求， 然后返回一段文本，上面作为演示，具体的展开下面说明</p>
+<h3 id="3-Servlet接口说明"><a href="#3-Servlet接口说明" class="headerlink" title="3. Servlet接口说明"></a>3. Servlet接口说明</h3><p>上面是直接继承了HttpServlet，可能没法完全的暴露一个Servlet的具体接口有哪些，以及它的生命周期是怎样的，接下来则直接针对源头进行说明</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Servlet</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 初始化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ServletConfig config)</span> <span class="keyword">throws</span> ServletException</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获取配置信息</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ServletConfig <span class="title">getServletConfig</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 处理请求</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">service</span><span class="params">(ServletRequest req, ServletResponse res)</span></span></span><br><span class="line"><span class="function">	<span class="keyword">throws</span> ServletException, IOException</span>;</span><br><span class="line">	</span><br><span class="line">	  <span class="comment">// Returns information about the servlet, such as author, version, and copyright</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getServletInfo</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 销毁</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>五个方法，从命名也可以看出对应的生命周期</p>
+<ul>
+<li>首先是创建： init() 方法被创建</li>
+<li>创建完毕之后，请求来了，分给  service方法，执行对应的业务逻辑</li>
+<li>最后不想玩了，就销毁掉，此时触发 destroy方法</li>
+</ul>
+<p><strong>说明</strong></p>
+<p>在Servlet被创建后，服务器会马上调用Servlet的void init(ServletConfig)方法。请记住， Servlet出生后马上就会调用init()方法，我们可以把一些对Servlet的初始化工作放到init方法中，今后所有分配到这个Servlet的请求，都是公用这个Servlet的</p>
+<h3 id="4-ServletConfig"><a href="#4-ServletConfig" class="headerlink" title="4. ServletConfig"></a>4. ServletConfig</h3><blockquote>
+<p>init()方法的参数</p>
+</blockquote>
+<p>ServletConfig对象对应web.xml文件中的元素。例如你想获取当前Servlet在web.xml文件中的配置名，那么可以使用servletConfig.getServletName()方法获取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">String getServletName()：获取Servlet在web.xml文件中的配置名称，即指定的名称； </span><br><span class="line">ServletContext getServletContext()：用来获取ServletContext对象，ServletContext会在后面讲解； </span><br><span class="line">String getInitParameter(String name)：用来获取在web.xml中配置的初始化参数，通过参数名来获取参数值； </span><br><span class="line">Enumeration getInitParameterNames()：用来获取在web.xml中配置的所有初始化参数名称；</span><br></pre></td></tr></table></figure>
+<h3 id="5-ServletRequest"><a href="#5-ServletRequest" class="headerlink" title="5. ServletRequest"></a>5. ServletRequest</h3><blockquote>
+<p>请求对象，可以从其中获取请求数据，请求头等</p>
+</blockquote>
+<p>内部提供的方法挺多，通常我们最关心的有:</p>
+<ul>
+<li>获取参数: <code>javax.servlet.ServletRequest#getParameter</code></li>
+<li>获取头 : <code>javax.servlet.http.HttpServletRequest#getHeader</code></li>
+<li>获取cookie: <code>javax.servlet.http.HttpServletRequest#getCookies</code></li>
+<li>获取请求 : <code>javax.servlet.http.HttpServletRequest#getRequestURI</code></li>
+<li>…</li>
+</ul>
+<p>还有一个比较重要的就是指定字符编码，如我们通常要求提交的参数满足utf8编码，这时就可以如下设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// javax.servlet.ServletRequest#setCharacterEncoding</span><br><span class="line">request.setCharacterEncoding(&quot;utf-8&quot;);</span><br></pre></td></tr></table></figure>
+<p>如我们最常用的一个spring的fitler，关键代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// org.springframework.web.filter.CharacterEncodingFilter#doFilterInternal</span></span><br><span class="line"><span class="comment">// </span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">		HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span></span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">this</span>.encoding != <span class="keyword">null</span> &amp;&amp; (<span class="keyword">this</span>.forceEncoding || request.getCharacterEncoding() == <span class="keyword">null</span>)) &#123;</span><br><span class="line">		request.setCharacterEncoding(<span class="keyword">this</span>.encoding);</span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.forceEncoding) &#123;</span><br><span class="line">			response.setCharacterEncoding(<span class="keyword">this</span>.encoding);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	filterChain.doFilter(request, response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="6-ServletResponse"><a href="#6-ServletResponse" class="headerlink" title="6. ServletResponse"></a>6. ServletResponse</h3><blockquote>
+<p>返回对象，返回响应给调用方的结构，设置返回头</p>
+</blockquote>
+<p>返回数据给调用方，主要就是利用这个东西了，内部提供的方法也不少，我们主要关心的其实也并不太多</p>
+<ul>
+<li>设置返回头：<code>javax.servlet.http.HttpServletResponse#setHeader</code></li>
+<li>添加cookie: <code>javax.servlet.http.HttpServletResponse#addCookie</code></li>
+<li>重定向 : <code>javax.servlet.http.HttpServletResponse#sendRedirect</code></li>
+<li>异常 : <code>javax.servlet.http.HttpServletResponse#sendError</code></li>
+<li>设置ContentType: <code>javax.servlet.ServletResponse#setContentType</code></li>
+<li>设置返回流: <code>javax.servlet.ServletResponse#getOutputStream</code>,  <code>javax.servlet.ServletResponse#getWriter</code></li>
+<li>设置编码: <code>javax.servlet.ServletResponse#setCharacterEncoding</code></li>
+</ul>
+<h2 id="II-进阶"><a href="#II-进阶" class="headerlink" title="II. 进阶"></a>II. 进阶</h2><h3 id="1-web-xml中配置"><a href="#1-web-xml中配置" class="headerlink" title="1. web.xml中配置"></a>1. web.xml中配置</h3><blockquote>
+<p>这个配置，主要针对 Servlet 的顺序指定，URL匹配这两个问题，所以有必要研究下这个配置中的说明</p>
+</blockquote>
+<p>通常web.xml的配置，下面两个是必须的</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- servlet的配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- servlet的内部名称，自定义。尽量有意义 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>ServletDemo<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- servlet的类全名： 包名+简单类名 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.xxx.ServletDemo<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- servlet的映射配置 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- servlet的内部名称，一定要和上面的内部名称保持一致！！ --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>ServletDemo<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- servlet的映射路径（访问servlet的名称） --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/servlet<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其中 servlet-mapping 指定映射的路径，满足条件的会匹配对应的Servlet，匹配规则有以下几个定义</p>
+<ul>
+<li>必须 / 开头</li>
+<li>/servlet  表示精确匹配<ul>
+<li><a href="http://localhost:8088/servlet" target="_blank" rel="noopener">http://localhost:8088/servlet</a> 匹配</li>
+<li><a href="http://localhost:8088/servlets" target="_blank" rel="noopener">http://localhost:8088/servlets</a> 不匹配</li>
+<li><a href="http://localhost:8088/servlet/123" target="_blank" rel="noopener">http://localhost:8088/servlet/123</a> 不匹配</li>
+</ul>
+</li>
+<li>/servlet/*  表示目录匹配，所有servlet路径开头的都可以匹配<ul>
+<li><a href="http://localhost:8088/servlet" target="_blank" rel="noopener">http://localhost:8088/servlet</a> 匹配</li>
+<li><a href="http://localhost:8088/servlet/123" target="_blank" rel="noopener">http://localhost:8088/servlet/123</a> 匹配</li>
+<li><a href="http://localhost:8088/servlet/123/123" target="_blank" rel="noopener">http://localhost:8088/servlet/123/123</a> 匹配</li>
+<li><a href="http://localhost:8088/servlets" target="_blank" rel="noopener">http://localhost:8088/servlets</a> 不匹配</li>
+</ul>
+</li>
+<li>/*.do  表示扩展名匹配，所有以 .do 结尾的匹配</li>
+</ul>
+<p>既然这个url匹配支持模糊匹配，那么问题来了，如果两个servlet都匹配了这个path路径，那么到底是哪个处理呢？</p>
+<p>注意到前面有个配置参数：load-on-startup</p>
+<ul>
+<li>当值为0或者大于0时，表示容器在应用启动时就加载这个servlet；</li>
+<li>当是一个负数时或者没有指定时，则指示容器在该servlet被选择时才加载</li>
+<li>正数的值越小，启动该servlet的优先级越高</li>
+</ul>
+<p><strong>注意</strong> 这个参数是加载顺序，而不是最终的匹配顺序</p>
+<p>那么匹配顺序的优先级是：</p>
+<ul>
+<li>精确路径匹配<ul>
+<li>比如servletA 的url-pattern为 /test，servletB的url-pattern为 /* ，这个时候，如果我访问的url为<a href="http://localhost/test" target="_blank" rel="noopener">http://localhost/test</a> ，这个时候容器就会先 进行精确路径匹配，发现/test正好被servletA精确匹配，那么就去调用servletA，也不会去理会其他的servlet了</li>
+</ul>
+</li>
+<li>最长路径匹配<ul>
+<li>servletA的url-pattern为/test/<em>，而servletB的url-pattern为/test/a/</em>，此时访问<a href="http://localhost/test/a时，容器会选择路径最长的servlet来匹配，也就是这里的servletB" target="_blank" rel="noopener">http://localhost/test/a时，容器会选择路径最长的servlet来匹配，也就是这里的servletB</a></li>
+</ul>
+</li>
+<li>扩展匹配，如果url最后一段包含扩展，容器将会根据扩展选择合适的servlet</li>
+<li>如果前面三条规则都没有找到一个servlet，容器会根据url选择对应的请求资源，即匹配defaultServlet</li>
+</ul>
+<h3 id="2-参数获取"><a href="#2-参数获取" class="headerlink" title="2. 参数获取"></a>2. 参数获取</h3><blockquote>
+<p>参数获取，则主要区分get请求参数，post提交表单，上传的文件了</p>
+</blockquote>
+<h4 id="a-通过-getQueryString"><a href="#a-通过-getQueryString" class="headerlink" title="a. 通过 getQueryString"></a>a. 通过 getQueryString</h4><p>这种获取参数的方式，只能获取url上面的参数，无法获取到post的表单内容</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String str = req.getQueryString();</span><br></pre></td></tr></table></figure>
+<h4 id="b-通过-getParameter"><a href="#b-通过-getParameter" class="headerlink" title="b. 通过 getParameter"></a>b. 通过 getParameter</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回所有的请求参数</span></span><br><span class="line">javax.servlet.ServletRequest#getParameterMap</span><br></pre></td></tr></table></figure>
+<p>这种使用姿势，和我们在SpringMVC中常见的基本一致</p>
+<h4 id="c-通过-getInputStream"><a href="#c-通过-getInputStream" class="headerlink" title="c. 通过 getInputStream"></a>c. 通过 getInputStream</h4><p>获取请求流，一般的使用姿势如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">InputStream stream = req.getInputStream();</span><br><span class="line"><span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[stream.available()];</span><br><span class="line">stream.read(bytes);</span><br><span class="line">String str = <span class="keyword">new</span> String(bytes);</span><br></pre></td></tr></table></figure>
+<p>然后就需要自己对上面的请求参数进行处理了；两厢对比，常规的获取方法，直接使用 getParameter方式更加优雅</p>
+<p><strong>注意</strong></p>
+<p>通过getInputStream方式获取了请求数据之后，再通过 getParameter获取不到参数的，也好理解，请求的流，被你读取之后，其他的地方就无法获取流中的数据了</p>
+<h4 id="d-获取上传的文件"><a href="#d-获取上传的文件" class="headerlink" title="d. 获取上传的文件"></a>d. 获取上传的文件</h4><p>从请求参数中获取上传的文件，网上随意搜索了一下，发现大部分都使用apache的fileupload包， 其实处理的依然是inputstream这个请求流，只是逻辑比较复杂，粗略的翻看了一下源码，发现这一块还挺有意思的，准备单独的深入看一下</p>
+<h3 id="3-数据返回"><a href="#3-数据返回" class="headerlink" title="3. 数据返回"></a>3. 数据返回</h3><p>返回数据，前面介绍HttpServletResponse的时候，就给出了两个方法</p>
+<h4 id="a-getWriter"><a href="#a-getWriter" class="headerlink" title="a. getWriter"></a>a. getWriter</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> PrintWriter <span class="title">getWriter</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="b-getOutputStream"><a href="#b-getOutputStream" class="headerlink" title="b. getOutputStream"></a>b. getOutputStream</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ServletOutputStream <span class="title">getOutputStream</span><span class="params">()</span> <span class="keyword">throws</span> IOException</span>;</span><br></pre></td></tr></table></figure>
+<p>下面简单说一下上面的区别</p>
+<table>
+<thead>
+<tr>
+<th>PrintWriter</th>
+<th>ServletOutputStream</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>字符流返回</td>
+<td>字节流返回</td>
+</tr>
+<tr>
+<td>需要字符编码</td>
+<td>字节流直接返回（返回文件就很占优势了）</td>
+</tr>
+</tbody>
+</table>
+<p><strong>说明</strong></p>
+<ol>
+<li>上面两种方式互斥，只能使用其中一种case</li>
+<li>Servlet程序向ServletOutputStream或PrintWriter对象中写入的数据将被Servlet引擎获取，Servlet引擎将这些数据当作响应消息的正文，然后再与响应状态行和各响应头组合后输出到客户端</li>
+<li>Serlvet的service方法结束后，Servlet引擎将检查getWriter或getOutputStream方法返回的输出流对象是否已经调用过close方法，如果没有，Servlet引擎将调用close方法关闭该输出流对象</li>
+</ol>
+<h3 id="4-返回头设置"><a href="#4-返回头设置" class="headerlink" title="4. 返回头设置"></a>4. 返回头设置</h3><p>常见的请求头和返回头设置，对于servlet而言也是比较常见的，一般常见的几个设置</p>
+<ul>
+<li>是否缓存，缓存时间</li>
+<li>设置cookie</li>
+<li>设置 corss-origin 相关，以支持跨域</li>
+<li>设置 content-type<br>…</li>
+</ul>
+<p>而实际的使用也比较简单了，如下即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># javax.servlet.http.HttpServletResponse#addHeader</span><br><span class="line">response.addHeader(<span class="string">"Content-Type"</span>, <span class="string">"text/html; charset=UTF-8"</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="III-实例测试"><a href="#III-实例测试" class="headerlink" title="III. 实例测试"></a>III. 实例测试</h2><p>创建一个自定义的嗯Servlet，然后拦截所有 /study 下面的请求</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DocServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        resp.setCharacterEncoding(<span class="string">"utf-8"</span>);</span><br><span class="line">        PrintWriter writer = resp.getWriter();</span><br><span class="line">        writer.append(<span class="string">"这是一个自定义servlet"</span>)</span><br><span class="line">                .append(<span class="string">"emoj😄=="</span>).flush();</span><br><span class="line">        System.out.println(<span class="string">"hereher!!!!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse res)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        Map map = req.getParameterMap();</span><br><span class="line">        System.out.println(<span class="string">"arg: "</span> + map);</span><br><span class="line">        res.getWriter().append(<span class="string">"success"</span>).flush();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的xml配置如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>doc-servlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.yihui.study.DocServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>2<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>doc-servlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/study/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>实测演示：</p>
+<p><img src="https://s17.mogucdn.com/mlcdn/c45406/180123_2ebh689d410dj1j8d4dd1hh8bccih_1223x656.gif" alt="show"></p>
+<h2 id="IV-其他"><a href="#IV-其他" class="headerlink" title="IV. 其他"></a>IV. 其他</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ol>
+<li><a href="http://blog.csdn.net/qq_28483283/article/details/51220749" target="_blank" rel="noopener">servlet详解(第一篇)</a></li>
+</ol>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/JavaWeb/">JavaWeb</a>
+		  
+			<a href="/hexblog/tags/Servlet/">Servlet</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/01/26/JavaWeb三大组件之Filter学习详解/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default"> JavaWeb三大组件之Filter学习详解</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/01/22/Android学习之旅1D-首屏页的开发/">
+        <span class="next-text nav-default">Android学习之旅1D:首屏页的开发</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

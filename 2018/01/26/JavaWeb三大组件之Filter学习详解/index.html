@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content=" JavaWeb三大组件之Filter学习详解"/>
+
+
+
+
+  <meta name="keywords" content="Java,JavaWeb,Filter," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/01/26/JavaWeb三大组件之Filter学习详解/"/>
+
+
+<meta name="description" content="JavaWeb三大组件之Filter学习详解 Filter基本上可以说存在所有的JavaWeb项目中，比如最基本的一个请求参数的编码CharacterEncodingFilter，大家一般都会配置下，那么filter是干嘛的呢？  本篇将主要集中在fitler的以下几个知识点:  干嘛的 怎么用 多个Filter执行的先后顺序 注意事项">
+<meta name="keywords" content="Java,JavaWeb,Filter">
+<meta property="og:type" content="article">
+<meta property="og:title" content=" JavaWeb三大组件之Filter学习详解">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/01/26/JavaWeb三大组件之Filter学习详解/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="JavaWeb三大组件之Filter学习详解 Filter基本上可以说存在所有的JavaWeb项目中，比如最基本的一个请求参数的编码CharacterEncodingFilter，大家一般都会配置下，那么filter是干嘛的呢？  本篇将主要集中在fitler的以下几个知识点:  干嘛的 怎么用 多个Filter执行的先后顺序 注意事项">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s3.mogucdn.com/mlcdn/c45406/180126_88h5hd8dhhfhe0h31jf9g6d5ik12f_630x253.png">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-01-26T12:30:59.325Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content=" JavaWeb三大组件之Filter学习详解">
+<meta name="twitter:description" content="JavaWeb三大组件之Filter学习详解 Filter基本上可以说存在所有的JavaWeb项目中，比如最基本的一个请求参数的编码CharacterEncodingFilter，大家一般都会配置下，那么filter是干嘛的呢？  本篇将主要集中在fitler的以下几个知识点:  干嘛的 怎么用 多个Filter执行的先后顺序 注意事项">
+<meta name="twitter:image" content="https://s3.mogucdn.com/mlcdn/c45406/180126_88h5hd8dhhfhe0h31jf9g6d5ik12f_630x253.png">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title>  JavaWeb三大组件之Filter学习详解 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+           JavaWeb三大组件之Filter学习详解
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-26
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="JavaWeb三大组件之Filter学习详解"><a href="#JavaWeb三大组件之Filter学习详解" class="headerlink" title="JavaWeb三大组件之Filter学习详解"></a>JavaWeb三大组件之Filter学习详解</h1><blockquote>
+<p>Filter基本上可以说存在所有的JavaWeb项目中，比如最基本的一个请求参数的编码<code>CharacterEncodingFilter</code>，大家一般都会配置下，那么filter是干嘛的呢？</p>
+</blockquote>
+<p>本篇将主要集中在fitler的以下几个知识点:</p>
+<ul>
+<li>干嘛的</li>
+<li>怎么用</li>
+<li>多个Filter执行的先后顺序</li>
+<li>注意事项</li>
+</ul>
+<a id="more"></a>
+<h2 id="I-基本知识"><a href="#I-基本知识" class="headerlink" title="I. 基本知识"></a>I. 基本知识</h2><p>Filter称之为过滤器，是用来做一些拦截的任务， 在Servlet接受请求之前，做一些事情，如果不满足限定，可以拒绝进入Servlet</p>
+<p><img src="https://s3.mogucdn.com/mlcdn/c45406/180126_88h5hd8dhhfhe0h31jf9g6d5ik12f_630x253.png" alt="arch"></p>
+<p>从上面的图，可以看出一个Filter的工作流程:</p>
+<p>一个http请求过来之后</p>
+<ul>
+<li>首先进入filter，执行相关业务逻辑</li>
+<li>若判定通行，则进入Servlet逻辑，Servlet执行完毕之后，又返回Filter，最后在返回给请求方</li>
+<li>判定失败，直接返回，不需要将请求发给Servlet</li>
+</ul>
+<p>通过上面的流程，可以推算使用场景：</p>
+<ul>
+<li>在filter层，来获取用户的身份</li>
+<li>可以考虑在filter层做一些常规的校验（如参数校验，referer校验等）</li>
+<li>可以在filter层做稳定性相关的工作（如全链路打点，可以在filter层分配一个traceId；也可以在这一层做限流等）</li>
+</ul>
+<h3 id="1-基本使用姿势"><a href="#1-基本使用姿势" class="headerlink" title="1. 基本使用姿势"></a>1. 基本使用姿势</h3><p>要使用一个Filter，一半需要两步，实现Filter接口的自定义类，web.xml中对filter的定义</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException</span>;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">                         FilterChain chain)</span></span></span><br><span class="line"><span class="function">            <span class="keyword">throws</span> IOException, ServletException</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要就三个方法，从命名来看，</p>
+<ul>
+<li>也比较清晰，在创建Filter对象的时候，调用 <code>init</code> 方法</li>
+<li>销毁Filter对象的时候，调用 <code>destroy</code> 方法</li>
+<li>当请求过来之后，调用 <code>doFilter</code>，也就是主要的业务逻辑所在了</li>
+</ul>
+<p>详细case后面再说</p>
+<p>接下来就是xml的配置了，和Servlet类似，每自定义一个，都需要在xml中加上一个配置（挺繁琐的操作的）</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 解决乱码的问题 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.CharacterEncodingFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>encoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>forceEncoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>配置也比较简单了，一个 <filter> 一个 <filter-mapping> 前者定义具体的Filter，后者表示这个Filter拦截的URL （看起来和Servlet的配置规则没什么两样）</filter-mapping></filter></p>
+<hr>
+<h2 id="II-实例"><a href="#II-实例" class="headerlink" title="II. 实例"></a>II. 实例</h2><p>我们的实例，就拿大名鼎鼎的<code>CharacterEncodingFilter</code>来说明，顺带膜拜下Spring的大神的优秀源码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CharacterEncodingFilter</span> <span class="keyword">extends</span> <span class="title">OncePerRequestFilter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> String encoding;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">boolean</span> forceEncoding = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CharacterEncodingFilter</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CharacterEncodingFilter</span><span class="params">(String encoding)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>(encoding, <span class="keyword">false</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">CharacterEncodingFilter</span><span class="params">(String encoding, <span class="keyword">boolean</span> forceEncoding)</span> </span>&#123;</span><br><span class="line">		Assert.hasLength(encoding, <span class="string">"Encoding must not be empty"</span>);</span><br><span class="line">		<span class="keyword">this</span>.encoding = encoding;</span><br><span class="line">		<span class="keyword">this</span>.forceEncoding = forceEncoding;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setEncoding</span><span class="params">(String encoding)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.encoding = encoding;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setForceEncoding</span><span class="params">(<span class="keyword">boolean</span> forceEncoding)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.forceEncoding = forceEncoding;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (<span class="keyword">this</span>.encoding != <span class="keyword">null</span> &amp;&amp; (<span class="keyword">this</span>.forceEncoding || request.getCharacterEncoding() == <span class="keyword">null</span>)) &#123;</span><br><span class="line">			request.setCharacterEncoding(<span class="keyword">this</span>.encoding);</span><br><span class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.forceEncoding) &#123;</span><br><span class="line">				response.setCharacterEncoding(<span class="keyword">this</span>.encoding);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		filterChain.doFilter(request, response);</span><br><span class="line">		System.out.printl(<span class="string">"servelt 执行完成，又返回filter"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的实现比较简单，主要将视线集中在 <code>doFilterInternal</code> 方法内部，如果要设置编码参数，则直接修改 <code>HttpServletRequest</code>, <code>HttpServletResponse</code> 两个参数，操作完成之后，执行下面这一行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">filterChain.doFilter(request, response);</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong></p>
+<ul>
+<li>上面这一行执行，表示Filter层已经通过了，请求可以转发给下一个Filter或者直接传给Servlet</li>
+<li>而下一个Filter, Servlet执行完成之后，还会继续往下走，就是上面的那一行输出，也会被调用（那一行是我加的，源码中没有）</li>
+</ul>
+<p>所以，如果你不希望继续往下走，那么就简单了，不执行上面的那一行即可</p>
+<h3 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h3><p><strong>问题一：看了上面的源码，一个很明显的问题就是，参数怎么设置的？</strong></p>
+<p>仔细看上面的源码，发现自定义Filter是继承 <code>org.springframework.web.filter.OncePerRequestFilter</code> 而不是直接实现的 Filter 接口，而且方法内也没有显示的实现 <code>init()</code>方法，所有很容易猜到是父类中实现了参数的初始化过程</p>
+<p>具体的实现逻辑是在 <code>org.springframework.web.filter.GenericFilterBean#init</code> 中，同样是Spring实现的，主要代码捞出来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">		Assert.notNull(filterConfig, <span class="string">"FilterConfig must not be null"</span>);</span><br><span class="line">		<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">			logger.debug(<span class="string">"Initializing filter '"</span> + filterConfig.getFilterName() + <span class="string">"'"</span>);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">this</span>.filterConfig = filterConfig;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Set bean properties from init parameters.</span></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			PropertyValues pvs = <span class="keyword">new</span> FilterConfigPropertyValues(filterConfig, <span class="keyword">this</span>.requiredProperties);</span><br><span class="line">			BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(<span class="keyword">this</span>);</span><br><span class="line">			ResourceLoader resourceLoader = <span class="keyword">new</span> ServletContextResourceLoader(filterConfig.getServletContext());</span><br><span class="line">			bw.registerCustomEditor(Resource.class, <span class="keyword">new</span> ResourceEditor(resourceLoader, <span class="keyword">this</span>.environment));</span><br><span class="line">			initBeanWrapper(bw);</span><br><span class="line">			bw.setPropertyValues(pvs, <span class="keyword">true</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (BeansException ex) &#123;</span><br><span class="line">			String msg = <span class="string">"Failed to set bean properties on filter '"</span> +</span><br><span class="line">				filterConfig.getFilterName() + <span class="string">"': "</span> + ex.getMessage();</span><br><span class="line">			logger.error(msg, ex);</span><br><span class="line">			<span class="keyword">throw</span> <span class="keyword">new</span> NestedServletException(msg, ex);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Let subclasses do whatever initialization they like.</span></span><br><span class="line">		initFilterBean();</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">			logger.debug(<span class="string">"Filter '"</span> + filterConfig.getFilterName() + <span class="string">"' configured successfully"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看上面一大串的代码，到底干了嘛？ 简单来讲，就是获取xml中配置的参数，然后填充到Filter对象中（对Srping而言，CharacterEncodingFilter就是一个bean），这个具体的逻辑和本篇关系不大，就直接跳过了</p>
+<p><strong>问题二：在Filter层中可以获取参数么</strong></p>
+<p>从doFilter的方法签名中看，既然有Request参数，那么应该是可以获取到请求参数的，那么实际验证一下</p>
+<p>先实现一个最最最简单的Filter</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"in filter"</span>);</span><br><span class="line">        System.out.println(<span class="string">"args: "</span> + JSON.toJSONString(request.getParameterMap()));</span><br><span class="line">        chain.doFilter(request, response);</span><br><span class="line">        System.out.println(<span class="string">"out filter"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>开始测试</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -d <span class="string">'name=Hello&amp;password=world'</span> http://127.0.0.1:8088/123</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">in</span> filter</span><br><span class="line">args: &#123;<span class="string">"name"</span>:[<span class="string">"Hello"</span>],<span class="string">"password"</span>:[<span class="string">"world"</span>]&#125;</span><br><span class="line">out filter</span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong></p>
+<p>在Filter中获取参数时，最好不要直接使用获取请求流的方式，如果获取请求流，那么Servlet就获取不到请求参数了</p>
+<p><strong>问题三：多个filter的顺序怎么定</strong></p>
+<p>前面学习Servlet的时候，也有这个问题，一个URL被多个Servlet命中了，那么先后顺序是怎样的呢？</p>
+<ul>
+<li>精确匹配 &gt; 最长匹配 &gt; 其他模糊匹配 &gt; 没有匹配的则是404</li>
+</ul>
+<p>那么Filter呢，他们的区别还是比较明显的，很多Filter都是拦截所有的请求，即很多Filter的命中规则都是一样的，那么怎么办？</p>
+<ul>
+<li>先执行带有url-pattern标签的filter，再执行带有servlet-name标签的filter</li>
+<li>如果同为url-pattern或servlet-name，则会按照在web.xml中的声明顺序执行</li>
+</ul>
+<p>测试case如下，我们定义三个Filter： </p>
+<ul>
+<li>TestFilter: 匹配所有路径</li>
+<li>ATestFilter: 匹配所有路径</li>
+<li>ServletFilter: 匹配 mvc-servlet</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ATestFilter</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"in ATestFilter"</span>);</span><br><span class="line">    chain.doFilter(request, response);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// TestFilter</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"in TestFilter"</span>);</span><br><span class="line">    chain.doFilter(request, response);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ServletFilter</span></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">    System.out.println(<span class="string">"in ServletFilter"</span>);</span><br><span class="line">    chain.doFilter(request, response);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的xml配置如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>servletFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.test.ServletFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>servletFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>mvc-dispatcher<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>testFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.test.TestFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>testFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>atestFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.test.ATestFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>atestFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>输出结果</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">in</span> TestFilter</span><br><span class="line"><span class="keyword">in</span> ATestFilter</span><br><span class="line"><span class="keyword">in</span> ServletFilter</span><br></pre></td></tr></table></figure>
+<h2 id="III-小结"><a href="#III-小结" class="headerlink" title="III. 小结"></a>III. 小结</h2><p>Filter 通常用于JavaWeb的过滤使用，通过doFilter方法中执行 <code>chain.doFilter(request, response);</code>，进入下一个Filter或者Servlet执行逻辑，当执行完成之后，依然会回到Filter这一层，继续走下去</p>
+<p><strong>针对上面的逻辑，Filter的常见应用场景有：</strong></p>
+<ul>
+<li>用户信息获取，身份校验</li>
+<li>安全校验（referer校验失败，直接拒绝）</li>
+<li>稳定性相关（限流，监控埋点，全链路日志埋点）</li>
+</ul>
+<p><strong>Filter的执行顺序：</strong></p>
+<ul>
+<li>url-mapping 的优先执行，其次是 servlet-mapping</li>
+<li>同一个匹配方式（如都是url-mapping）中，根据在xml中定义的先后顺序来确定</li>
+</ul>
+<p><strong>Filter的注意事项：</strong></p>
+<ul>
+<li>正常业务，请记得一定执行 <code>chain.doFilter(request, response)</code>， 最后把它放在finnal块中，防止你在Filter中的代码抛异常导致进入不到后续的逻辑</li>
+<li>在Filter中不要直接获取请求数据流（请求流被读取完之后，Servlet就get不到了!）</li>
+</ul>
+<h2 id="IV-其他"><a href="#IV-其他" class="headerlink" title="IV. 其他"></a>IV. 其他</h2><h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/JavaWeb/">JavaWeb</a>
+		  
+			<a href="/hexblog/tags/Filter/">Filter</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/02/04/SpringMVC统一异常处理/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">SpringMVC统一异常处理</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/01/24/JavaWeb三大组件之Servlet学习/">
+        <span class="next-text nav-default">JavaWeb三大组件之Servlet学习</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

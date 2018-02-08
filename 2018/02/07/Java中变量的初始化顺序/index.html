@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Java中变量的初始化顺序"/>
+
+
+
+
+  <meta name="keywords" content="Java,JDK,Initialize," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/02/07/Java中变量的初始化顺序/"/>
+
+
+<meta name="description" content="Java中变量的初始化顺序 在写一个通用的报警模块时，遇到一个有意思的问题，在调用静态方法时，发现静态方法内部对静态变量引用时，居然抛出了npe，仿佛是因为这个静态变量的初始化在静态方法被调用时，还没有触发，从而导致这个问题，因此今天专门来学习下静态成员的初始化顺序，以及上面这个问题导致的原因">
+<meta name="keywords" content="Java,JDK,Initialize">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中变量的初始化顺序">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/02/07/Java中变量的初始化顺序/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="Java中变量的初始化顺序 在写一个通用的报警模块时，遇到一个有意思的问题，在调用静态方法时，发现静态方法内部对静态变量引用时，居然抛出了npe，仿佛是因为这个静态变量的初始化在静态方法被调用时，还没有触发，从而导致这个问题，因此今天专门来学习下静态成员的初始化顺序，以及上面这个问题导致的原因">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s3.mogucdn.com/mlcdn/c45406/180207_6i4l21475ahg2d047a56cd4jj7h22_1219x656.gif">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-02-07T12:30:56.560Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中变量的初始化顺序">
+<meta name="twitter:description" content="Java中变量的初始化顺序 在写一个通用的报警模块时，遇到一个有意思的问题，在调用静态方法时，发现静态方法内部对静态变量引用时，居然抛出了npe，仿佛是因为这个静态变量的初始化在静态方法被调用时，还没有触发，从而导致这个问题，因此今天专门来学习下静态成员的初始化顺序，以及上面这个问题导致的原因">
+<meta name="twitter:image" content="https://s3.mogucdn.com/mlcdn/c45406/180207_6i4l21475ahg2d047a56cd4jj7h22_1219x656.gif">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Java中变量的初始化顺序 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Java中变量的初始化顺序
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-02-07
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/JDK/">JDK</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="Java中变量的初始化顺序"><a href="#Java中变量的初始化顺序" class="headerlink" title="Java中变量的初始化顺序"></a>Java中变量的初始化顺序</h1><blockquote>
+<p>在写一个通用的报警模块时，遇到一个有意思的问题，在调用静态方法时，发现静态方法内部对静态变量引用时，居然抛出了npe，仿佛是因为这个静态变量的初始化在静态方法被调用时，还没有触发，从而导致这个问题，因此今天专门来学习下静态成员的初始化顺序，以及上面这个问题导致的原因</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="I-初始化顺序"><a href="#I-初始化顺序" class="headerlink" title="I. 初始化顺序"></a>I. 初始化顺序</h2><p><strong>类的初始化顺序</strong></p>
+<p>静态变量, 静态代码快 -》 实例变量（属性，实例代码块，构造方法）</p>
+<p><strong>继承关系初始化顺序</strong></p>
+<p>父类静态成员，静态代码块 -》 子类静态成员，静态代码块 -》 父类实例变量（属性，实例代码块，构造方法）-》子类实例变量（属性，实例代码块，构造方法）</p>
+<h2 id="II-静态变量初始化顺序"><a href="#II-静态变量初始化顺序" class="headerlink" title="II. 静态变量初始化顺序"></a>II. 静态变量初始化顺序</h2><p>类初始化时，会优先初始化静态成员，那么一个类中有多个静态成员时，如何处理的？</p>
+<p>下面是一个使用静态成员，静态代码块，静态方法的测试类，那么下面的输出应该是怎样的呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"a init! "</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">B</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"b init! "</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> A a1 = <span class="keyword">new</span> A(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> B b1;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> num;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> B b2 = <span class="keyword">new</span> B(<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> A a2 = genA(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        b1 = <span class="keyword">new</span> B(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> A <span class="title">genA</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"gen A: "</span> + i);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> A(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> B <span class="title">genB</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"gen B: "</span> + i);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> B(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSome</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"static function doSome called! a3!=null : "</span> + (a3 != <span class="keyword">null</span>) + <span class="string">" | num &gt; 0 : "</span> + num);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> A a3;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> B b3;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"num : "</span> + num);</span><br><span class="line">        num = <span class="number">10</span>;</span><br><span class="line">        a3 = genA(<span class="number">3</span>);</span><br><span class="line">        b3 = genB(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        doSome();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a init! 1</span><br><span class="line">b init! 2</span><br><span class="line">gen A: 2</span><br><span class="line">a init! 2</span><br><span class="line">b init! 1</span><br><span class="line">num : 0</span><br><span class="line">gen A: 3</span><br><span class="line">a init! 3</span><br><span class="line">gen B: 3</span><br><span class="line">b init! 3</span><br><span class="line">static <span class="keyword">function</span> doSome called! a3!=null : <span class="literal">true</span> | num &gt; 0 : 10</span><br></pre></td></tr></table></figure>
+<p>从实际的输出结果来看：</p>
+<ul>
+<li>初始化的顺序比较清晰了，压根就是根据初始化代码的先后顺序来的，</li>
+<li>且在调用静态方法时，静态方法内部的静态成员已经被初始化</li>
+</ul>
+<p><strong>那么问题来了，如果在某个静态成员初始化的时候抛出了异常，会怎样？</strong></p>
+<p>那么稍稍改一下上面的代码，加一个主动抛异常的case</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"a init! "</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">B</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"b init! "</span> + i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> A a1 = <span class="keyword">new</span> A(<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> B b1;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> num;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> B b2 = <span class="keyword">new</span> B(<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> A a2 = genA(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        b1 = <span class="keyword">new</span> B(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> A <span class="title">genA</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"gen A: "</span> + i);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> A(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> B <span class="title">genB</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"gen B: "</span> + i);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> B(i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> A aError = genError();</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> A <span class="title">genError</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"gen error!"</span>);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException();</span><br><span class="line"><span class="comment">//        return new A(10);</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doSome</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"static function doSome called! a3!=null : "</span> + (a3 != <span class="keyword">null</span>) + <span class="string">" | num &gt; 0 : "</span> + num);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> A a3;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> B b3;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">"num : "</span> + num);</span><br><span class="line">        num = <span class="number">10</span>;</span><br><span class="line">        a3 = genA(<span class="number">3</span>);</span><br><span class="line">        b3 = genB(<span class="number">3</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        doSome();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时输出：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a init! 1</span><br><span class="line">b init! 2</span><br><span class="line">gen A: 2</span><br><span class="line">a init! 2</span><br><span class="line">b init! 1</span><br><span class="line">gen error!</span><br><span class="line">Exception <span class="keyword">in</span> thread <span class="string">"main"</span> java.lang.ExceptionInInitializerError</span><br><span class="line">Caused by: java.lang.RuntimeException</span><br></pre></td></tr></table></figure>
+<p>也就是说，初始化异常之后的代码将不会在继续执行</p>
+<p><strong>那么第二个问题来了，前面说到哪个问题是什么情况</strong></p>
+<p>最开始说到，在调用类的静态方法时，发现本该被初始化的静态成员，依然是null，从上面的分析来说，唯一的可能就是在成员变量初始化的过程中，出现了异常</p>
+<p>那么，就有另一个问题了，初始化就报错了，这个类的静态方法还能被调用执行么（加入这个静态方法不依赖内部的静态成员）？</p>
+<p>将前面的 <code>genA()</code>方法的private去掉，改成默认的访问范围，然后下面给出一个演示：</p>
+<p><img src="https://s3.mogucdn.com/mlcdn/c45406/180207_6i4l21475ahg2d047a56cd4jj7h22_1219x656.gif" alt="post.gif"></p>
+<p>通过这个演示，也挺有意思的，第一次访问，会抛出一个初始化异常；但是再调用一次，结果发现居然正常执行了；但是调用public方法时，每次都是抛异常</p>
+<p>导致这个问题的原因，还有待考究，但是前面这个问题的答案，估摸着和下面差不多了（但是不敢确定，有待大神指点）</p>
+<ul>
+<li>理论上类初始化失败，应该就不允许被调用了</li>
+<li>但是某些情况下，可以绕过这个限制</li>
+</ul>
+<h2 id="III-成员变量的初始化"><a href="#III-成员变量的初始化" class="headerlink" title="III. 成员变量的初始化"></a>III. 成员变量的初始化</h2><p>测试case也比较简单，把前面的代码中的static去掉即可， 输出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a init! <span class="number">1</span></span><br><span class="line">b init! <span class="number">2</span></span><br><span class="line">gen A: <span class="number">2</span></span><br><span class="line">a init! <span class="number">2</span></span><br><span class="line">b init! <span class="number">1</span></span><br><span class="line">num : <span class="number">0</span></span><br><span class="line">gen A: <span class="number">3</span></span><br><span class="line">a init! <span class="number">3</span></span><br><span class="line">gen B: <span class="number">3</span></span><br><span class="line">b init! <span class="number">3</span></span><br><span class="line"><span class="keyword">static</span> function doSome called! a3!=<span class="keyword">null</span> : <span class="keyword">true</span> | num &gt; <span class="number">0</span> : <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>依然是根据初始化代码的先后顺序进行的</p>
+<p>当然如果出现异常的情况，和前面的结果类似，不再赘述</p>
+<h2 id="IV-小结"><a href="#IV-小结" class="headerlink" title="IV. 小结"></a>IV. 小结</h2><h3 id="1-初始化顺序"><a href="#1-初始化顺序" class="headerlink" title="1. 初始化顺序"></a>1. 初始化顺序</h3><p><strong>类的初始化顺序</strong></p>
+<p>静态变量, 静态代码快 -》 实例变量（属性，实例代码块，构造方法）</p>
+<p><strong>继承关系初始化顺序</strong></p>
+<p>父类静态成员，静态代码块 -》 子类静态成员，静态代码块 -》 父类实例变量（属性，实例代码块，构造方法）-》子类实例变量（属性，实例代码块，构造方法）</p>
+<p>相同等级的初始化的先后顺序，是直接依赖代码中初始化的先后顺序</p>
+<h3 id="2-初始化异常时"><a href="#2-初始化异常时" class="headerlink" title="2. 初始化异常时"></a>2. 初始化异常时</h3><p>理论上，类初始化中抛出了异常，那么这个类将无法被classLoader正确的加载，因此也无法有效的使用这个类</p>
+<p>但是不排除某些情况下，依然强行的使用了这个类（如上面gif图中的演示），这个原理还不太清晰，也有可能是idea的debug功能有什么黑科技？</p>
+<p><strong>注意</strong></p>
+<p>因此，请格外注意，在初始化代码中，请确保不会有抛出异常，如果无法把控，不妨新建一个<code>init()</code>方法来实现初始化各种状态，然后在代码中主动调用好了</p>
+<h2 id="V-其他"><a href="#V-其他" class="headerlink" title="V. 其他"></a>V. 其他</h2><h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/JDK/">JDK</a>
+		  
+			<a href="/hexblog/tags/Initialize/">Initialize</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/02/08/Java可以如何实现文件变动的监听/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Java可以如何实现文件变动的监听</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/02/04/SpringMVC统一异常处理/">
+        <span class="next-text nav-default">SpringMVC统一异常处理</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

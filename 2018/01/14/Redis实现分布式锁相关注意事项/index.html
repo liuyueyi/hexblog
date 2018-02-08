@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Redis实现分布式锁相关注意事项"/>
+
+
+
+
+  <meta name="keywords" content="redis,distributeLock," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/01/14/Redis实现分布式锁相关注意事项/"/>
+
+
+<meta name="description" content="Redis实现分布式锁相关注意事项 查看了不少关于redis实现分布式锁的文章，无疑要设计一个靠谱的分布式并不太容易，总会出现各种鬼畜的问题；现在就来小述一下，在设计一个分布式锁的过程中，会遇到一些什么问题">
+<meta name="keywords" content="redis,distributeLock">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis实现分布式锁相关注意事项">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/01/14/Redis实现分布式锁相关注意事项/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="Redis实现分布式锁相关注意事项 查看了不少关于redis实现分布式锁的文章，无疑要设计一个靠谱的分布式并不太容易，总会出现各种鬼畜的问题；现在就来小述一下，在设计一个分布式锁的过程中，会遇到一些什么问题">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-01-14T08:20:27.081Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis实现分布式锁相关注意事项">
+<meta name="twitter:description" content="Redis实现分布式锁相关注意事项 查看了不少关于redis实现分布式锁的文章，无疑要设计一个靠谱的分布式并不太容易，总会出现各种鬼畜的问题；现在就来小述一下，在设计一个分布式锁的过程中，会遇到一些什么问题">
+<meta name="twitter:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Redis实现分布式锁相关注意事项 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Redis实现分布式锁相关注意事项
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-14
+          
+              
+                - <a href="/hexblog/categories/redis/">redis</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="Redis实现分布式锁相关注意事项"><a href="#Redis实现分布式锁相关注意事项" class="headerlink" title="Redis实现分布式锁相关注意事项"></a>Redis实现分布式锁相关注意事项</h1><blockquote>
+<p>查看了不少关于redis实现分布式锁的文章，无疑要设计一个靠谱的分布式并不太容易，总会出现各种鬼畜的问题；现在就来小述一下，在设计一个分布式锁的过程中，会遇到一些什么问题</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="I-背景知识"><a href="#I-背景知识" class="headerlink" title="I. 背景知识"></a>I. 背景知识</h2><p>借助redis来实现分布式锁（我们先考虑单机redis的模式），首先有必要了解下以下几点：</p>
+<ul>
+<li>单线程模式</li>
+<li>setnx  : 当不存在时，设置value，并返回1； 否则返回0</li>
+<li>getset : 设置并获取原来的值</li>
+<li>expire : 设置失效时间</li>
+<li>get    : 获取对应的值</li>
+<li>del    : 删除</li>
+<li>ttl    : 获取key对应的剩余时间，若key没有设置过超时时间，或者压根没有这个key则返回负数（可能是-1，-2）</li>
+<li>watch/unwatch : 事务相关</li>
+</ul>
+<h2 id="II-方案设计"><a href="#II-方案设计" class="headerlink" title="II. 方案设计"></a>II. 方案设计</h2><h3 id="1-设计思路"><a href="#1-设计思路" class="headerlink" title="1. 设计思路"></a>1. 设计思路</h3><p><strong>获取锁：</strong></p>
+<ul>
+<li>调用 setnx 尝试获取锁，如果设置成功，表示获取到了锁</li>
+<li>设置失败，此时需要判断锁是否过期<ul>
+<li>未过期，则表示获取失败；循环等待，并再次尝试获取锁</li>
+<li>已过期，getset再次设置锁，判断是否获取了锁（根据返回的值进行判断，后面给出具体的方案）</li>
+<li>若失败，则重新进入获取锁的逻辑</li>
+</ul>
+</li>
+</ul>
+<p><strong>释放锁：</strong></p>
+<ul>
+<li>一个原则就是确保每个业务方释放的是自己的锁</li>
+</ul>
+<h3 id="2-getset的实现方案"><a href="#2-getset的实现方案" class="headerlink" title="2. getset的实现方案"></a>2. getset的实现方案</h3><p>网上一种常见的case，主要思路如下</p>
+<ul>
+<li>setnx 尝试获取锁</li>
+<li>失败，则 get 获取锁的value （一般是 uuid_timstamp）</li>
+<li>判断是否过期，若没有过期，则表示真的获取失败</li>
+<li>若过期，则采用 getset设置，尝试获取锁</li>
+</ul>
+<p>实现代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DistributeLock</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Long OUT_TIME = <span class="number">30L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">tryLock</span><span class="params">(Jedis jedis, String key)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">            String value = UUID.randomUUID().toString() + <span class="string">"_"</span> + System.currentTimeMillis();</span><br><span class="line">            Long ans = jedis.setnx(key, value);</span><br><span class="line">            <span class="keyword">if</span> (ans != <span class="keyword">null</span> &amp;&amp; ans == <span class="number">1</span>) &#123; <span class="comment">// 获取锁成功</span></span><br><span class="line">                <span class="keyword">return</span> value;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 锁获取失败, 判断是否超时</span></span><br><span class="line">            String oldLock = jedis.get(key);</span><br><span class="line">            <span class="keyword">if</span> (oldLock == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">long</span> oldTime = Long.parseLong(oldLock.substring(oldLock.lastIndexOf(<span class="string">"_"</span>) + <span class="number">1</span>));</span><br><span class="line">            <span class="keyword">long</span> now = System.currentTimeMillis();</span><br><span class="line">            <span class="keyword">if</span> (now - oldTime &lt; OUT_TIME) &#123; <span class="comment">// 没有超时</span></span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            String getsetOldVal = jedis.getSet(key, value);</span><br><span class="line">            <span class="keyword">if</span> (Objects.equals(oldLock, getsetOldVal)) &#123; <span class="comment">// 返回的正好是上次的值，表示锁获取成功</span></span><br><span class="line">                <span class="keyword">return</span> value;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123; <span class="comment">// 表示返回的是其他业务设置的锁，赶紧的设置回去</span></span><br><span class="line">                jedis.set(key, getsetOldVal);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">tryUnLock</span><span class="params">(Jedis jedis, String key, String uuid)</span> </span>&#123;</span><br><span class="line">        String ov = jedis.get(key);</span><br><span class="line">        <span class="keyword">if</span> (uuid.equals(ov)) &#123; <span class="comment">// 只释放自己的锁</span></span><br><span class="line">            jedis.del(key);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>观察获取锁的逻辑，特别是获取超时锁的逻辑，很容易想到有一个问题 <code>getSet</code> 方法会不会导致写数据混乱的问题，简单来说就是多个线程同时判断锁超时时，执行 <code>getSet</code>设置锁时，最终获取锁的线程，能否保证和redis中的锁的value相同</p>
+<p>上面的实现方式，一个混乱的case如下:</p>
+<ol>
+<li>三个线程a,b,c 都进入到了锁超时的阶段</li>
+<li>线程a, 获取原始值 oldVal, 并设置 t1</li>
+<li>线程b, 获取线程a设置的 t1, 并重设为 t2</li>
+<li>线程c, 获取线程b设置的 t2, 并重设为 t3</li>
+<li>线程a，判断，并正式获取到锁</li>
+<li>线程b，判断失败，恢复原来锁的内容为t1</li>
+<li>线程c, 判断失败，恢复原来锁的内容为t2</li>
+<li>问题出现了，获取锁的线程a，期望所得内容为t1, 但是实际为t2; 导致无法释放锁</li>
+</ol>
+<p>实际验证</p>
+<p>在上面的代码中，配合测试case，加上一些日志输出</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">tryLock</span><span class="params">(Jedis jedis, String key)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    String threadName = Thread.currentThread().getName();</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        String value = threadName + <span class="string">"_"</span> + UUID.randomUUID().toString() + <span class="string">"_"</span> + System.currentTimeMillis();</span><br><span class="line">        Long ans = jedis.setnx(key, value);</span><br><span class="line">        <span class="keyword">if</span> (ans != <span class="keyword">null</span> &amp;&amp; ans == <span class="number">1</span>) &#123; <span class="comment">// 获取锁成功</span></span><br><span class="line">            <span class="keyword">return</span> value;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 锁获取失败, 判断是否超时</span></span><br><span class="line">        String oldLock = jedis.get(key);</span><br><span class="line">        <span class="keyword">if</span> (oldLock == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> oldTime = Long.parseLong(oldLock.substring(oldLock.lastIndexOf(<span class="string">"_"</span>) + <span class="number">1</span>));</span><br><span class="line">        <span class="keyword">long</span> now = System.currentTimeMillis();</span><br><span class="line">        <span class="keyword">if</span> (now - oldTime &lt; OUT_TIME) &#123; <span class="comment">// 没有超时</span></span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 强制使所有的线程都可以到这一步</span></span><br><span class="line">        Thread.sleep(<span class="number">50</span>);</span><br><span class="line">        System.out.println(threadName + <span class="string">" in getSet!"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 人工接入，确保t1 获取到锁， t2 获取的是t1设置的内容， t3获取的是t2设置的内容</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="string">"t2"</span>.equalsIgnoreCase(threadName)) &#123;</span><br><span class="line">            Thread.sleep(<span class="number">20</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"t3"</span>.equalsIgnoreCase(threadName)) &#123;</span><br><span class="line">            Thread.sleep(<span class="number">40</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        String getsetOldVal = jedis.getSet(key, value);</span><br><span class="line">        System.out.println(threadName + <span class="string">" set redis value: "</span> + value);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Objects.equals(oldLock, getsetOldVal)) &#123; <span class="comment">// 返回的正好是上次的值，表示锁获取成功</span></span><br><span class="line">            System.out.println(threadName + <span class="string">" get lock!"</span>);</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">"t1"</span>.equalsIgnoreCase(threadName)) &#123;</span><br><span class="line">                <span class="comment">// t1获取到锁，强制sleep40ms， 确保线t2,t3也进入了 getSet逻辑</span></span><br><span class="line">                Thread.sleep(<span class="number">40</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> value;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123; <span class="comment">// 表示返回的是其他业务设置的锁，赶紧的设置回去</span></span><br><span class="line">            <span class="comment">// 人肉介入，确保t2优先执行，并设置回t1设置的值, t3后执行设置的是t2设置的值</span></span><br><span class="line">            <span class="keyword">if</span> (<span class="string">"t3"</span>.equalsIgnoreCase(threadName)) &#123;</span><br><span class="line">                Thread.sleep(<span class="number">40</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">"t2"</span>.equalsIgnoreCase(threadName))&#123;</span><br><span class="line">                Thread.sleep(<span class="number">20</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            jedis.set(key, getsetOldVal);</span><br><span class="line">            System.out.println(threadName + <span class="string">" recover redis value: "</span> + getsetOldVal);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试case</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testLock</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    <span class="comment">// 先无视获取jedis的方式</span></span><br><span class="line">    JedisPool jedisPool = cacheWrapper.getJedisPool(<span class="number">0</span>);</span><br><span class="line">    Jedis jedis = jedisPool.getResource();</span><br><span class="line">    String lockKey = <span class="string">"lock_test"</span>;</span><br><span class="line"></span><br><span class="line">    String old = DistributeLock.tryLock(jedis, lockKey);</span><br><span class="line">    System.out.println(<span class="string">"old lock: "</span> + old);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 确保锁超时</span></span><br><span class="line">    Thread.sleep(<span class="number">40</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建三个线程</span></span><br><span class="line">    Thread t1 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Jedis j =jedisPool.getResource();</span><br><span class="line">            DistributeLock.tryLock(j, lockKey);</span><br><span class="line">            System.out.println(<span class="string">"t1 &gt;&gt;&gt;&gt; "</span> + j.get(lockKey));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="string">"t1"</span>);</span><br><span class="line">    Thread t2 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Jedis j =jedisPool.getResource();</span><br><span class="line">            DistributeLock.tryLock(j, lockKey);</span><br><span class="line">            System.out.println(<span class="string">"t2 &gt;&gt;&gt;&gt;&gt; "</span> + j.get(lockKey));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="string">"t2"</span>);</span><br><span class="line">    Thread t3 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Jedis j =jedisPool.getResource();</span><br><span class="line">            DistributeLock.tryLock(j, lockKey);</span><br><span class="line">            System.out.println(<span class="string">"t3 &gt;&gt;&gt;&gt;&gt; "</span> + j.get(lockKey));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="string">"t3"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    t1.start();</span><br><span class="line">    t2.start();</span><br><span class="line">    t3.start();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    Thread.sleep(<span class="number">10000</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>部分输出结果:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">main <span class="keyword">in</span> getSet!</span><br><span class="line">main <span class="built_in">set</span> redis value: main_d4cc5d69-5027-4550-abe1-10126f057779_1515643763130</span><br><span class="line">main get lock!</span><br><span class="line">old lock: main_d4cc5d69-5027-4550-abe1-10126f057779_1515643763130</span><br><span class="line">t1 <span class="keyword">in</span> getSet!</span><br><span class="line">t2 <span class="keyword">in</span> getSet!</span><br><span class="line">t1 <span class="built_in">set</span> redis value: t1_105974db-7d89-48bf-9669-6f122a3f9fb6_1515643763341</span><br><span class="line">t1 get lock!</span><br><span class="line">t3 <span class="keyword">in</span> getSet!</span><br><span class="line">t2 <span class="built_in">set</span> redis value: t2_be06f80a-9b70-4a0e-a86d-44337abe8642_1515643763341</span><br><span class="line">t1 &gt;&gt;&gt;&gt; t2_be06f80a-9b70-4a0e-a86d-44337abe8642_1515643763341</span><br><span class="line">t3 <span class="built_in">set</span> redis value: t3_9aa5d755-43b2-43bd-9a0b-2bad13fa31f6_1515643763345</span><br><span class="line">t2 recover redis value: t1_105974db-7d89-48bf-9669-6f122a3f9fb6_1515643763341</span><br><span class="line">t3 recover redis value: t2_be06f80a-9b70-4a0e-a86d-44337abe8642_1515643763341</span><br></pre></td></tr></table></figure>
+<p>重点关注 <code>t1 &gt;&gt;&gt;&gt; t2_be06f80a-9b70-4a0e-a86d-44337abe8642_1515643763341</code>，表示t1线程过去了锁，但是锁的内容不是其value，即便t2去恢复，也会被t3给覆盖</p>
+<hr>
+<p><strong>如何解决上面这个问题呢？</strong></p>
+<p>上面是典型的并发导致的问题，当然可以考虑从解决并发问题的角度出发来考虑，一个常见的方式就是加锁了，思路如下：（不详细展开了）</p>
+<ul>
+<li>在判断超时之后，加锁</li>
+<li>再次获取对应的值，判断是否超时，是则执行上面的操作</li>
+<li>否则退出逻辑，继续循环</li>
+</ul>
+<p><strong>这种实现方式，会有以下的问题：</strong></p>
+<ul>
+<li>getset 这个方法执行，可能导致写入脏数据</li>
+<li>基于服务器时钟进行超时判断，要求所有服务器始终一致，否则有坑</li>
+</ul>
+<h3 id="3-expire实现方式"><a href="#3-expire实现方式" class="headerlink" title="3. expire实现方式"></a>3. expire实现方式</h3><p>相比于前面一种直接将value设置为时间戳，然后来比对的方法，这里则直接借助redis本身的expire方式来实现超时设置，主要实现逻辑相差无几</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DistributeExpireLock</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Integer OUT_TIME = <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">tryLock</span><span class="params">(Jedis jedis, String key)</span> </span>&#123;</span><br><span class="line">        String value = UUID.randomUUID().toString();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">            Long ans = jedis.setnx(key, value);</span><br><span class="line">            <span class="keyword">if</span> (ans != <span class="keyword">null</span> &amp;&amp; ans == <span class="number">1</span>) &#123; <span class="comment">// 获取锁成功</span></span><br><span class="line">                jedis.expire(key, OUT_TIME); <span class="comment">// 主动设置超时时间为3s</span></span><br><span class="line">                <span class="keyword">return</span> value;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 获取失败，先确认下是否有设置国超是时间</span></span><br><span class="line">            <span class="comment">// 防止锁的超时时间设置失效，导致一直竞争不到</span></span><br><span class="line">            <span class="keyword">if</span>(jedis.ttl(key) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                jedis.expire(key, OUT_TIME);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">tryUnLock</span><span class="params">(Jedis jedis, String key, String uuid)</span> </span>&#123;</span><br><span class="line">        String ov = jedis.get(key);</span><br><span class="line">        <span class="keyword">if</span> (uuid.equals(ov)) &#123; <span class="comment">// 只释放自己的锁</span></span><br><span class="line">            jedis.del(key);</span><br><span class="line">            System.out.println(Thread.currentThread() +<span class="string">" del lock success!"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(Thread.currentThread() +<span class="string">" del lock fail!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>获取锁的逻辑相比之前的，就简单很多了，接下来则需要简单的分析下，上面这种实现方式，会不会有坑呢？我们主要看一下获取锁失败的场景</p>
+<ul>
+<li>如果获取锁失败</li>
+<li>表示有其他的业务方已经获取到了锁</li>
+<li>此时，只能等持有锁的业务方主动释放锁</li>
+<li>判断锁是否设置了超时时间，若没有则加一个（防止设置超时时间失败导致问题）</li>
+</ul>
+<p><strong>从上面这个逻辑来看问题不大，但是有个问题，case ：</strong></p>
+<ul>
+<li>如某个业务方setnx获取到了锁，但是因为网络问题，过了很久才获取到返回，此时锁已经失效并被其他业务方获取到了，就会出现多个业务方同时持有锁的场景</li>
+</ul>
+<h2 id="III-小结说明"><a href="#III-小结说明" class="headerlink" title="III. 小结说明"></a>III. 小结说明</h2><p>想基于redis实现一个相对靠谱的分布式锁，需要考虑的东西还是比较多的，而且这种锁并不太适用于业务要求特别严格的地方，如</p>
+<ul>
+<li>一个线程持有锁时，如果发生gc，导致锁超时失效，但是自己又不知道，此时就会出现多个业务方同时持有锁的场景</li>
+<li>对于锁超时的场景，需要仔细考虑，是否会出现并发问题</li>
+<li>确保只能释放自己的锁（以防止释放了别人的锁，出现问题）</li>
+</ul>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><ul>
+<li><a href="http://blog.csdn.net/paincupid/article/details/75094550" target="_blank" rel="noopener">基于Redis的分布式锁到底安全吗?</a></li>
+<li><a href="http://blog.csdn.net/yuxxz/article/details/52551357" target="_blank" rel="noopener">利用redis实现的分布式锁</a></li>
+</ul>
+<h2 id="V-其他"><a href="#V-其他" class="headerlink" title="V. 其他"></a>V. 其他</h2><h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/redis/">redis</a>
+		  
+			<a href="/hexblog/tags/distributeLock/">distributeLock</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/01/15/基于OkHttp封装一个简单易用的http工具/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">基于OkHttp封装一个简单易用的http工具</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/01/04/SpringMVC之请求参数的获取方式/">
+        <span class="next-text nav-default">SpringMVC之请求参数的获取方式</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

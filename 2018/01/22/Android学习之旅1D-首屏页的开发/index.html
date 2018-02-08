@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Android学习之旅1D:首屏页的开发"/>
+
+
+
+
+  <meta name="keywords" content="Android,一封,RelativeLayout,CountDownTimer," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/01/22/Android学习之旅1D-首屏页的开发/"/>
+
+
+<meta name="description" content="Android学习之旅：第一天 采用依葫芦画瓢的方式来学习android的开发，准备逐步的开发出《一封》这个app  本片主要记录了SplashActivity的开发过程">
+<meta name="keywords" content="Android,一封,RelativeLayout,CountDownTimer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android学习之旅1D:首屏页的开发">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/01/22/Android学习之旅1D-首屏页的开发/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="Android学习之旅：第一天 采用依葫芦画瓢的方式来学习android的开发，准备逐步的开发出《一封》这个app  本片主要记录了SplashActivity的开发过程">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s3.mogucdn.com/mlcdn/c45406/180122_00ce7aa5licd57gi8802ee8c508k4_618x1130.jpg">
+<meta property="og:image" content="https://s11.mogucdn.com/mlcdn/c45406/180122_168i53b37946888fj7ag88chdffjh_618x1130.jpg">
+<meta property="og:image" content="https://s11.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-01-22T12:30:56.393Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android学习之旅1D:首屏页的开发">
+<meta name="twitter:description" content="Android学习之旅：第一天 采用依葫芦画瓢的方式来学习android的开发，准备逐步的开发出《一封》这个app  本片主要记录了SplashActivity的开发过程">
+<meta name="twitter:image" content="https://s3.mogucdn.com/mlcdn/c45406/180122_00ce7aa5licd57gi8802ee8c508k4_618x1130.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Android学习之旅1D:首屏页的开发 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Android学习之旅1D:首屏页的开发
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-22
+          
+              
+                - <a href="/hexblog/categories/Android/">Android</a>
+              
+                - <a href="/hexblog/categories/Android/一封/">一封</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="Android学习之旅：第一天"><a href="#Android学习之旅：第一天" class="headerlink" title="Android学习之旅：第一天"></a>Android学习之旅：第一天</h1><blockquote>
+<p>采用依葫芦画瓢的方式来学习android的开发，准备逐步的开发出《一封》这个app</p>
+</blockquote>
+<p>本片主要记录了SplashActivity的开发过程</p>
+<a id="more"></a>
+<h2 id="I-前置"><a href="#I-前置" class="headerlink" title="I. 前置"></a>I. 前置</h2><p>主要copy两个开源项目</p>
+<ol>
+<li><a href="https://github.com/ImKarl/JianshuApp" target="_blank" rel="noopener">JianshuApp</a></li>
+<li><a href="https://github.com/sues-lee/SuesNews" target="_blank" rel="noopener">SUESNews</a></li>
+</ol>
+<p>上面两个工程，第二个用到的依赖比较少，实现的基本功能也都很ok，而第一个里面则用了很多有意思的第三方框架，但是目前我看不太懂，所以第一版以SUESNews作为主要的学习目标</p>
+<p>所以，第一版的目标是：</p>
+<ul>
+<li>实现基本功能</li>
+<li>完成主体业务逻辑</li>
+</ul>
+<h2 id="II-Splash页面开发"><a href="#II-Splash页面开发" class="headerlink" title="II. Splash页面开发"></a>II. Splash页面开发</h2><p>一般来将，进入app之前，会进入一个类似首屏页的页面（比如12306的显示广告啥的），那么第一件事情就是做这个了</p>
+<h3 id="1-做什么"><a href="#1-做什么" class="headerlink" title="1. 做什么"></a>1. 做什么</h3><p>这个页面，主要显示的东西比较简单了</p>
+<ul>
+<li>上边是一个图片，右上角一个倒计时</li>
+<li>下边显示的应用信息，版本等</li>
+</ul>
+<p>业务逻辑：</p>
+<ul>
+<li>显示广告（😄），点击进入相应的详情页</li>
+<li>判断是否登录，若未登录，则进入登录页</li>
+<li>若已经登录，则进入主APP</li>
+</ul>
+<h3 id="2-开动"><a href="#2-开动" class="headerlink" title="2. 开动"></a>2. 开动</h3><h4 id="a-全屏"><a href="#a-全屏" class="headerlink" title="a. 全屏"></a>a. 全屏</h4><p>进入的首页，所以状态栏，标题啥的都不要，主要的逻辑如下</p>
+<p>styles.xml 文件中新增</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">name</span>=<span class="string">"AppTheme.FullScreen"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"windowNoTitle"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">name</span>=<span class="string">"android:windowFullscreen"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">item</span>&gt;</span></span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>其次，就是在定义的Activity中，使用对应的style</p>
+<p>AndroidManifest.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">activity</span> <span class="attr">android:name</span>=<span class="string">".ui.SplashActivity"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:theme</span>=<span class="string">"@style/AppTheme.FullScreen"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">intent-filter</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">action</span> <span class="attr">android:name</span>=<span class="string">"android.intent.action.MAIN"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">category</span> <span class="attr">android:name</span>=<span class="string">"android.intent.category.LAUNCHER"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">intent-filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">activity</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="b-xml实现"><a href="#b-xml实现" class="headerlink" title="b. xml实现"></a>b. xml实现</h4><p><code>activity_splash.xml</code> 对应的实现如下</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">RelativeLayout</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:tools</span>=<span class="string">"http://schemas.android.com/tools"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:fitsSystemWindows</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">tools:context</span>=<span class="string">"com.yihui.yifeng.ui.SplashActivity"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/image_background"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_alignBottom</span>=<span class="string">"@+id/title_text"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_alignParentLeft</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_alignParentStart</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginBottom</span>=<span class="string">"52dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:scaleType</span>=<span class="string">"centerCrop"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/image_info_bg"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_alignTop</span>=<span class="string">"@+id/title_text"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_centerHorizontal</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:scaleType</span>=<span class="string">"centerCrop"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/title_text"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_above</span>=<span class="string">"@+id/version_text"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_centerHorizontal</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginBottom</span>=<span class="string">"17dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:text</span>=<span class="string">"@string/app_name"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textColor</span>=<span class="string">"@color/text_color"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">"@dimen/text_size_title_bigger"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textStyle</span>=<span class="string">"bold"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:id</span>=<span class="string">"@+id/version_text"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_alignParentBottom</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_centerHorizontal</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:layout_marginBottom</span>=<span class="string">"11dp"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textColor</span>=<span class="string">"@color/secondary_text"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textSize</span>=<span class="string">"@dimen/text_size_subhead"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:textStyle</span>=<span class="string">"bold"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">tools:text</span>=<span class="string">"Copyright @2017-2018 一封 | 小灰灰技术支持"</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">RelativeLayout</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>运行截图如下：</p>
+<p><img src="https://s3.mogucdn.com/mlcdn/c45406/180122_00ce7aa5licd57gi8802ee8c508k4_618x1130.jpg" alt="A7108014-E6AC-4327-91F2-A89F07EEFE53.png"></p>
+<p>上面这个布局，是直接使用可视化的拖拽的，所以操作起来挺蛋疼的，而且最终的结果也不太好，下面单独的开一节来研究下这个布局的东西了</p>
+<h4 id="c-Activity的实现"><a href="#c-Activity的实现" class="headerlink" title="c. Activity的实现"></a>c. Activity的实现</h4><p>上面是xml的配置，当然还得有对应的实体类了，大部分逻辑是直接从参考的工程中copy过来的，所以相关的动画配置，图片也是直接扣过来的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SplashActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ImageView mBackgroundImage;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ImageView infoBgImg;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> TextView mTitleText;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> TextView mVersionText;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] ary = <span class="keyword">new</span> <span class="keyword">int</span>[] &#123;R.drawable.pic_background_1, R.drawable.pic_background_2, R.drawable.pic_background_3, R.drawable.pic_background_4&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">getBgDrawable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ary[<span class="keyword">new</span> Random().nextInt(ary.length)];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initInfoBg</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        infoBgImg = findViewById(R.id.image_info_bg);</span><br><span class="line">        infoBgImg.setImageDrawable(getResources().getDrawable(ary[<span class="number">0</span>]));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initAdBg</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mBackgroundImage = findViewById(R.id.image_background);</span><br><span class="line">        mBackgroundImage.setImageDrawable(getResources().getDrawable(getBgDrawable()));</span><br><span class="line"></span><br><span class="line">        Animation animImage = AnimationUtils.loadAnimation(<span class="keyword">this</span>, R.anim.image_welcome);</span><br><span class="line">        mBackgroundImage.startAnimation(animImage);</span><br><span class="line">        animImage.setAnimationListener(<span class="keyword">new</span> Animation.AnimationListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationStart</span><span class="params">(Animation animation)</span> </span>&#123;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animation animation)</span> </span>&#123;</span><br><span class="line">                <span class="comment">//动画结束时打开首页</span></span><br><span class="line">                startActivity(<span class="keyword">new</span> Intent(SplashActivity.<span class="keyword">this</span>, MainActivity.class));</span><br><span class="line">                overridePendingTransition(R.anim.activity_slide_in, R.anim.no_anim);</span><br><span class="line">                finish();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationRepeat</span><span class="params">(Animation animation)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.activity_splash);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 下半的提示文案信息</span></span><br><span class="line">        initInfoBg();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 上半的广告动画</span></span><br><span class="line">        initAdBg();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="todo"><a href="#todo" class="headerlink" title="todo"></a>todo</h4><p>登录状态判断，如果未登录，则应该跳转到登录页面；否则才是跳转到主页</p>
+<h2 id="III-知识点小结"><a href="#III-知识点小结" class="headerlink" title="III. 知识点小结"></a>III. 知识点小结</h2><p>上面只是实现了一个简单的应用开启页面，但也涉及了几个有趣的知识点，下面来深入一下</p>
+<h3 id="1-RelativeLayout-布局"><a href="#1-RelativeLayout-布局" class="headerlink" title="1. RelativeLayout 布局"></a>1. RelativeLayout 布局</h3><p>控件的位置是按照相对位置来计算的，后一个控件在什么位置依赖于前一个控件的基本位置，是布局最常用，也是最灵活的一种布局</p>
+<p>常见的属性值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">第一类:属性值为true或false</span><br><span class="line">android:layout_centerHrizontal 水平居中</span><br><span class="line">android:layout_centerVertical 垂直居中</span><br><span class="line">android:layout_centerInparent 相对于父元素完全居中</span><br><span class="line">android:layout_alignParentBottom 贴紧父元素的下边缘</span><br><span class="line">android:layout_alignParentLeft 贴紧父元素的左边缘</span><br><span class="line">android:layout_alignParentRight 贴紧父元素的右边缘</span><br><span class="line">android:layout_alignParentTop 贴紧父元素的上边缘　　</span><br><span class="line"></span><br><span class="line">第二类：属性值必须为id的引用名“@id/id-name”</span><br><span class="line">android:layout_below 在某元素的下方</span><br><span class="line">android:layout_above 在某元素的的上方</span><br><span class="line">android:layout_toLeftOf 在某元素的左边</span><br><span class="line">android:layout_toRightOf 在某元素的右边</span><br><span class="line">android:layout_alignTop 本元素的上边缘和某元素的的上边缘对齐</span><br><span class="line">android:layout_alignLeft 本元素的左边缘和某元素的的左边缘对齐</span><br><span class="line">android:layout_alignBottom 本元素的下边缘和某元素的的下边缘对齐</span><br><span class="line">android:layout_alignRight 本元素的右边缘和某元素的的右边缘对齐</span><br><span class="line"></span><br><span class="line">第三类：属性值为具体的像素值，如30dip，40px</span><br><span class="line">android:layout_marginBottom 离某元素底边缘的距离</span><br><span class="line">android:layout_marginLeft 离某元素左边缘的距离</span><br><span class="line">android:layout_marginRight 离某元素右边缘的距离</span><br><span class="line">android:layout_marginTop 离某元素上边缘的距离</span><br></pre></td></tr></table></figure>
+<p>所以可以简单的修改一下上面的布局，相对布局的样式就两个，上面一个图，下面一个图</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/image_background"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line">    &lt;!-- 注意这一行 --&gt;</span><br><span class="line">    android:layout_alignBottom="@+id/image_info_bg" </span><br><span class="line">    android:layout_alignParentLeft="true"</span><br><span class="line">    android:layout_alignParentStart="true"</span><br><span class="line">    android:layout_marginBottom="52dp"</span><br><span class="line">    android:scaleType="centerCrop" /&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/image_info_bg"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"match_parent"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"match_parent"</span></span></span><br><span class="line">    &lt;!-- 注意这一行，确保背景图可以包含文本信息 --&gt;</span><br><span class="line">    android:layout_alignTop="@+id/title_text"</span><br><span class="line">    android:layout_centerHorizontal="true"</span><br><span class="line">    android:scaleType="centerCrop" /&gt;</span><br></pre></td></tr></table></figure>
+<p>那么剩下的两个文本显示就可以直接指定下边距来确定位置了</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/title_text"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_above</span>=<span class="string">"@+id/version_text"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_centerHorizontal</span>=<span class="string">"true"</span></span></span><br><span class="line">    &lt;!-- 这里确定了高度 --&gt;</span><br><span class="line">    android:layout_marginBottom="17dp"</span><br><span class="line">    android:text="@string/app_name"</span><br><span class="line">    android:textColor="@color/text_color"</span><br><span class="line">    android:textSize="@dimen/text_size_title_bigger"</span><br><span class="line">    android:textStyle="bold" /&gt;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">TextView</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:id</span>=<span class="string">"@+id/version_text"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_alignParentBottom</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">android:layout_centerHorizontal</span>=<span class="string">"true"</span></span></span><br><span class="line">    &lt;!-- 这里确定了高度 --&gt;</span><br><span class="line">    android:layout_marginBottom="11dp"</span><br><span class="line">    android:textColor="@color/secondary_text"</span><br><span class="line">    android:textSize="@dimen/text_size_subhead"</span><br><span class="line">    android:text="@string/splash_copyright" /&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="2-获取组件"><a href="#2-获取组件" class="headerlink" title="2. 获取组件"></a>2. 获取组件</h3><p>在Activity中，先要绑定视图，然后再获取view进行相关的操作（如修改值，绑定事件等）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Activity 的 oncreate方法中，进行初始化</span></span><br><span class="line"><span class="comment">// 绑定视图</span></span><br><span class="line"><span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">setContentView(R.layout.activity_splash);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取组件</span></span><br><span class="line">findViewById(R.id.image_info_bg);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取资源，如图片</span></span><br><span class="line">Drawable drawable = getResources().getDrawable(R.drawable.pic_background_1)</span><br></pre></td></tr></table></figure>
+<p>有一个非常有名的工具叫做 <code>butterknife</code>, 可以通过注解的方式来解决 findViewById这种频繁的调用姿势，这个放在后续的进阶版中使用</p>
+<h3 id="3-设置动画"><a href="#3-设置动画" class="headerlink" title="3. 设置动画"></a>3. 设置动画</h3><p>开屏使用了一个图片放大的动画，持续3s，动画播放完毕之后跳转主页；所以这里有个有趣的知识点就是如何使用xml来配置动画效果，从实现来看也挺简单的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 解析xml配置为 Animation 对象</span></span><br><span class="line">Animation animImage = AnimationUtils.loadAnimation(<span class="keyword">this</span>, R.anim.image_welcome);</span><br><span class="line"><span class="comment">// 设置组件的动画属性</span></span><br><span class="line">mBackgroundImage.startAnimation(animImage);</span><br><span class="line"><span class="comment">// 配置监听事件</span></span><br><span class="line">animImage.setAnimationListener(<span class="keyword">new</span> Animation.AnimationListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationStart</span><span class="params">(Animation animation)</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 动画结束后的回调</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animation animation)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//动画结束时打开首页</span></span><br><span class="line">        startActivity(<span class="keyword">new</span> Intent(SplashActivity.<span class="keyword">this</span>, MainActivity.class));</span><br><span class="line">        overridePendingTransition(R.anim.activity_slide_in, R.anim.no_anim);</span><br><span class="line">        finish();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationRepeat</span><span class="params">(Animation animation)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>对应的xml配置如下</p>
+<p><code>image_welcome.xml</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">set</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scale</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:fromXScale</span>=<span class="string">"1.0"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:toXScale</span>=<span class="string">"1.3"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:fromYScale</span>=<span class="string">"1.0"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:toYScale</span>=<span class="string">"1.3"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:duration</span>=<span class="string">"3000"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:pivotY</span>=<span class="string">"50%"</span></span></span><br><span class="line"><span class="tag">        <span class="attr">android:pivotX</span>=<span class="string">"50%"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>那么，我们需要实现开头说的，这个图片如果是个广告，点击时展开详情页；右上角显示一个倒计时的小控件，可以怎么处理？（看最后）</p>
+<h3 id="4-页面跳转"><a href="#4-页面跳转" class="headerlink" title="4. 页面跳转"></a>4. 页面跳转</h3><p>从一个Activity跳转到另一个，常见的使用姿势如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">startActivity(<span class="keyword">new</span> Intent(SplashActivity.<span class="keyword">this</span>, MainActivity.class));</span><br></pre></td></tr></table></figure>
+<h2 id="IV-倒计时改进"><a href="#IV-倒计时改进" class="headerlink" title="IV. 倒计时改进"></a>IV. 倒计时改进</h2><p>如何使用倒计时来替换前面的动画呢？最容易想到的就是用Timer或者ScheduleService来实现一个计时器，当然这是一个后端java的想法，对于Android呢，特意查了一下，发现有个 CountDownTimer 的类，专门干这个的，所以简单的改造一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initAdBg</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    mBackgroundImage = findViewById(R.id.image_background);</span><br><span class="line">    mBackgroundImage.setImageDrawable(getResources().getDrawable(getBgDrawable()));</span><br><span class="line">    mBackgroundImage.setOnClickListener(<span class="keyword">new</span> View.OnClickListener() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onClick</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 点击</span></span><br><span class="line">            Toast.makeText(SplashActivity.<span class="keyword">this</span>, <span class="string">"点击了"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> TextView countDown = findViewById(R.id.splash_timedown);</span><br><span class="line">    CountDownTimer timer = <span class="keyword">new</span> CountDownTimer(<span class="number">10000</span>, <span class="number">1000</span>) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onTick</span><span class="params">(<span class="keyword">long</span> l)</span> </span>&#123;</span><br><span class="line">            countDown.setText(<span class="string">"倒计时:"</span> + (l / <span class="number">1000</span>) + <span class="string">"s"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFinish</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">//动画结束时打开首页</span></span><br><span class="line">            startActivity(<span class="keyword">new</span> Intent(SplashActivity.<span class="keyword">this</span>, MainActivity.class));</span><br><span class="line">            overridePendingTransition(R.anim.activity_slide_in, R.anim.no_anim);</span><br><span class="line">            finish();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    timer.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>改造后的输出图, 注意右上角的时间，已经下面分割处，不会有前面的空白了</p>
+<p><img src="https://s11.mogucdn.com/mlcdn/c45406/180122_168i53b37946888fj7ag88chdffjh_618x1130.jpg" alt="7694230F-D9FE-4DCE-B76B-75E3204D3571.png"></p>
+<h2 id="V-其他"><a href="#V-其他" class="headerlink" title="V. 其他"></a>V. 其他</h2><h3 id="额外话"><a href="#额外话" class="headerlink" title="额外话"></a>额外话</h3><p>感觉最近不太能专心下来学习一门技术，有点浮躁了，所以决定学习下andorid，锻炼下自己，初步规划，先入门，然后接收一些有趣的第三方框架，最后再试一下kotalin</p>
+<p>Android学习第一天，总感觉这将是个漫长的过程，也不晓得最终会完成得怎么样，努力坚持吧</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s11.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Android/">Android</a>
+		  
+			<a href="/hexblog/tags/一封/">一封</a>
+		  
+			<a href="/hexblog/tags/RelativeLayout/">RelativeLayout</a>
+		  
+			<a href="/hexblog/tags/CountDownTimer/">CountDownTimer</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/01/24/JavaWeb三大组件之Servlet学习/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">JavaWeb三大组件之Servlet学习</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/01/22/兼容ImageIO读取jpeg图片变红/">
+        <span class="next-text nav-default">兼容ImageIO读取jpeg图片变红</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Java可以如何实现文件变动的监听"/>
+
+
+
+
+  <meta name="keywords" content="Java,File,ScheduledExecutorService," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/02/08/Java可以如何实现文件变动的监听/"/>
+
+
+<meta name="description" content="Java可以如何实现文件变动的监听应用中使用logback作为日志输出组件的话，大部分会去配置 logback.xml 这个文件，而且生产环境下，直接去修改logback.xml文件中的日志级别，不用重启应用就可以生效 那么，这个功能是怎么实现的呢？">
+<meta name="keywords" content="Java,File,ScheduledExecutorService">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java可以如何实现文件变动的监听">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/02/08/Java可以如何实现文件变动的监听/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="Java可以如何实现文件变动的监听应用中使用logback作为日志输出组件的话，大部分会去配置 logback.xml 这个文件，而且生产环境下，直接去修改logback.xml文件中的日志级别，不用重启应用就可以生效 那么，这个功能是怎么实现的呢？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-02-08T04:06:14.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java可以如何实现文件变动的监听">
+<meta name="twitter:description" content="Java可以如何实现文件变动的监听应用中使用logback作为日志输出组件的话，大部分会去配置 logback.xml 这个文件，而且生产环境下，直接去修改logback.xml文件中的日志级别，不用重启应用就可以生效 那么，这个功能是怎么实现的呢？">
+<meta name="twitter:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Java可以如何实现文件变动的监听 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Java可以如何实现文件变动的监听
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-02-08
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="Java可以如何实现文件变动的监听"><a href="#Java可以如何实现文件变动的监听" class="headerlink" title="Java可以如何实现文件变动的监听"></a>Java可以如何实现文件变动的监听</h1><p>应用中使用logback作为日志输出组件的话，大部分会去配置 <code>logback.xml</code> 这个文件，而且生产环境下，直接去修改logback.xml文件中的日志级别，不用重启应用就可以生效</p>
+<p>那么，这个功能是怎么实现的呢？</p>
+<a id="more"></a>
+<h2 id="I-问题描述及分析"><a href="#I-问题描述及分析" class="headerlink" title="I. 问题描述及分析"></a>I. 问题描述及分析</h2><p>针对上面的这个问题，首先抛出一个实际的case，在我的个人网站 <a href="https://zbang.online/webs">Z+</a>中，所有的小工具都是通过配置文件来动态新增和隐藏的，因为只有一台服务器，所以配置文件就简化的直接放在了服务器的某个目录下</p>
+<p>现在的问题时，我需要在这个文件的内容发生变动时，应用可以感知这种变动，并重新加载文件内容，更新应用内部缓存</p>
+<p>一个最容易想到的方法，就是轮询，判断文件是否发生修改，如果修改了，则重新加载，并刷新内存，所以主要需要关心的问题如下：</p>
+<ul>
+<li>如何轮询？</li>
+<li>如何判断文件是否修改？</li>
+<li>配置异常，会不会导致服务不可用？（即容错，这个与本次主题关联不大，但又比较重要…）</li>
+</ul>
+<h2 id="II-设计与实现"><a href="#II-设计与实现" class="headerlink" title="II. 设计与实现"></a>II. 设计与实现</h2><p>问题抽象出来之后，对应的解决方案就比较清晰了</p>
+<ul>
+<li>如何轮询 ？ –》 定时器 Timer, ScheduledExecutorService 都可以实现</li>
+<li>如何判断文件修改？ –》根据 <code>java.io.File#lastModified</code> 获取文件的上次修改时间，比对即可</li>
+</ul>
+<p>那么一个很简单的实现就比较容易了:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileUpTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> lastTime;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFileUpdate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">"/tmp/alarmConfig"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 首先文件的最近一次修改时间戳</span></span><br><span class="line">        lastTime = file.lastModified();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 定时任务，每秒来判断一下文件是否发生变动，即判断lastModified是否改变</span></span><br><span class="line">        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(<span class="number">1</span>);</span><br><span class="line">        scheduledExecutorService.scheduleAtFixedRate(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (file.lastModified() &gt; lastTime) &#123;</span><br><span class="line">                    System.out.println(<span class="string">"file update! time : "</span> + file.lastModified());</span><br><span class="line">                    lastTime = file.lastModified();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,<span class="number">0</span>, <span class="number">1</span>, TimeUnit.SECONDS);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">1000</span> * <span class="number">60</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这个属于一个非常简单，非常基础的实现了，基本上也可以满足我们的需求，那么这个实现有什么问题呢？</p>
+<p><strong>定时任务的执行中，如果出现了异常会怎样？</strong></p>
+<p>对上面的代码稍作修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileUpTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span> lastTime;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ttt</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NullPointerException();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testFileUpdate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        File file = <span class="keyword">new</span> File(<span class="string">"/tmp/alarmConfig"</span>);</span><br><span class="line"></span><br><span class="line">        lastTime = file.lastModified();</span><br><span class="line"></span><br><span class="line">        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(<span class="number">1</span>);</span><br><span class="line">        scheduledExecutorService.scheduleAtFixedRate(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (file.lastModified() &gt; lastTime) &#123;</span><br><span class="line">                    System.out.println(<span class="string">"file update! time : "</span> + file.lastModified());</span><br><span class="line">                    lastTime = file.lastModified();</span><br><span class="line">                    ttt();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="number">0</span>, <span class="number">1</span>, TimeUnit.SECONDS);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">1000</span> * <span class="number">60</span> * <span class="number">10</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实际测试，发现只有首次修改的时候，触发了上面的代码，但是再次修改则没有效果了，即当抛出异常之后，定时任务将不再继续执行了，这个问题的主要原因是因为 <code>ScheduledExecutorService</code> 的原因了</p>
+<p>直接查看ScheduledExecutorService的源码注释说明</p>
+<blockquote>
+<p>If any execution of the task encounters an exception, subsequent executions are suppressed.Otherwise, the task will only terminate via cancellation or termination of the executor.<br>即如果定时任务执行过程中遇到发生异常，则后面的任务将不再执行。</p>
+</blockquote>
+<p><strong>所以，使用这种姿势的时候，得确保自己的任务不会抛出异常，否则后面就没法玩了</strong></p>
+<p>对应的解决方法也比较简单，整个catch一下就好</p>
+<h2 id="III-进阶版"><a href="#III-进阶版" class="headerlink" title="III. 进阶版"></a>III. 进阶版</h2><p>前面是一个基础的实现版本了，当然在java圈，基本上很多常见的需求，都是可以找到对应的开源工具来使用的，当然这个也不例外，而且应该还是大家比较属性的apache系列</p>
+<p>首先maven依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-io<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>主要是借助这个工具中的 <code>FileAlterationObserver</code>, <code>FileAlterationListener</code>, <code>FileAlterationMonitor</code> 三个类来实现相关的需求场景了，当然使用也算是很简单了，以至于都不太清楚可以再怎么去说明了，直接看下面从我的一个开源项目quick-alarm中拷贝出来的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PropertiesConfListenerHelper</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">registerConfChangeListener</span><span class="params">(File file, Function&lt;File, Map&lt;String, AlarmConfig&gt;&gt; func)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 轮询间隔 5 秒</span></span><br><span class="line">            <span class="keyword">long</span> interval = TimeUnit.SECONDS.toMillis(<span class="number">5</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 因为监听是以目录为单位进行的，所以这里直接获取文件的根目录</span></span><br><span class="line">            File dir = file.getParentFile();</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 创建一个文件观察器用于过滤</span></span><br><span class="line">            FileAlterationObserver observer = <span class="keyword">new</span> FileAlterationObserver(dir,</span><br><span class="line">                    FileFilterUtils.and(FileFilterUtils.fileFileFilter(),</span><br><span class="line">                            FileFilterUtils.nameFileFilter(file.getName())));</span><br><span class="line"></span><br><span class="line">            <span class="comment">//设置文件变化监听器</span></span><br><span class="line">            observer.addListener(<span class="keyword">new</span> MyFileListener(func));</span><br><span class="line">            FileAlterationMonitor monitor = <span class="keyword">new</span> FileAlterationMonitor(interval, observer);</span><br><span class="line">            monitor.start();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.error(<span class="string">"register properties change listener error! e:&#123;&#125;"</span>, e);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">MyFileListener</span> <span class="keyword">extends</span> <span class="title">FileAlterationListenerAdaptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Function&lt;File, Map&lt;String, AlarmConfig&gt;&gt; func;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">MyFileListener</span><span class="params">(Function&lt;File, Map&lt;String, AlarmConfig&gt;&gt; func)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.func = func;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFileChange</span><span class="params">(File file)</span> </span>&#123;</span><br><span class="line">            Map&lt;String, AlarmConfig&gt; ans = func.apply(file); <span class="comment">// 如果加载失败，打印一条日志</span></span><br><span class="line">            log.warn(<span class="string">"PropertiesConfig changed! reload ans: &#123;&#125;"</span>, ans);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>针对上面的实现，简单说明几点：</p>
+<ul>
+<li>这个文件监听，是以目录为根源，然后可以设置过滤器，来实现对应文件变动的监听</li>
+<li>如上面<code>registerConfChangeListener</code>方法，传入的file是具体的配置文件，因此构建参数的时候，捞出了目录，捞出了文件名作为过滤</li>
+<li>第二参数是jdk8语法，其中为具体的读取配置文件内容，并映射为对应的实体对象</li>
+</ul>
+<p>一个问题，如果 func方法执行时，也抛出了异常，会怎样？</p>
+<p>实际测试表现结果和上面一样，抛出异常之后，依然跪，所以依然得注意，不要跑异常</p>
+<p>那么简单来看一下上面的实现逻辑，直接扣出核心模块</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(<span class="keyword">this</span>.running) &#123;</span><br><span class="line">            Iterator var1 = <span class="keyword">this</span>.observers.iterator();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">while</span>(var1.hasNext()) &#123;</span><br><span class="line">                FileAlterationObserver observer = (FileAlterationObserver)var1.next();</span><br><span class="line">                observer.checkAndNotify();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span>(<span class="keyword">this</span>.running) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    Thread.sleep(<span class="keyword">this</span>.interval);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (InterruptedException var3) &#123;</span><br><span class="line">                    ;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从上面基本上一目了然，整个的实现逻辑了，和我们的第一种定时任务的方法不太一样，这儿直接使用线程，死循环，内部采用sleep的方式来来暂停，因此出现异常时，相当于直接抛出去了，这个线程就跪了</p>
+<h2 id="IV-小结"><a href="#IV-小结" class="headerlink" title="IV. 小结"></a>IV. 小结</h2><p>使用Java来实现配置文件变动的监听，主要涉及到的就是两个点</p>
+<ul>
+<li>如何轮询：  定时器（Timer, ScheduledExecutorService）, 线程死循环+sleep</li>
+<li>文件修改： File#lastModified</li>
+</ul>
+<p>整体来说，这个实现还是比较简单的，无论是自定义实现，还是依赖 commos-io来做，都没太大的技术成本，但是需要注意的一点是：</p>
+<ul>
+<li>千万不要在定时任务 or 文件变动的回调方法中抛出异常！！！</li>
+</ul>
+<p>为了避免上面这个情况，一个可以做的实现是借助EventBus的异步消息通知来实现，当文件变动之后，发送一个消息即可，然后在具体的重新加载文件内容的方法上，添加一个 <code>@Subscribe</code>注解即可，这样既实现了解耦，也避免了异常导致的服务异常 （如果对这个实现有兴趣的可以评论说明）</p>
+<h2 id="V-其他"><a href="#V-其他" class="headerlink" title="V. 其他"></a>V. 其他</h2><h3 id="参考项目"><a href="#参考项目" class="headerlink" title="参考项目"></a>参考项目</h3><ul>
+<li>项目： <a href="https://github.com/liuyueyi/quick-alarm" target="_blank" rel="noopener">quick-alarm</a></li>
+<li>测试类： <a href="com.hust.hui.alarm.core.test.FileUpTest">FileUpTest.java</a></li>
+</ul>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/File/">File</a>
+		  
+			<a href="/hexblog/tags/ScheduledExecutorService/">ScheduledExecutorService</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/hexblog/2018/02/07/Java中变量的初始化顺序/">
+        <span class="next-text nav-default">Java中变量的初始化顺序</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

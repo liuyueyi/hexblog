@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="JDK学习之反射的使用姿势一览"/>
+
+
+
+
+  <meta name="keywords" content="Java,Reflect," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2017/12/29/JDK学习之反射的使用姿势一览/"/>
+
+
+<meta name="description" content="反射的学习使用 日常的学习工作中，可能用到反射的地方不太多，但看看一些优秀框架的源码，会发现基本上都离不开反射的使用；因此本篇博文将专注下如何使用反射  本片博文布局如下:  反射是什么，有什么用，可以做什么 如何使用反射 实例：  利用反射方式，获取一个类的所有成员变量的name及值 通过反射方式，修改对象的私有成员变量 会通过写一个BeanUtils实现对象的成员变量值拷贝来覆盖上面两个场景">
+<meta name="keywords" content="Java,Reflect">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDK学习之反射的使用姿势一览">
+<meta property="og:url" content="https://zbang.online/hexblog/2017/12/29/JDK学习之反射的使用姿势一览/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="反射的学习使用 日常的学习工作中，可能用到反射的地方不太多，但看看一些优秀框架的源码，会发现基本上都离不开反射的使用；因此本篇博文将专注下如何使用反射  本片博文布局如下:  反射是什么，有什么用，可以做什么 如何使用反射 实例：  利用反射方式，获取一个类的所有成员变量的name及值 通过反射方式，修改对象的私有成员变量 会通过写一个BeanUtils实现对象的成员变量值拷贝来覆盖上面两个场景">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://static.oschina.net/uploads/img/201710/13203703_6IVg.jpg">
+<meta property="og:updated_time" content="2018-02-08T04:06:14.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JDK学习之反射的使用姿势一览">
+<meta name="twitter:description" content="反射的学习使用 日常的学习工作中，可能用到反射的地方不太多，但看看一些优秀框架的源码，会发现基本上都离不开反射的使用；因此本篇博文将专注下如何使用反射  本片博文布局如下:  反射是什么，有什么用，可以做什么 如何使用反射 实例：  利用反射方式，获取一个类的所有成员变量的name及值 通过反射方式，修改对象的私有成员变量 会通过写一个BeanUtils实现对象的成员变量值拷贝来覆盖上面两个场景">
+<meta name="twitter:image" content="https://static.oschina.net/uploads/img/201710/13203703_6IVg.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> JDK学习之反射的使用姿势一览 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          JDK学习之反射的使用姿势一览
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-12-29
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/JDK/">JDK</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="反射的学习使用"><a href="#反射的学习使用" class="headerlink" title="反射的学习使用"></a>反射的学习使用</h2><blockquote>
+<p>日常的学习工作中，可能用到反射的地方不太多，但看看一些优秀框架的源码，会发现基本上都离不开反射的使用；因此本篇博文将专注下如何使用反射</p>
+</blockquote>
+<p>本片博文布局如下:</p>
+<ol>
+<li>反射是什么，有什么用，可以做什么</li>
+<li>如何使用反射</li>
+<li><p>实例：</p>
+<ul>
+<li>利用反射方式，获取一个类的所有成员变量的name及值</li>
+<li>通过反射方式，修改对象的私有成员变量</li>
+<li>会通过写一个BeanUtils实现对象的成员变量值拷贝来覆盖上面两个场景</li>
+</ul>
+</li>
+</ol>
+<a id="more"></a>
+<hr>
+<h2 id="I-反射定义"><a href="#I-反射定义" class="headerlink" title="I. 反射定义"></a>I. 反射定义</h2><blockquote>
+<p>指程序可以访问、检测和修改它本身状态或行为的一种能力</p>
+</blockquote>
+<p>直接说定义的话，可能并不能非常清晰的解释说明，结合作用进行描述</p>
+<p><strong>反射可以干什么？</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在运行时构造任意一个类的对象。</span><br><span class="line">在运行时判断任意一个对象所属的类。</span><br><span class="line">在运行时判断任意一个类所具有的成员变量和方法。</span><br><span class="line">在运行时调用任意一个对象的方法</span><br></pre></td></tr></table></figure>
+<p>有了上面四点，基本上你想干嘛就可以干嘛，比如我现在就有下面这个类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RefectTest</span> <span class="keyword">extends</span> <span class="title">MyRefect</span> <span class="keyword">implements</span> <span class="title">IRefect</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String s1 = <span class="string">"hello"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> s2 = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> s3 = <span class="number">200</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> ans;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> RefectTest next;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RefectTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">RefectTest</span><span class="params">(<span class="keyword">int</span> s3, <span class="keyword">boolean</span> ans, RefectTest next)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.s3 = s3;</span><br><span class="line">        <span class="keyword">this</span>.ans = ans;</span><br><span class="line">        <span class="keyword">this</span>.next = next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RefectTest <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">count</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> a + b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在我有了clz,其赋值语句为 <code>Class clz = RefectTest.class</code>， 那么我可以干啥？</p>
+<ol>
+<li><p>创建一个 RefectTest 对象</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 若有默认构造方法</span></span><br><span class="line">RefectTest instance = clz.newIntance();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 若需要传参数</span></span><br><span class="line">Constructor con = clz.getConstructor(<span class="keyword">int</span>.class, <span class="keyword">boolean</span>.class, RefectTest.class);</span><br><span class="line">RefectTest instance2 =  con.newInstance(<span class="number">10</span>, <span class="keyword">true</span>, <span class="keyword">new</span> RefectTest());</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>判断父类是否是 MyRefect</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 判断MyRefect是否为clz的父类</span></span><br><span class="line"><span class="keyword">boolean</span> ans = MyRefect.class.isAssignableFrom(clz);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取所有的成员变量</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取所有的成员变量（包括私有的）</span></span><br><span class="line">Field[] fields = clz.getDeclaredFields();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取所有的方法</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取所有的成员方法（包括私有方法）</span></span><br><span class="line">Method[] methods = clz.getDeclaredMethods();</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>上面给出了可以干些什么，并给了对应的简单示例，引入了几个新的类<code>Constructor</code>, <code>Field</code>, <code>Method</code>， 下面将详细解释这三个类是什么，怎么用</p>
+<h2 id="II-反射的使用"><a href="#II-反射的使用" class="headerlink" title="II. 反射的使用"></a>II. 反射的使用</h2><p>努力结合实际的应用场景，给出每种利用反射的实现对应需求的使用姿势，有些场景可能并不是特别贴切，欢迎提出给合适的场景以此进行替换</p>
+<h3 id="1-通过反射创建对象"><a href="#1-通过反射创建对象" class="headerlink" title="1. 通过反射创建对象"></a>1. 通过反射创建对象</h3><blockquote>
+<p>这是个比较常见的场景，我在使用了自定义注解时，通常会这么晚</p>
+</blockquote>
+<p><strong>应用场景：</strong></p>
+<p>我定义了一个校验器的注解<code>ValDot</code>，注解中有个校验规则class对象，如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ICheckRule</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">check</span><span class="params">(Object ... obj)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultCheckRule</span> <span class="keyword">implements</span> <span class="title">ICheckRule</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">check</span><span class="params">(Object... obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Target</span>(ElementType.METHOD)</span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> CheckDot &#123;</span><br><span class="line">    <span class="comment">// 校验规则</span></span><br><span class="line">    Class&lt;? extends ICheckRule&gt; check() <span class="keyword">default</span> DefaultCheckRule.class;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面定义了注解和校验条件，接着进入整体，在切面中，需要获取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Aspect</span></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CheckAspect</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Before</span>(<span class="string">"@annotation(checkDot)"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">process</span><span class="params">(JoinPoint joinPoint, CheckDot checkDot)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> IllegalAccessException, InstantiationException </span>&#123;</span><br><span class="line">        <span class="comment">// 注意，这里获取注解上的校验规则类，并获取实例</span></span><br><span class="line">        ICheckRule rule = checkDot.check().newInstance();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(rule.check(joinPoint.getArgs())) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"check argument error!"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面是一个较好的利用反射获取实例的应用场景，想一想，如果不用反射，这个校验规则怎么传进来呢，这个时候就没那么方便了（当然也不是不可以，最简单的就是拿一个Holder持有类名到类对象的映射关系，然后在注解中传类名，也可以达到上面的效果）</p>
+<p>还有一种场景可能就比较蛋疼了，如果一个类没有默认构造方法，通过反射就没法直接用<code>class.newInstanace()</code>了</p>
+<hr>
+<p><strong><code>Constructor</code>构造器类</strong></p>
+<p>根据Class优先获取到 <code>Constructor</code> 对象，然后传入需要的构造参数, 测试如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> a,b;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ConTest</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.a = a;</span><br><span class="line">        <span class="keyword">this</span>.b = b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"ConTest&#123;"</span> + <span class="string">"a="</span> + a + <span class="string">", b="</span> + b + <span class="string">'&#125;'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Class clz = ConTest.class;</span><br><span class="line">        <span class="comment">// 获取对应的构造器（注意参数类型）</span></span><br><span class="line">        Constructor constructor = clz.getConstructor(<span class="keyword">int</span>.class, <span class="keyword">int</span>.class);</span><br><span class="line">        <span class="comment">// 创建实例（注意参数要匹配）</span></span><br><span class="line">        ConTest test = (ConTest) constructor.newInstance(<span class="number">10</span>, <span class="number">20</span>);</span><br><span class="line">        System.out.println(test.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ConTest&#123;a=10, b=20&#125;</span><br></pre></td></tr></table></figure>
+<p>一般常用下面四种方式获取</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据参数类型获取匹配的构造器</span></span><br><span class="line"><span class="function">Constructor <span class="title">getConstructor</span><span class="params">(Class[] params)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 获取所有的</span></span></span><br><span class="line"><span class="function">Constructor[] <span class="title">getConstructors</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 相比较前面的，这里可以获取私有方法</span></span></span><br><span class="line"><span class="function">Constructor <span class="title">getDeclaredConstructor</span><span class="params">(Class[] params)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 可以获取私有方法</span></span></span><br><span class="line"><span class="function">Constructor[] <span class="title">getDeclaredConstructors</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-判断class的继承关系"><a href="#2-判断class的继承关系" class="headerlink" title="2. 判断class的继承关系"></a>2. 判断class的继承关系</h3><h4 id="判断是否为基础数据类型"><a href="#判断是否为基础数据类型" class="headerlink" title="判断是否为基础数据类型"></a>判断是否为基础数据类型</h4><p>基本类型较为特殊，所以JDK很人性化的给封装了一个方法，<code>Class#isPrimitive</code></p>
+<p>因此返回true的类型有:</p>
+<ul>
+<li>int</li>
+<li>long</li>
+<li>short</li>
+<li>byte</li>
+<li>char</li>
+<li>boolean</li>
+</ul>
+<p>封装后的类型，返回的依然是false</p>
+<font color="red">附带一句，是没有<code>null.class</code>这种用法的</font>
+
+<hr>
+<h4 id="判断是否为另一个类的子类，另一个接口的实现类"><a href="#判断是否为另一个类的子类，另一个接口的实现类" class="headerlink" title="判断是否为另一个类的子类，另一个接口的实现类"></a>判断是否为另一个类的子类，另一个接口的实现类</h4><p>通常我们利用  <code>instanceof</code> 关键字来判断继承关系，但是这个是针对对象来的，现在给一个class，要怎么玩？</p>
+<p>看下面，主要就是 <code>Class#isAssignableFrom()</code> 的功劳了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExtendTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">ITest</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">ATest</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">abstract</span> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">TestClz</span> <span class="keyword">extends</span> <span class="title">ATest</span> <span class="keyword">implements</span> <span class="title">ITest</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"TestClz"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Class clz = TestClz.class;</span><br><span class="line"></span><br><span class="line">        System.out.println(ATest.class.isAssignableFrom(clz));</span><br><span class="line">        System.out.println(ITest.class.isAssignableFrom(clz));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意一点，父类作为调用方，子类作为参数</p>
+<h4 id="结合泛型时，获取泛型的实际类型"><a href="#结合泛型时，获取泛型的实际类型" class="headerlink" title="结合泛型时，获取泛型的实际类型"></a>结合泛型时，获取泛型的实际类型</h4><p>泛型，又是一个有意思的功能，这里不多说，继承一个泛型基类，然后问题是如何通过反射获得泛型签名中的类型，一般会在继承或实现泛型接口时会用到它。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&lt;<span class="title">T</span>, <span class="title">ID</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span>&lt;<span class="title">String</span>, <span class="title">Integer</span>&gt; </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    System.out.println(B.class.getGenericSuperclass());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>换成泛型接口呢 ?</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">A</span>&lt;<span class="title">T</span>, <span class="title">ID</span>&gt; </span>&#123;  </span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">implements</span> <span class="title">A</span>&lt;<span class="title">String</span>, <span class="title">Integer</span>&gt; </span>&#123;  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    ParameterizedType parameterizedType = (ParameterizedType) B.class.getGenericInterfaces()[<span class="number">0</span>];  </span><br><span class="line">    Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();  </span><br><span class="line">    <span class="keyword">for</span> (Type actualTypeArgument : actualTypeArguments) &#123;  </span><br><span class="line">        System.out.println(actualTypeArgument);  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-获取成员变量"><a href="#3-获取成员变量" class="headerlink" title="3. 获取成员变量"></a>3. 获取成员变量</h3><p>获取成员变量，主要是根据 <code>B.class.getDeclaredFields()</code> 来获取所有声明的变量，这个应用场景会和下面的获取方法并执行联合一起说明</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取指定的公共成员变量</span></span><br><span class="line"><span class="function">Field <span class="title">getField</span><span class="params">(String name)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 获得所有公共字段</span></span></span><br><span class="line"><span class="function">Field[] <span class="title">getFields</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 获取指定声明的成员变量（包括prive）</span></span></span><br><span class="line"><span class="function">Field <span class="title">getDeclaredField</span><span class="params">(String name)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 获取所有声明的成员变量</span></span></span><br><span class="line"><span class="function">Field[] <span class="title">getDeclaredFields</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+<p>这个主要返回 <code>Field</code>对象，现在有了Field，可以做些啥？</p>
+<ol>
+<li><p>判断成员的修饰  <code>Field#getModifiers()</code></p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> modify = field.getModifiers();</span><br><span class="line"><span class="comment">// 是否是静态变量</span></span><br><span class="line"><span class="keyword">boolean</span> ans = Modifier.isStatic(modifier);</span><br><span class="line"><span class="comment">// 是否是公共变量</span></span><br><span class="line"><span class="keyword">boolean</span> ans = Modifier.isPublic(modifier);</span><br><span class="line"><span class="comment">// 是否不可变</span></span><br><span class="line"><span class="keyword">boolean</span> ans = Modifier.isFinal(modifier);</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取成员的变量名 : <code>field#getName()</code></p>
+</li>
+<li><p>获取成员对应的value:  <code>field#get(instance)</code></p>
+<ul>
+<li>对于静态成员，instance可以为null</li>
+<li>对于非静态成员，instance必须为一个实例对象</li>
+</ul>
+</li>
+<li><p>获取注解: <code>field#getAnnotations()</code></p>
+<ul>
+<li>这个就厉害了，hibernate的校验框架，在成员变量上加一个注解<code>Max</code>,就可以设置参数的最大值，其实就是通过反射获取到注解，然后进行相应的逻辑</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-获取方法"><a href="#4-获取方法" class="headerlink" title="4. 获取方法"></a>4. 获取方法</h3><p>获取方法，同上面的差不多，也有四种方式</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 根据方法名，参数类型获取公共方法</span></span><br><span class="line"><span class="function">Method <span class="title">getMethod</span><span class="params">(String name, Class[] params)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 获取所有的公共方法</span></span></span><br><span class="line"><span class="function">Method[] <span class="title">getMethods</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 根据方法名，参数类型，获取声明的方法（包括私有）</span></span></span><br><span class="line"><span class="function">Method <span class="title">getDeclaredMethod</span><span class="params">(String name, Class[] params)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="comment">// 获取所有声明的方法</span></span></span><br><span class="line"><span class="function">Method[] <span class="title">getDeclaredMethods</span><span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+<p>返回了一个<code>Method</code>类，那么这个东西又有一些什么功能？</p>
+<ol>
+<li><p>获取方法名 <code>Method#getName()</code></p>
+</li>
+<li><p>获取方法所在的类 : <code>Method#getDeclaringClass()</code></p>
+</li>
+<li><p>获取方法返回类型 : <code>Method#getReturnType()</code></p>
+</li>
+<li><p>获取方法上的注解 : <code>Method#getAnnotations()</code></p>
+</li>
+<li><p>执行方法 有了这个就可以做很多事情了，实例中给出说明</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置方法可访问（即私有方法也可以被调用）</span></span><br><span class="line">method.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"><span class="comment">// instance为实例对象， args为传入参数</span></span><br><span class="line">method.invoke(instance, args)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h2 id="III-实例DEMO"><a href="#III-实例DEMO" class="headerlink" title="III. 实例DEMO"></a>III. 实例DEMO</h2><p>通过反射的方式，实现一个 <code>BeanUtils</code>，实现Bean的拷贝</p>
+<p>当一个Bean有较多的成员变量时，如果我们采用最原始的<code>setXXX()</code>来一次赋值的时候，一是实现比较繁琐，其次就是当Bean的字段发生变动之后，也需要同步的修改，那么我们借助反射的方式，实现一个优雅的 <code>BeanUtils</code> 工具类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BeanUtils</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copy</span><span class="params">(Object source, Object dest)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Class destClz = dest.getClass();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取目标的所有成员</span></span><br><span class="line">        Field[] destFields = destClz.getDeclaredFields();</span><br><span class="line">        Object value;</span><br><span class="line">        <span class="keyword">for</span> (Field field : destFields) &#123; <span class="comment">// 遍历所有的成员，并赋值</span></span><br><span class="line">            <span class="comment">// 获取value值</span></span><br><span class="line">            value = getVal(field.getName(), source);</span><br><span class="line"></span><br><span class="line">            field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            field.set(dest, value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title">getVal</span><span class="params">(String name, Object obj)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 优先获取obj中同名的成员变量</span></span><br><span class="line">            Field field = obj.getClass().getField(name);</span><br><span class="line">            field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            <span class="keyword">return</span> field.get(obj);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">            <span class="comment">// 表示没有同名的变量</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取对应的 getXxx() 或者 isXxx() 方法</span></span><br><span class="line">        name = name.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + name.substring(<span class="number">1</span>);</span><br><span class="line">        String methodName = <span class="string">"get"</span> + name;</span><br><span class="line">        String methodName2 = <span class="string">"is"</span> + name;</span><br><span class="line">        Method[] methods = obj.getClass().getMethods();</span><br><span class="line">        <span class="keyword">for</span> (Method method : methods) &#123;</span><br><span class="line">            <span class="comment">// 只获取无参的方法</span></span><br><span class="line">            <span class="keyword">if</span> (method.getParameterCount() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (method.getName().equals(methodName)</span><br><span class="line">                    || method.getName().equals(methodName2)) &#123;</span><br><span class="line">                <span class="keyword">return</span> method.invoke(obj);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 没有匹配到，这里返回null实际上是不合适的</span></span><br><span class="line">        <span class="comment">// 因为如果原属性为基本数据类型，赋值null为报错</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="IV-小结"><a href="#IV-小结" class="headerlink" title="IV. 小结"></a>IV. 小结</h2><p><strong>反射的四种用途</strong></p>
+<ol>
+<li><p>创建一个 RefectTest 对象</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 若有默认构造方法</span></span><br><span class="line">RefectTest instance = clz.newIntance();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 若需要传参数</span></span><br><span class="line">Constructor con = clz.getConstructor(<span class="keyword">int</span>.class, <span class="keyword">boolean</span>.class, RefectTest.class);</span><br><span class="line">RefectTest instance2 =  con.newInstance(<span class="number">10</span>, <span class="keyword">true</span>, <span class="keyword">new</span> RefectTest());</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>判断父类是否是 MyRefect</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 判断MyRefect是否为clz的父类</span></span><br><span class="line"><span class="keyword">boolean</span> ans = MyRefect.class.isAssignableFrom(clz);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取所有的成员变量</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取所有的成员变量（包括私有的）</span></span><br><span class="line">Field[] fields = clz.getDeclaredFields();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取所有的方法</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取所有的成员方法（包括私有方法）</span></span><br><span class="line">Method[] methods = clz.getDeclaredMethods();</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>使用注意事项</strong></p>
+<ol>
+<li>操作私有变量，私有方法时，先设置<code>field.setAccessible(true);</code>确保可访问</li>
+<li>反射会带来额外的性能开销</li>
+<li>可以用 <code>Class#isAssignableFrom()</code> 来判断类继承关系</li>
+<li>可以用 <code>Class#isPrimitive()</code>判断是否为基本数据类型</li>
+<li>可以用 <code>Class#getGenericSuperclass()</code> 获取泛型类型</li>
+</ol>
+<hr>
+<h2 id="V-其他"><a href="#V-其他" class="headerlink" title="V. 其他"></a>V. 其他</h2><h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://static.oschina.net/uploads/img/201710/13203703_6IVg.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/Reflect/">Reflect</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/01/03/jvm调优的工具介绍/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">jvm调优的工具介绍</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2017/12/29/Centos-安装hexo博客/">
+        <span class="next-text nav-default">Centos 安装hexo博客</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

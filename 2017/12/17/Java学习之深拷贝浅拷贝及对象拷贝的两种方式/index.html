@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Java学习之深拷贝浅拷贝及对象拷贝的两种方式"/>
+
+
+
+
+  <meta name="keywords" content="Java,clone,beancopy," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2017/12/17/Java学习之深拷贝浅拷贝及对象拷贝的两种方式/"/>
+
+
+<meta name="description" content="I. Java之Clone0. 背景对象拷贝，是一个非常基础的内容了，为什么会单独的把这个领出来讲解，主要是先前遇到了一个非常有意思的场景 有一个任务，需要解析类xml标记语言，然后生成document对象，之后将会有一系列针对document对象的操作 通过实际的测试，发现生成Document对象是比较耗时的一个操作，再加上这个任务场景中，需要解析的xml文档是固定的几个，那么一个可以优化的思路">
+<meta name="keywords" content="Java,clone,beancopy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java学习之深拷贝浅拷贝及对象拷贝的两种方式">
+<meta property="og:url" content="https://zbang.online/hexblog/2017/12/17/Java学习之深拷贝浅拷贝及对象拷贝的两种方式/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="I. Java之Clone0. 背景对象拷贝，是一个非常基础的内容了，为什么会单独的把这个领出来讲解，主要是先前遇到了一个非常有意思的场景 有一个任务，需要解析类xml标记语言，然后生成document对象，之后将会有一系列针对document对象的操作 通过实际的测试，发现生成Document对象是比较耗时的一个操作，再加上这个任务场景中，需要解析的xml文档是固定的几个，那么一个可以优化的思路">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://static.oschina.net/uploads/img/201710/13203703_6IVg.jpg">
+<meta property="og:updated_time" content="2018-02-08T04:06:14.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java学习之深拷贝浅拷贝及对象拷贝的两种方式">
+<meta name="twitter:description" content="I. Java之Clone0. 背景对象拷贝，是一个非常基础的内容了，为什么会单独的把这个领出来讲解，主要是先前遇到了一个非常有意思的场景 有一个任务，需要解析类xml标记语言，然后生成document对象，之后将会有一系列针对document对象的操作 通过实际的测试，发现生成Document对象是比较耗时的一个操作，再加上这个任务场景中，需要解析的xml文档是固定的几个，那么一个可以优化的思路">
+<meta name="twitter:image" content="https://static.oschina.net/uploads/img/201710/13203703_6IVg.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Java学习之深拷贝浅拷贝及对象拷贝的两种方式 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Java学习之深拷贝浅拷贝及对象拷贝的两种方式
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2017-12-17
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/JDK/">JDK</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h2 id="I-Java之Clone"><a href="#I-Java之Clone" class="headerlink" title="I. Java之Clone"></a>I. Java之Clone</h2><h3 id="0-背景"><a href="#0-背景" class="headerlink" title="0. 背景"></a>0. 背景</h3><p>对象拷贝，是一个非常基础的内容了，为什么会单独的把这个领出来讲解，主要是先前遇到了一个非常有意思的场景</p>
+<p>有一个任务，需要解析类xml标记语言，然后生成document对象，之后将会有一系列针对document对象的操作</p>
+<p>通过实际的测试，发现生成Document对象是比较耗时的一个操作，再加上这个任务场景中，需要解析的xml文档是固定的几个，那么一个可以优化的思路就是能不能缓存住创建后的Document对象，在实际使用的时候clone一份出来</p>
+<a id="more"></a>
+<h3 id="1-内容说明"><a href="#1-内容说明" class="headerlink" title="1. 内容说明"></a>1. 内容说明</h3><p>看到了上面的应用背景，自然而言的就会想到深拷贝了，本篇博文则主要内容如下</p>
+<ul>
+<li>介绍下两种拷贝方式的区别</li>
+<li>深拷贝的辅助工具类</li>
+<li>如何自定义实现对象拷贝</li>
+</ul>
+<h2 id="II-深拷贝和浅拷贝"><a href="#II-深拷贝和浅拷贝" class="headerlink" title="II. 深拷贝和浅拷贝"></a>II. 深拷贝和浅拷贝</h2><h3 id="0-定义说明"><a href="#0-定义说明" class="headerlink" title="0. 定义说明"></a>0. 定义说明</h3><p><strong>深拷贝</strong></p>
+<p>相当于创建了一个新的对象，只是这个对象的所有内容，都和被拷贝的对象一模一样而已，即两者的修改是隔离的，相互之间没有影响</p>
+<p><strong>浅拷贝</strong></p>
+<p>也是创建了一个对象，但是这个对象的某些内容（比如A）依然是被拷贝对象的，即通过这两个对象中任意一个修改A，两个对象的A都会受到影响</p>
+<p>看到上面两个简单的说明，那么问题来了</p>
+<ul>
+<li>浅拷贝中，是所有的内容公用呢？还是某些内容公用？</li>
+<li>从隔离来将，都不希望出现浅拷贝这种方式了，太容易出错了，那么两种拷贝方式的应用场景是怎样的？</li>
+</ul>
+<h3 id="1-浅拷贝"><a href="#1-浅拷贝" class="headerlink" title="1. 浅拷贝"></a>1. 浅拷贝</h3><p>一般来说，浅拷贝方式需要实现<code>Cloneable</code>接口，下面结合一个实例，来看下浅拷贝中哪些是独立的，哪些是公用的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShallowClone</span> <span class="keyword">implements</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; books;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ShallowClone <span class="title">clone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        ShallowClone clone = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            clone = (ShallowClone) <span class="keyword">super</span>.clone();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (CloneNotSupportedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> clone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ShallowClone shallowClone = <span class="keyword">new</span> ShallowClone();</span><br><span class="line">        shallowClone.setName(<span class="string">"SourceName"</span>);</span><br><span class="line">        shallowClone.setAge(<span class="number">28</span>);</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        list.add(<span class="string">"java"</span>);</span><br><span class="line">        list.add(<span class="string">"c++"</span>);</span><br><span class="line">        shallowClone.setBooks(list);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        ShallowClone cloneObj = shallowClone.clone();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 判断两个对象是否为同一个对象（即是否是新创建了一个实例）</span></span><br><span class="line">        System.out.println(shallowClone == cloneObj);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 修改一个对象的内容是否会影响另一个对象</span></span><br><span class="line">        shallowClone.setName(<span class="string">"newName"</span>);</span><br><span class="line">        shallowClone.setAge(<span class="number">20</span>);</span><br><span class="line">        shallowClone.getBooks().add(<span class="string">"javascript"</span>);</span><br><span class="line">        System.out.println(<span class="string">"source: "</span> + shallowClone.toString() + <span class="string">"\nclone:"</span> + cloneObj.toString());</span><br><span class="line"></span><br><span class="line">        shallowClone.setBooks(Arrays.asList(<span class="string">"hello"</span>));</span><br><span class="line">        System.out.println(<span class="string">"source: "</span> + shallowClone.toString() + <span class="string">"\nclone:"</span> + cloneObj.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果:</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="built_in">source</span>: ShallowClone(name=newName, age=20, books=[java, c++, javascript])</span><br><span class="line"><span class="built_in">clone</span>:ShallowClone(name=SourceName, age=28, books=[java, c++, javascript])</span><br><span class="line"><span class="built_in">source</span>: ShallowClone(name=newName, age=20, books=[hello])</span><br><span class="line"><span class="built_in">clone</span>:ShallowClone(name=SourceName, age=28, books=[java, c++, javascript])</span><br></pre></td></tr></table></figure>
+<p>结果分析：</p>
+<ul>
+<li>拷贝后获取的是一个独立的对象，和原对象拥有不同的内存地址</li>
+<li>基本元素类型，两者是隔离的（虽然上面只给出了int，String）<ul>
+<li>基本元素类型包括:</li>
+<li>int, Integer, long, Long, char, Charset, byte,Byte, boolean, Boolean, float,Float, double, Double, String</li>
+</ul>
+</li>
+<li>非基本数据类型（如基本容器，其他对象等），只是拷贝了一份引用出去了，实际指向的依然是同一份</li>
+</ul>
+<p>其实，浅拷贝有个非常简单的理解方式：</p>
+<p><strong>浅拷贝的整个过程就是，创建一个新的对象，然后新对象的每个值都是由原对象的值，通过 <code>=</code> 进行赋值</strong></p>
+<p>这个怎么理解呢？</p>
+<p>上面的流程拆解就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- Object clone = new Object();</span><br><span class="line">- clone.a = source.a</span><br><span class="line">- clone.b = source.b</span><br><span class="line">- ...</span><br></pre></td></tr></table></figure>
+<p>那么=赋值有什么特点呢？</p>
+<p>基本数据类型是值赋值；非基本的就是引用赋值</p>
+<h3 id="2-深拷贝"><a href="#2-深拷贝" class="headerlink" title="2. 深拷贝"></a>2. 深拷贝</h3><p>深拷贝，就是要创建一个全新的对象，新的对象内部所有的成员也都是全新的，只是初始化的值已经由被拷贝的对象确定了而已</p>
+<p>那么上面的实例改成深拷贝应该是怎样的呢？</p>
+<p>可以加上这么一个方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ShallowClone <span class="title">deepClone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ShallowClone clone = <span class="keyword">new</span> ShallowClone();</span><br><span class="line">    clone.name = <span class="keyword">this</span>.name;</span><br><span class="line">    clone.age = <span class="keyword">this</span>.age;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.books != <span class="keyword">null</span>) &#123;</span><br><span class="line">        clone.books = <span class="keyword">new</span> ArrayList&lt;&gt;(<span class="keyword">this</span>.books);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> clone;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 简单改一下测试case</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    ShallowClone shallowClone = <span class="keyword">new</span> ShallowClone();</span><br><span class="line">    shallowClone.setName(<span class="string">"SourceName"</span>);</span><br><span class="line">    shallowClone.setAge(<span class="keyword">new</span> Integer(<span class="number">1280</span>));</span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    list.add(<span class="string">"java"</span>);</span><br><span class="line">    list.add(<span class="string">"c++"</span>);</span><br><span class="line">    shallowClone.setBooks(list);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    ShallowClone cloneObj = shallowClone.deepClone();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 判断两个对象是否为同一个对象（即是否是新创建了一个实例）</span></span><br><span class="line">    System.out.println(shallowClone == cloneObj);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 修改一个对象的内容是否会影响另一个对象</span></span><br><span class="line">    shallowClone.setName(<span class="string">"newName"</span>);</span><br><span class="line">    shallowClone.setAge(<span class="number">2000</span>);</span><br><span class="line">    shallowClone.getBooks().add(<span class="string">"javascript"</span>);</span><br><span class="line">    System.out.println(<span class="string">"source: "</span> + shallowClone.toString() + <span class="string">"\nclone:"</span> + cloneObj.toString());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    shallowClone.setBooks(Arrays.asList(<span class="string">"hello"</span>));</span><br><span class="line">    System.out.println(<span class="string">"source: "</span> + shallowClone.toString() + <span class="string">"\nclone:"</span> + cloneObj.toString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果为：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">false</span></span><br><span class="line"><span class="built_in">source</span>: ShallowClone(name=newName, age=2000, books=[java, c++, javascript])</span><br><span class="line"><span class="built_in">clone</span>:ShallowClone(name=SourceName, age=1280, books=[java, c++])</span><br><span class="line"><span class="built_in">source</span>: ShallowClone(name=newName, age=2000, books=[hello])</span><br><span class="line"><span class="built_in">clone</span>:ShallowClone(name=SourceName, age=1280, books=[java, c++])</span><br></pre></td></tr></table></figure>
+<p>结果分析：</p>
+<ul>
+<li>深拷贝独立的对象</li>
+<li>拷贝后对象的内容，与原对象的内容完全没关系，都是独立的</li>
+</ul>
+<p>简单来说，深拷贝是需要自己来实现的，对于基本类型可以直接赋值，而对于对象、容器、数组来讲，需要创建一个新的出来，然后重新赋值</p>
+<h3 id="3-应用场景区分"><a href="#3-应用场景区分" class="headerlink" title="3. 应用场景区分"></a>3. 应用场景区分</h3><p>深拷贝的用途我们很容易可以想见，某个复杂对象创建比较消耗资源的时候，就可以缓存一个蓝本，后续的操作都是针对深clone后的对象，这样就不会出现混乱的情况了</p>
+<p>那么浅拷贝呢？感觉留着是一个坑，一个人修改了这个对象的值，结果发现对另一个人造成了影响，真不是坑爹么？</p>
+<p>假设又这么一个通知对象长下面这样</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String notifyUser;</span><br><span class="line"></span><br><span class="line"><span class="comment">// xxx</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> List&lt;String&gt; notifyRules;</span><br></pre></td></tr></table></figure>
+<p>我们现在随机挑选了一千个人，同时发送通知消息，所以需要创建一千个上面的对象，这些对象中呢，除了notifyUser不同，其他的都一样</p>
+<p>在发送之前，突然发现要临时新增一条通知信息，如果是浅拷贝的话，只用在任意一个通知对象的notifyRules中添加一调消息，那么这一千个对象的通知消息都会变成最新的了；而如果你是用深拷贝，那么苦逼的得遍历这一千个对象，每个都加一条消息了</p>
+<hr>
+<h2 id="III-对象拷贝工具"><a href="#III-对象拷贝工具" class="headerlink" title="III. 对象拷贝工具"></a>III. 对象拷贝工具</h2><p>上面说到，浅拷贝，需要实现Clonebale接口，深拷贝一般需要自己来实现，那么我现在拿到一个对象A，它自己没有提供深拷贝接口，我们除了主动一条一条的帮它实现之外，有什么辅助工具可用么？</p>
+<p>对象拷贝区别与clone，它可以支持两个不同对象之间实现内容拷贝</p>
+<p><strong>Apache的两个版本：（反射机制）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">org.apache.commons.beanutils.PropertyUtils.copyProperties(Object dest, Object orig)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">org.apache.commons.beanutils.BeanUtils#cloneBean</span><br></pre></td></tr></table></figure>
+<p><strong>Spring版本：（反射机制）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.beans.BeanUtils.copyProperties(Object source, Object target, Class editable, String[] ignoreProperties)</span><br></pre></td></tr></table></figure>
+<p><strong>cglib版本：（使用动态代理，效率高）</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net.sf.cglib.beans.BeanCopier.copy(Object paramObject1, Object paramObject2, Converter paramConverter)</span><br></pre></td></tr></table></figure>
+<p>从上面的几个有名的工具类来看，提供了两种使用者姿势，一个是反射，一个是动态代理，下面分别来看两种思路</p>
+<h3 id="1-借助反射实现对象拷贝"><a href="#1-借助反射实现对象拷贝" class="headerlink" title="1. 借助反射实现对象拷贝"></a>1. 借助反射实现对象拷贝</h3><p>通过反射的方式实现对象拷贝的思路还是比较清晰的，先通过反射获取对象的所有属性，然后修改可访问级别，然后赋值；再获取继承的父类的属性，同样利用反射进行赋值</p>
+<p>上面的几个开源工具，内部实现封装得比较好，所以直接贴源码可能不太容易一眼就能看出反射方式的原理，所以简单的实现了一个, 仅提供思路</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">copy</span><span class="params">(Object source, Object dest)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    Class destClz = dest.getClass();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取目标的所有成员</span></span><br><span class="line">    Field[] destFields = destClz.getDeclaredFields();</span><br><span class="line">    Object value;</span><br><span class="line">    <span class="keyword">for</span> (Field field : destFields) &#123; <span class="comment">// 遍历所有的成员，并赋值</span></span><br><span class="line">        <span class="comment">// 获取value值</span></span><br><span class="line">        value = getVal(field.getName(), source);</span><br><span class="line"></span><br><span class="line">        field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        field.set(dest, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> Object <span class="title">getVal</span><span class="params">(String name, Object obj)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 优先获取obj中同名的成员变量</span></span><br><span class="line">        Field field = obj.getClass().getDeclaredField(name);</span><br><span class="line">        field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        <span class="keyword">return</span> field.get(obj);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchFieldException e) &#123;</span><br><span class="line">        <span class="comment">// 表示没有同名的变量</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取对应的 getXxx() 或者 isXxx() 方法</span></span><br><span class="line">    name = name.substring(<span class="number">0</span>, <span class="number">1</span>).toUpperCase() + name.substring(<span class="number">1</span>);</span><br><span class="line">    String methodName = <span class="string">"get"</span> + name;</span><br><span class="line">    String methodName2 = <span class="string">"is"</span> + name;</span><br><span class="line">    Method[] methods = obj.getClass().getMethods();</span><br><span class="line">    <span class="keyword">for</span> (Method method : methods) &#123;</span><br><span class="line">        <span class="comment">// 只获取无参的方法</span></span><br><span class="line">        <span class="keyword">if</span> (method.getParameterCount() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (method.getName().equals(methodName)</span><br><span class="line">                || method.getName().equals(methodName2)) &#123;</span><br><span class="line">            <span class="keyword">return</span> method.invoke(obj);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的实现步骤还是非常清晰的，首先是找同名的属性，然后利用反射获取对应的值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Field field = obj.getClass().getDeclaredField(name);</span><br><span class="line">field.setAccessible(<span class="keyword">true</span>);</span><br><span class="line"><span class="keyword">return</span> field.get(obj);</span><br></pre></td></tr></table></figure>
+<p>如果找不到，则找getXXX, isXXX来获取</p>
+<h3 id="2-代理的方式实现对象拷贝"><a href="#2-代理的方式实现对象拷贝" class="headerlink" title="2. 代理的方式实现对象拷贝"></a>2. 代理的方式实现对象拷贝</h3><p>Cglib的BeanCopier就是通过代理的方式实现拷贝，性能优于反射的方式，特别是在大量的数据拷贝时，比较明显</p>
+<p>代理，我们知道可以区分为静态代理和动态代理，简单来讲就是你要操作对象A，但是你不直接去操作A，而是找一个中转porxyA, 让它来帮你操作对象A</p>
+<p>那么这种技术是如何使用在对象拷贝的呢？</p>
+<p>我们知道，效率最高的对象拷贝方式就是Getter/Setter方法了，前面说的代理的含义指我们不直接操作，而是找个中间商来赚差价，那么方案就出来了</p>
+<p>将原SourceA拷贝到目标DestB</p>
+<ul>
+<li>创建一个代理 copyProxy</li>
+<li>在代理中，依次调用 SourceA的get方法获取属性值，然后调用DestB的set方法进行赋值</li>
+</ul>
+<p>实际上BeanCopier的思路大致如上，具体的方案当然就不太一样了, 简单看了一下实现逻辑，挺有意思的一块，先留个坑，后面单独开个博文补上</p>
+<p><strong>说明</strong></p>
+<p>从实现原理和通过简单的测试，发现BeanCopier是扫描原对象的getXXX方法，然后赋值给同名的 setXXX 方法，也就是说，如果这个对象中某个属性没有get/set方法，那么就无法赋值成功了</p>
+<hr>
+<h2 id="IV-小结"><a href="#IV-小结" class="headerlink" title="IV. 小结"></a>IV. 小结</h2><h3 id="1-深拷贝和浅拷贝"><a href="#1-深拷贝和浅拷贝" class="headerlink" title="1. 深拷贝和浅拷贝"></a>1. 深拷贝和浅拷贝</h3><p><strong>深拷贝</strong></p>
+<blockquote>
+<p>相当于创建了一个新的对象，只是这个对象的所有内容，都和被拷贝的对象一模一样而已，即两者的修改是隔离的，相互之间没有影响</p>
+<ul>
+<li>完全独立</li>
+</ul>
+</blockquote>
+<p><strong>浅拷贝</strong></p>
+<blockquote>
+<p>也是创建了一个对象，但是这个对象的某些内容（比如A）依然是被拷贝对象的，即通过这两个对象中任意一个修改A，两个对象的A都会受到影响</p>
+</blockquote>
+<ul>
+<li>等同与新创建一个对象，然后使用=，将原对象的属性赋值给新对象的属性</li>
+<li>需要实现Cloneable接口</li>
+</ul>
+<h3 id="2-对象拷贝的两种方法"><a href="#2-对象拷贝的两种方法" class="headerlink" title="2. 对象拷贝的两种方法"></a>2. 对象拷贝的两种方法</h3><p><strong>通过反射方式实现对象拷贝</strong></p>
+<p>主要原理就是通过反射获取所有的属性，然后反射更改属性的内容</p>
+<p><strong>通过代理实现对象拷贝</strong></p>
+<p>将原SourceA拷贝到目标DestB</p>
+<p>创建一个代理 copyProxy<br>在代理中，依次调用 SourceA的get方法获取属性值，然后调用DestB的set方法进行赋值</p>
+<h2 id="V-其他"><a href="#V-其他" class="headerlink" title="V. 其他"></a>V. 其他</h2><h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://static.oschina.net/uploads/img/201710/13203703_6IVg.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/clone/">clone</a>
+		  
+			<a href="/hexblog/tags/beancopy/">beancopy</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2017/12/25/Centos-安装gitbook/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Centos 安装gitbook</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

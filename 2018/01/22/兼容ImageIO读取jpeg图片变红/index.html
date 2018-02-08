@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="兼容ImageIO读取jpeg图片变红"/>
+
+
+
+
+  <meta name="keywords" content="Java,BugFix,BufferedImage,Jpeg," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/01/22/兼容ImageIO读取jpeg图片变红/"/>
+
+
+<meta name="description" content="兼容ImageIO读取jpeg图片变红 使用ImageIO.read()方法，加载图片为BufferedImage对象时，对于某些图片，会出现变红的case">
+<meta name="keywords" content="Java,BugFix,BufferedImage,Jpeg">
+<meta property="og:type" content="article">
+<meta property="og:title" content="兼容ImageIO读取jpeg图片变红">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/01/22/兼容ImageIO读取jpeg图片变红/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="兼容ImageIO读取jpeg图片变红 使用ImageIO.read()方法，加载图片为BufferedImage对象时，对于某些图片，会出现变红的case">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://s17.mogucdn.com/mlcdn/c45406/170418_68lkjddg3bll08h9c9bk0d8ihkffi_800x1200.jpg">
+<meta property="og:image" content="https://s3.mogucdn.com/mlcdn/c45406/180122_0j91i74djjka8bj959db144eecaaj_1882x1100.jpg">
+<meta property="og:image" content="https://s3.mogucdn.com/mlcdn/c45406/180122_1aih840f4b60c15hdd51kabc0ee5g_2058x1034.jpg">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-01-22T12:30:56.393Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="兼容ImageIO读取jpeg图片变红">
+<meta name="twitter:description" content="兼容ImageIO读取jpeg图片变红 使用ImageIO.read()方法，加载图片为BufferedImage对象时，对于某些图片，会出现变红的case">
+<meta name="twitter:image" content="http://s17.mogucdn.com/mlcdn/c45406/170418_68lkjddg3bll08h9c9bk0d8ihkffi_800x1200.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> 兼容ImageIO读取jpeg图片变红 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          兼容ImageIO读取jpeg图片变红
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-22
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/BugFix/">BugFix</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="兼容ImageIO读取jpeg图片变红"><a href="#兼容ImageIO读取jpeg图片变红" class="headerlink" title="兼容ImageIO读取jpeg图片变红"></a>兼容ImageIO读取jpeg图片变红</h1><blockquote>
+<p>使用ImageIO.read()方法，加载图片为BufferedImage对象时，对于某些图片，会出现变红的case</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="问题重现"><a href="#问题重现" class="headerlink" title="问题重现"></a>问题重现</h2><p>有问题的图片： <img src="http://s17.mogucdn.com/mlcdn/c45406/170418_68lkjddg3bll08h9c9bk0d8ihkffi_800x1200.jpg" alt="img"></p>
+<p>测试验证代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 图片读取之后，颜色变红的测试</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testLoadRedImg</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    String url = <span class="string">"http://s17.mogucdn.com/mlcdn/c45406/170418_68lkjddg3bll08h9c9bk0d8ihkffi_800x1200.jpg"</span>;</span><br><span class="line">    URL u = <span class="keyword">new</span> URL(url);</span><br><span class="line">    BufferedImage bf = ImageIO.read(u);</span><br><span class="line">    ImageIO.write</span><br><span class="line">    System.out.println(<span class="string">"--over--"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>debug截图如下：</p>
+<p><img src="https://s3.mogucdn.com/mlcdn/c45406/180122_0j91i74djjka8bj959db144eecaaj_1882x1100.jpg" alt="FFC31217-6457-46BD-9DB4-3C0632C2AE07.png"></p>
+<h2 id="问题兼容"><a href="#问题兼容" class="headerlink" title="问题兼容"></a>问题兼容</h2><p>不实用ImageIO来加载图片，改用Toolkit来实现图片读取，然后再将读取到的图片绘制到BufferedImage对象上</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testLoadRedImg2</span><span class="params">()</span> <span class="keyword">throws</span> MalformedURLException </span>&#123;</span><br><span class="line">    String url = <span class="string">"http://s17.mogucdn.com/mlcdn/c45406/170418_68lkjddg3bll08h9c9bk0d8ihkffi_800x1200.jpg"</span>;</span><br><span class="line">    URL u = <span class="keyword">new</span> URL(url);</span><br><span class="line">    Image img = Toolkit.getDefaultToolkit().getImage(u);</span><br><span class="line">    BufferedImage bf = toBufferedImage(img);</span><br><span class="line">    System.out.println(<span class="string">"eeee"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> BufferedImage <span class="title">toBufferedImage</span><span class="params">(Image image)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (image <span class="keyword">instanceof</span> BufferedImage) &#123;</span><br><span class="line">        <span class="keyword">return</span> (BufferedImage) image;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// This code ensures that all the pixels in the image are loaded</span></span><br><span class="line">    image = <span class="keyword">new</span> ImageIcon(image).getImage();</span><br><span class="line">    BufferedImage bimage = <span class="keyword">null</span>;</span><br><span class="line">    GraphicsEnvironment ge = GraphicsEnvironment</span><br><span class="line">            .getLocalGraphicsEnvironment();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> transparency = Transparency.OPAQUE;</span><br><span class="line">        GraphicsDevice gs = ge.getDefaultScreenDevice();</span><br><span class="line">        GraphicsConfiguration gc = gs.getDefaultConfiguration();</span><br><span class="line">        bimage = gc.createCompatibleImage(image.getWidth(<span class="keyword">null</span>),</span><br><span class="line">                image.getHeight(<span class="keyword">null</span>), transparency);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (HeadlessException e) &#123;</span><br><span class="line">        <span class="comment">// The system does not have a screen</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (bimage == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Create a buffered image using the default color model</span></span><br><span class="line">        <span class="keyword">int</span> type = BufferedImage.TYPE_INT_RGB;</span><br><span class="line">        bimage = <span class="keyword">new</span> BufferedImage(image.getWidth(<span class="keyword">null</span>),</span><br><span class="line">                image.getHeight(<span class="keyword">null</span>), type);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Copy image to buffered image</span></span><br><span class="line">    Graphics g = bimage.createGraphics();</span><br><span class="line">    <span class="comment">// Paint the image onto the buffered image</span></span><br><span class="line">    g.drawImage(image, <span class="number">0</span>, <span class="number">0</span>, <span class="keyword">null</span>);</span><br><span class="line">    g.dispose();</span><br><span class="line">    <span class="keyword">return</span> bimage;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实测验证</p>
+<p><img src="https://s3.mogucdn.com/mlcdn/c45406/180122_1aih840f4b60c15hdd51kabc0ee5g_2058x1034.jpg" alt="4871A1EA-A9FC-46A8-9C9D-954B93978435.png"></p>
+<p>为什么会出现这个问题：</p>
+<p>ImageIO.read()方法读取图片时可能存在不正确处理图片ICC信息的问题，ICC为JPEG图片格式中的一种头部信息，导致渲染图片前景色时蒙上一层红色。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="http://blog.csdn.net/amorym/article/details/52936470" target="_blank" rel="noopener">Java处理某些图片红色问题</a></li>
+</ul>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/BugFix/">BugFix</a>
+		  
+			<a href="/hexblog/tags/BufferedImage/">BufferedImage</a>
+		  
+			<a href="/hexblog/tags/Jpeg/">Jpeg</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/01/22/Android学习之旅1D-首屏页的开发/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Android学习之旅1D:首屏页的开发</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/01/20/Batik渲染png图片异常的bug修复/">
+        <span class="next-text nav-default">Batik渲染png图片异常的bug修复</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

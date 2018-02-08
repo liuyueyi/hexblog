@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="基于OkHttp封装一个简单易用的http工具"/>
+
+
+
+
+  <meta name="keywords" content="Java,Okhttp," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/01/15/基于OkHttp封装一个简单易用的http工具/"/>
+
+
+<meta name="description" content="基于OkHttp封装一个简单易用的http工具 okHtt更常见的是用在android项目上实现http交互，而java后端，可能更多的使用httpclient；一般来讲，android的包，大部分也是可以用到java后端的，本片博文则主要是介绍如何使用okhttp实现http交互，并会做一个简单的封装，以达到更好的使用体验  本篇为纯工具封装，无原理分析">
+<meta name="keywords" content="Java,Okhttp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于OkHttp封装一个简单易用的http工具">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/01/15/基于OkHttp封装一个简单易用的http工具/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="基于OkHttp封装一个简单易用的http工具 okHtt更常见的是用在android项目上实现http交互，而java后端，可能更多的使用httpclient；一般来讲，android的包，大部分也是可以用到java后端的，本片博文则主要是介绍如何使用okhttp实现http交互，并会做一个简单的封装，以达到更好的使用体验  本篇为纯工具封装，无原理分析">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s17.mogucdn.com/mlcdn/c45406/180115_4a4bi6b4j8h5057j8ife9i0k2jdcg_1222x718.gif">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-01-15T05:21:16.031Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于OkHttp封装一个简单易用的http工具">
+<meta name="twitter:description" content="基于OkHttp封装一个简单易用的http工具 okHtt更常见的是用在android项目上实现http交互，而java后端，可能更多的使用httpclient；一般来讲，android的包，大部分也是可以用到java后端的，本片博文则主要是介绍如何使用okhttp实现http交互，并会做一个简单的封装，以达到更好的使用体验  本篇为纯工具封装，无原理分析">
+<meta name="twitter:image" content="https://s17.mogucdn.com/mlcdn/c45406/180115_4a4bi6b4j8h5057j8ife9i0k2jdcg_1222x718.gif">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> 基于OkHttp封装一个简单易用的http工具 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          基于OkHttp封装一个简单易用的http工具
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-15
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/Tool/">Tool</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="基于OkHttp封装一个简单易用的http工具"><a href="#基于OkHttp封装一个简单易用的http工具" class="headerlink" title="基于OkHttp封装一个简单易用的http工具"></a>基于OkHttp封装一个简单易用的http工具</h1><blockquote>
+<p>okHtt更常见的是用在android项目上实现http交互，而java后端，可能更多的使用httpclient；一般来讲，android的包，大部分也是可以用到java后端的，本片博文则主要是介绍如何使用okhttp实现http交互，并会做一个简单的封装，以达到更好的使用体验</p>
+</blockquote>
+<p>本篇为纯工具封装，无原理分析</p>
+<a id="more"></a>
+<h2 id="I-封装后测试效果一览"><a href="#I-封装后测试效果一览" class="headerlink" title="I. 封装后测试效果一览"></a>I. 封装后测试效果一览</h2><p>基本上，最常见的http交互有两个，一个get请求，一个post请求，因此这里也就封装了这两种请求方式，并额外增加一个上传文件的功能，我们可以通过使用case，来看一下我们最终封装后的使用姿势</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 简单的get请求</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testGet</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String url = <span class="string">"https://zbang.online/wx/list"</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        okhttp3.Response res = HttpWrapper.of(url).get();</span><br><span class="line">        <span class="keyword">if</span> (res.isSuccessful()) &#123;</span><br><span class="line">            String ans = res.body().string();</span><br><span class="line">            System.out.println(<span class="string">"ans : "</span> + ans);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testUpload</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String url = <span class="string">"https://zbang.online/wx/qrcode/encode"</span>;</span><br><span class="line"></span><br><span class="line">    String path = <span class="string">"/Users/yihui/Desktop/img/test.jpg"</span>;</span><br><span class="line">    File file = <span class="keyword">new</span> File(path);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Response res = HttpWrapper.of(url)</span><br><span class="line">                .file(<span class="string">"image"</span>, file.getName(), <span class="string">"image/jpeg"</span>, file)</span><br><span class="line">                .addParam(<span class="string">"content"</span>, <span class="string">"http://www.baidu.com"</span>)</span><br><span class="line">                .addParam(<span class="string">"size"</span>, <span class="string">"400"</span>)</span><br><span class="line">                .upload();</span><br><span class="line">        <span class="keyword">if</span> (res.isSuccessful()) &#123;</span><br><span class="line">            String str = res.body().string();</span><br><span class="line">            System.out.println(<span class="string">"ans: "</span> + str);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面给出的是一个上传文件的case，实现主要是借助了builder模式，可以很简单的传递个中参数和配置，最后获取返回的结果，这样设计的好处很明显：</p>
+<ul>
+<li>使用简单</li>
+<li>阅读方便</li>
+</ul>
+<h2 id="II-封装实现"><a href="#II-封装实现" class="headerlink" title="II. 封装实现"></a>II. 封装实现</h2><p>接下来进入正题，如何封装这个工具类呢，一般而言，发起http请求，需要设置请求参数，设置请求头，所以builder内部的元素可以很清晰的定义了</p>
+<p>首先是引入依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.squareup.okhttp3<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>okhttp<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.9.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当然由于整个使用都比较简单，下面就直接贴出封装后的代码了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpWrapper</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> OkHttpClient client = <span class="keyword">new</span> OkHttpClient();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_USER_AGENT = <span class="string">"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Builder <span class="title">of</span><span class="params">(String url)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Builder(url);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Builder</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> String url;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Map&lt;String, String&gt; params;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> List&lt;MultipartBody.Part&gt; uploadParts;</span><br><span class="line"></span><br><span class="line">        Request.Builder reqBuilder;</span><br><span class="line"></span><br><span class="line">        Builder(String url) &#123;</span><br><span class="line">            <span class="keyword">this</span>.url = url;</span><br><span class="line">            params = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">            uploadParts = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">            reqBuilder = <span class="keyword">new</span> Request.Builder();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="comment">// 默认添加上user-agent</span></span><br><span class="line">            addHeader(<span class="string">"User-Agent"</span>, DEFAULT_USER_AGENT);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加参数</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">addParam</span><span class="params">(String key, String value)</span> </span>&#123;</span><br><span class="line">            params.put(key, value);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 添加头</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">addHeader</span><span class="params">(String key, String value)</span> </span>&#123;</span><br><span class="line">            reqBuilder.addHeader(key, value);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">file</span><span class="params">(String key, String fileName, String fileMime, <span class="keyword">byte</span>[] bytes)</span> </span>&#123;</span><br><span class="line">            MultipartBody.Part part = MultipartBody.Part.createFormData(</span><br><span class="line">                    key,</span><br><span class="line">                    fileName,</span><br><span class="line">                    RequestBody.create(MediaType.parse(fileMime), bytes));</span><br><span class="line">            uploadParts.add(part);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">file</span><span class="params">(String key, String fileName, String fileMime, File file)</span> </span>&#123;</span><br><span class="line">            MultipartBody.Part part = MultipartBody.Part.createFormData(</span><br><span class="line">                    key,</span><br><span class="line">                    fileName,</span><br><span class="line">                    RequestBody.create(MediaType.parse(fileMime), file));</span><br><span class="line">            uploadParts.add(part);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Builder <span class="title">file</span><span class="params">(String key, String fileName, String fileMime, InputStream stream)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">            <span class="keyword">int</span> size = stream.available();</span><br><span class="line">            <span class="keyword">byte</span>[] bytes = <span class="keyword">new</span> <span class="keyword">byte</span>[size];</span><br><span class="line">            stream.read(bytes);</span><br><span class="line">            <span class="keyword">return</span> file(key, fileName, fileMime, bytes);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 发送get请求</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">         * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Response <span class="title">get</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">            StringBuilder urlBuilder = <span class="keyword">new</span> StringBuilder(url);</span><br><span class="line">            <span class="keyword">if</span> (!params.isEmpty()) &#123;</span><br><span class="line">                urlBuilder.append(<span class="string">"?"</span>).append(Joiner.on(<span class="string">'&amp;'</span>).withKeyValueSeparator(<span class="string">'='</span>).join(params));</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> client.newCall(reqBuilder.url(urlBuilder.toString()).build()).execute();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * post表单数据</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Response <span class="title">post</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">            <span class="comment">// 创建表单</span></span><br><span class="line">            FormBody.Builder formBodyBuilder = <span class="keyword">new</span> FormBody.Builder();</span><br><span class="line">            <span class="keyword">if</span> (!params.isEmpty()) &#123;</span><br><span class="line">                params.forEach(formBodyBuilder::add);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> client.newCall(reqBuilder.url(url)</span><br><span class="line">                    .post(formBodyBuilder.build())</span><br><span class="line">                    .build())</span><br><span class="line">                    .execute();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 文件上传</span></span><br><span class="line"><span class="comment">         *</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">         * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Response <span class="title">upload</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">            MultipartBody.Builder bodyBuilder = <span class="keyword">new</span> MultipartBody.Builder()</span><br><span class="line">                    .setType(MultipartBody.FORM);</span><br><span class="line">            uploadParts.forEach(bodyBuilder::addPart);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 添加参数</span></span><br><span class="line">            params.forEach(bodyBuilder::addFormDataPart);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> client.newCall(reqBuilder.url(url)</span><br><span class="line">                    .post(bodyBuilder.build())</span><br><span class="line">                    .build())</span><br><span class="line">                    .execute();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>针对上面的实现，有几个需要注意的地方</p>
+<ul>
+<li>get请求时，将参数拼装到url上（需要考虑是否要编码？）</li>
+<li>post请求时，主要借助 FormBody 来存储请求参数</li>
+<li>文件上传时，<ul>
+<li>主要利用Part来封装上传的文件，借助 MultipartBody来包装Part和请求参数</li>
+<li>上传文件，需要指定其 MIME（即 Content-Type, 如 image/jpeg, audio/mp3, file/txt等）</li>
+<li>传文件的同时，也可以传递post参数，当然url参数也是可以的</li>
+</ul>
+</li>
+</ul>
+<h2 id="III-测试验证"><a href="#III-测试验证" class="headerlink" title="III. 测试验证"></a>III. 测试验证</h2><p>前面给出的是一个传文件的case，下面则给出一个提交post表单的测试用例</p>
+<p>这个http接口主要功能是实现markdown输出图片</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testPost</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String url = <span class="string">"https://zbang.online/wx/md2img"</span>;</span><br><span class="line"></span><br><span class="line">    String content = <span class="string">"h1 header\n"</span> +</span><br><span class="line">            <span class="string">"============\n"</span> +</span><br><span class="line">            <span class="string">"\n"</span> +</span><br><span class="line">            <span class="string">"Paragraphs are separated by a blank line.\n"</span> +</span><br><span class="line">            <span class="string">"\n"</span> +</span><br><span class="line">            <span class="string">"2nd paragraph. *Italic*, **bold**, and `monospace`. Itemized lists\n"</span> +</span><br><span class="line">            <span class="string">"look like:\n"</span> +</span><br><span class="line">            <span class="string">"\n"</span> +</span><br><span class="line">            <span class="string">"  * this one\n"</span> +</span><br><span class="line">            <span class="string">"  * that one\n"</span> +</span><br><span class="line">            <span class="string">"  * the other one"</span>;</span><br><span class="line">    String token = <span class="string">"0xdahdljk3u8eqhrjqwer90e"</span>;</span><br><span class="line">    String noborder = <span class="string">"true"</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        Response res = HttpWrapper.of(url)</span><br><span class="line">                .addParam(<span class="string">"content"</span>, content)</span><br><span class="line">                .addParam(<span class="string">"token"</span>, token)</span><br><span class="line">                .addParam(<span class="string">"noborder"</span>, noborder)</span><br><span class="line">                .addParam(<span class="string">"type"</span>, <span class="string">"stream"</span>)</span><br><span class="line">                .post();</span><br><span class="line">        <span class="keyword">if</span> (res.isSuccessful()) &#123;</span><br><span class="line">            BufferedImage bf = ImageIO.read(res.body().byteStream());</span><br><span class="line">            System.out.println(<span class="string">"over"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试演示</p>
+<p><img src="https://s17.mogucdn.com/mlcdn/c45406/180115_4a4bi6b4j8h5057j8ife9i0k2jdcg_1222x718.gif" alt="post表单"></p>
+<h2 id="V-其他"><a href="#V-其他" class="headerlink" title="V. 其他"></a>V. 其他</h2><h3 id="源码相关"><a href="#源码相关" class="headerlink" title="源码相关"></a>源码相关</h3><p>源码可以参见： <a href="https://github.com/liuyueyi/quick-crawler/blob/master/common/src/main/java/com/quick/hui/crawler/common/http/HttpWrapper.java" target="_blank" rel="noopener">HttpWrapper.java</a></p>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/Okhttp/">Okhttp</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/01/17/2017年全年回顾小结/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">2017年全年回顾小结</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/01/14/Redis实现分布式锁相关注意事项/">
+        <span class="next-text nav-default">Redis实现分布式锁相关注意事项</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

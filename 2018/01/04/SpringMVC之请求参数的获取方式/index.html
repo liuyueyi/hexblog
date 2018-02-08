@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="SpringMVC之请求参数的获取方式"/>
+
+
+
+
+  <meta name="keywords" content="Java,Spring,RequestParam," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/01/04/SpringMVC之请求参数的获取方式/"/>
+
+
+<meta name="description" content="SpringMVC之请求参数的获取方式 常见的一个web服务，如何获取请求参数？  一般最常见的请求为GET和POST，get请求的参数在url上可以获取，post请求参数除了url上还有可能在表单中，文件上传时，获取方式又和一般的参数获取不一样 本篇则主要集中在不同请求方式下，获取参数的使用姿势 首先需要搭建一个后端的请求，为了快速演示 利用spring-boot创建了一个机器简单的工程，依赖版">
+<meta name="keywords" content="Java,Spring,RequestParam">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringMVC之请求参数的获取方式">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/01/04/SpringMVC之请求参数的获取方式/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="SpringMVC之请求参数的获取方式 常见的一个web服务，如何获取请求参数？  一般最常见的请求为GET和POST，get请求的参数在url上可以获取，post请求参数除了url上还有可能在表单中，文件上传时，获取方式又和一般的参数获取不一样 本篇则主要集中在不同请求方式下，获取参数的使用姿势 首先需要搭建一个后端的请求，为了快速演示 利用spring-boot创建了一个机器简单的工程，依赖版">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-01-04T09:06:22.615Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringMVC之请求参数的获取方式">
+<meta name="twitter:description" content="SpringMVC之请求参数的获取方式 常见的一个web服务，如何获取请求参数？  一般最常见的请求为GET和POST，get请求的参数在url上可以获取，post请求参数除了url上还有可能在表单中，文件上传时，获取方式又和一般的参数获取不一样 本篇则主要集中在不同请求方式下，获取参数的使用姿势 首先需要搭建一个后端的请求，为了快速演示 利用spring-boot创建了一个机器简单的工程，依赖版">
+<meta name="twitter:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> SpringMVC之请求参数的获取方式 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          SpringMVC之请求参数的获取方式
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-04
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/Spring/">Spring</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="SpringMVC之请求参数的获取方式"><a href="#SpringMVC之请求参数的获取方式" class="headerlink" title="SpringMVC之请求参数的获取方式"></a>SpringMVC之请求参数的获取方式</h1><blockquote>
+<p>常见的一个web服务，如何获取请求参数？</p>
+</blockquote>
+<p>一般最常见的请求为GET和POST，get请求的参数在url上可以获取，post请求参数除了url上还有可能在表单中，文件上传时，获取方式又和一般的参数获取不一样</p>
+<p><strong>本篇则主要集中在不同请求方式下，获取参数的使用姿势</strong></p>
+<p>首先需要搭建一个后端的请求，为了快速演示</p>
+<p>利用spring-boot创建了一个机器简单的工程，依赖版本 <code>1.5.4.RELEASE</code></p>
+<a id="more"></a>
+<h2 id="I-GET请求参数获取"><a href="#I-GET请求参数获取" class="headerlink" title="I. GET请求参数获取"></a>I. GET请求参数获取</h2><p>get请求参数，一般都是直接挂在请求的url上，所以获取这些参数还是比较简单的</p>
+<h3 id="1-通过-HttpServletRequest获取参数"><a href="#1-通过-HttpServletRequest获取参数" class="headerlink" title="1. 通过 HttpServletRequest获取参数"></a>1. 通过 HttpServletRequest获取参数</h3><p>这个可以说是最基本最常见的的方式了，<code>javax.servlet.ServletRequest#getParameter</code> 来获取对应的参数，下面各处一个实例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping</span>(path = <span class="string">"webs/demo"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DemoController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(path = <span class="string">"req1"</span>)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">req1</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        String user = request.getParameter(<span class="string">"user"</span>);</span><br><span class="line">        String password = request.getParameter(<span class="string">"password"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"req1 user: "</span> + user + <span class="string">" pwd: "</span> + password;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据上面暴露的接口，我们测试的case就很简单了</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8080/webs/demo/req1?user=小灰灰Blog&amp;password=123456</span><br><span class="line"><span class="comment">## 输出  req1 user: 小灰灰Blog pwd: 123456</span></span><br><span class="line"></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req1?user=小灰灰Blog</span><br><span class="line"><span class="comment">## 输出  req1 user: 小灰灰Blog pwd: null</span></span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong></p>
+<ul>
+<li>这是一个最基本的获取参数的方式，get，post请求都适用的，通常在filter,intercepter中也是可以通过<code>HttpServletRequest</code>对象来获取请求参数</li>
+<li>除了获取常见的请求参数之外，<code>HttpServletRequest</code>可以获取请求头的完整信息</li>
+<li><p>在一次请求的生命周期内，可以通过下面的方式获取Request对象(当然也可以获取response对象)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">HttpServletRequest httpServletRequest = ((ServletRequestAttributes) </span><br><span class="line">    RequestContextHolder.getRequestAttributes()).getRequest();</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="2-直接方法参数获取"><a href="#2-直接方法参数获取" class="headerlink" title="2. 直接方法参数获取"></a>2. 直接方法参数获取</h3><p>直接给出case, 这个方法依然是放在上面的DemoController下面的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(path = <span class="string">"req2"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">req2</span><span class="params">(String user, String password)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"req2 user: "</span> + user + <span class="string">" pwd: "</span> + password;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请求验证</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8080/webs/demo/req2?user=%E5%B0%8F%E7%81%B0%E7%81%B0Blog&amp;password=123456</span><br><span class="line"><span class="comment">## 输出： req2 user: 小灰灰Blog pwd: 123456</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req2?password=123456</span><br><span class="line"><span class="comment">## 输出： req2 user: null pwd: 123456</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req2?password=123456&amp;User=blog</span><br><span class="line"><span class="comment">## 输出： req2 user: null pwd: 123456</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<ul>
+<li>上面这种使用方式，相当于直接将url参数映射到了Controller方法的参数上了</li>
+<li>方法参数名必须和url参数名完全一致（区分大小写）</li>
+<li>顺序无关</li>
+<li>若参数没传，则默认为null</li>
+</ul>
+<p><strong>一个疑问</strong></p>
+<p>上面的demo中Controller的方法参数都是String还好，如果将password改成int，会出现什么情况</p>
+<p>代码稍作修改</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(path = <span class="string">"req2"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">req2</span><span class="params">(String user, <span class="keyword">int</span> password)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"req2 user: "</span> + user + <span class="string">" pwd: "</span> + password;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实际测试</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># case1 </span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req2?password=123456&amp;user=blog</span><br><span class="line"><span class="comment">## 输出： req2 user: blog pwd: 123456</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># case 2</span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req2?password2=123456&amp;user=blog</span><br><span class="line"><span class="comment">## 输出: 报错, Optional int parameter 'password' is present but cannot be translated into a null value due to being declared as a primitive type. Consider declaring it as object wrapper for the corresponding primitive type</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># case 3</span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req2?password=abc&amp;user=blog</span><br><span class="line"><span class="comment">## 输出：报错, "Failed to convert value of type 'java.lang.String' to required type 'int'; nested exception is java.lang.NumberFormatException: For input string: "abc""</span></span><br></pre></td></tr></table></figure>
+<p><strong>结果说明</strong></p>
+<ul>
+<li>如果请求参数与方法参数类型不一致，会抛出转换异常</li>
+<li>如果方法参数为非封装基本类型，则url参数必须存在，否则报错</li>
+</ul>
+<h3 id="3-RequestParam注解方式获取请求参数"><a href="#3-RequestParam注解方式获取请求参数" class="headerlink" title="3. RequestParam注解方式获取请求参数"></a>3. RequestParam注解方式获取请求参数</h3><p>通过<code>@RequestParam</code>注解获取参数的方式和上面的一种比较类似，case如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(path = <span class="string">"req3"</span>, method = RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">req3</span><span class="params">(@RequestParam(<span class="string">"user"</span>)</span> String username,</span></span><br><span class="line"><span class="function">                   @<span class="title">RequestParam</span><span class="params">(<span class="string">"password"</span>)</span> String pwd) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"req3 user: "</span> + username + <span class="string">" pwd: "</span> + pwd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试case</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># case1 </span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req3?password=123456&amp;user=blog</span><br><span class="line"><span class="comment">## 输出: req3 user: blog pwd: 123456</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># case2</span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req3?password=123456</span><br><span class="line"><span class="comment">## 输出：报错， Required String parameter 'user' is not presen</span></span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong></p>
+<ul>
+<li>不指定注解的name或value属性时，等同于第二种使用姿势</li>
+<li>注解的name属性或value属性，用实际的参数名来指定</li>
+<li>controller的参数名与url参数名没有强关联（区别第二种方式）</li>
+<li>参数类型需要保证一致（通第二种方式）</li>
+<li>如果url参数可选，请设置require属性为false，如下<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestParam</span>(name = <span class="string">"user"</span>,  required = <span class="keyword">false</span>) String username</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="4-Bean方式获取参数"><a href="#4-Bean方式获取参数" class="headerlink" title="4. Bean方式获取参数"></a>4. Bean方式获取参数</h3><p>对于请求参数比较复杂的情况下，我比较喜欢这种使用姿势，管理起来方便简单</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">UserDO</span> </span>&#123;</span><br><span class="line">    String user;</span><br><span class="line">    String password;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@RequestMapping</span>(path = <span class="string">"req4"</span>, method = RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">req4</span><span class="params">(UserDO userDO)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"req4 userDO: "</span> + userDO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试case</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># case1</span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req4?password=123456&amp;user=%E5%B0%8F%E7%81%B0%E7%81%B0Blog</span><br><span class="line"><span class="comment">## 输出: req4 userDO: DemoController.UserDO(user=小灰灰Blog, password=123456)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># case2</span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req4?password=123456</span><br><span class="line"><span class="comment">## 输出: req4 userDO: DemoController.UserDO(user=null, password=123456)</span></span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong></p>
+<ul>
+<li>定义一个bean，内部属性和请求参数对应</li>
+<li>允许参数不存在的情况，会使用null代替（所以，尽量不要使用非封装基本类型，否则参数不传时，会抛异常）</li>
+<li>bean的属性，可以根据实际情况指定类型</li>
+</ul>
+<h3 id="5-ModelAttribute注解方式"><a href="#5-ModelAttribute注解方式" class="headerlink" title="5. ModelAttribute注解方式"></a>5. ModelAttribute注解方式</h3><p>@ModelAttribute注解的方法，会优于Controller之前执行，一般更常见于向视图传输数据使用，此处不详细展开，正常来讲，专门的获取参数不太会用这这种方式来玩</p>
+<h3 id="6-Path参数"><a href="#6-Path参数" class="headerlink" title="6. Path参数"></a>6. Path参数</h3><p>Path参数，专指的是请求路径的参数，如</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8080/webs/demo/req4?password=123456</span><br></pre></td></tr></table></figure>
+<p>上面这个url中，password是我们传统意义上的请求参数，其中path参数则是指其中 <code>req4</code>, <code>demo</code>这种path路径中的一环；对此，最常见的一个case就是常见的博客中,如开源中国的一个博客链接</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://my.oschina.net/u/566591/blog/1601400</span><br></pre></td></tr></table></figure>
+<ul>
+<li>566591 : 这个参数主要用来区分用户</li>
+<li>1601400 : 这个参数则主要是表示对应的博文</li>
+</ul>
+<p>一般path参数的获取方式如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(path = <span class="string">"req6/&#123;user&#125;/info"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">req6</span><span class="params">(@PathVariable(name = <span class="string">"user"</span>)</span> String user) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"req6 user: "</span> + user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试case</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># case1 </span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req6/blog/info?user=haha</span><br><span class="line"><span class="comment">## 输出：req6 user: blog</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># case2</span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req6/blog?user=haha</span><br><span class="line"><span class="comment">## 输出: 404</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># case3</span></span><br><span class="line">http://127.0.0.1:8080/webs/demo/req6/info?user=haha</span><br><span class="line"><span class="comment">## 输出: 404</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意:</strong></p>
+<ul>
+<li>path参数的使用，需要确保参数存在且类型匹配</li>
+<li>path参数和url参数不会相互影响</li>
+</ul>
+<h2 id="II-POST请求参数获取"><a href="#II-POST请求参数获取" class="headerlink" title="II. POST请求参数获取"></a>II. POST请求参数获取</h2><p>POST请求参数，更多的是看提交表单参数是否可以获取到，以及如何获取，主要的手段依然是上面几种方式，下面验证下是否ok</p>
+<h3 id="1-HttpServletRequest方式获取参数"><a href="#1-HttpServletRequest方式获取参数" class="headerlink" title="1. HttpServletRequest方式获取参数"></a>1. HttpServletRequest方式获取参数</h3><p>测试case，可以借助curl来实现post请求</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># case1 </span></span><br><span class="line">curl -d <span class="string">"user=小灰灰Blog&amp;password=123456"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req1"</span></span><br><span class="line"><span class="comment">## 输出： req1 user: 小灰灰Blog pwd: 123456</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># case2</span></span><br><span class="line">curl -d <span class="string">"user=小灰灰Blog"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req1?password=123456"</span></span><br><span class="line"><span class="comment">## 输出：req1 user: 小灰灰Blog pwd: 12345</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># case3</span></span><br><span class="line">curl -d <span class="string">"user=小灰灰Blog"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req1?user=greyBlog"</span></span><br><span class="line"><span class="comment">## 输出：req1 user: greyBlog pwd: null</span></span><br></pre></td></tr></table></figure>
+<p>curl也可以换成js请求测试方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> formData = <span class="keyword">new</span> FormData();</span><br><span class="line">formData.append(<span class="string">"user"</span>, <span class="string">"小灰灰Blog"</span>);</span><br><span class="line"></span><br><span class="line">$.ajax(&#123;</span><br><span class="line">  url: <span class="string">'http://127.0.0.1:8080/webs/demo/req1?password=123456'</span>,</span><br><span class="line">  type: <span class="string">'post'</span>,</span><br><span class="line">  cache: <span class="literal">false</span>,</span><br><span class="line">  data: formData,</span><br><span class="line">  processData: <span class="literal">false</span>,</span><br><span class="line">  contentType: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p><strong>说明</strong></p>
+<ul>
+<li>对于HttpServletReuqest方式获取参数时，get和post没什么区别</li>
+<li>若url参数和表单参数同名了，测试结果显示使用的是url参数（待确认，当然最好不要这么干）</li>
+</ul>
+<h3 id="2-方法参数获取"><a href="#2-方法参数获取" class="headerlink" title="2. 方法参数获取"></a>2. 方法参数获取</h3><p>几个测试demo如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># case 1</span></span><br><span class="line">curl -d <span class="string">"user=小灰灰Blog&amp;password=123456"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req2"</span></span><br><span class="line"><span class="comment">## 输出： req2 user: 小灰灰Blog pwd: 123456</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># case 2</span></span><br><span class="line">curl -d <span class="string">"password=123456"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req2"</span></span><br><span class="line"><span class="comment">## 输出：req2 user: null pwd: 123456</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># case 3</span></span><br><span class="line">curl -d <span class="string">"password=123456"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req2?user=blog"</span></span><br><span class="line"><span class="comment">## 输出： req2 user: blog pwd: 123456</span></span><br></pre></td></tr></table></figure>
+<p>基本上使用姿势和get没什么区别</p>
+<h3 id="3-RequestParam注解方式"><a href="#3-RequestParam注解方式" class="headerlink" title="3. RequestParam注解方式"></a>3. RequestParam注解方式</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># case 1</span></span><br><span class="line">curl -d <span class="string">"password=123456&amp;user=blog"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req3"</span></span><br><span class="line"><span class="comment">## 输出： req3 user: blog pwd: 123456</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># case 2</span></span><br><span class="line">curl -d <span class="string">"password=123456"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req3?user=blog"</span></span><br><span class="line"><span class="comment">## 输出： req3 user: blog pwd: 123456</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># case 3</span></span><br><span class="line">curl -d <span class="string">"password=123456&amp;user=blog"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req3?password=900"</span></span><br><span class="line"><span class="comment">## 输出：req3 user: blog pwd: 900,123456</span></span><br></pre></td></tr></table></figure>
+<p><strong>注意</strong></p>
+<ul>
+<li>和前面的两种方式不同的是，当post表单的参数和url参数同名时，会合并成一个字符串</li>
+</ul>
+<h3 id="4-Bean方式"><a href="#4-Bean方式" class="headerlink" title="4. Bean方式"></a>4. Bean方式</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## case1 </span></span><br><span class="line">curl -d <span class="string">"password=123456&amp;user=blog"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req4?password=900"</span></span><br><span class="line"><span class="comment">## 输出 req4 userDO: DemoController.UserDO(user=blog, password=900,123456)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## case2</span></span><br><span class="line">curl -d <span class="string">"password=123456&amp;user=blog"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req4"</span></span><br><span class="line"><span class="comment">## 输出 req4 userDO: DemoController.UserDO(user=blog, password=123456)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## case3</span></span><br><span class="line">curl -d <span class="string">"password=123456"</span> <span class="string">"http://127.0.0.1:8080/webs/demo/req4"</span></span><br><span class="line"><span class="comment">## 输出 req4 userDO: DemoController.UserDO(user=null, password=123456)</span></span><br></pre></td></tr></table></figure>
+<p>这种方式不区分get,post，所以完全复杂的交互接口，完全可以考虑用bean的方式来定义请求参数</p>
+<h3 id="5-PathVariable"><a href="#5-PathVariable" class="headerlink" title="5. PathVariable"></a>5. PathVariable</h3><p>这个没法玩…</p>
+<h2 id="III-多媒体上传参数获取"><a href="#III-多媒体上传参数获取" class="headerlink" title="III. 多媒体上传参数获取"></a>III. 多媒体上传参数获取</h2><blockquote>
+<p>上传文件的支持，对于传统的spring-mvc来说，可能需要一些添加一些相关配置，不在本文的范畴内，下面默认已经配置好</p>
+</blockquote>
+<h3 id="1-实例支持"><a href="#1-实例支持" class="headerlink" title="1. 实例支持"></a>1. 实例支持</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(path = &#123;<span class="string">"wx/upload"</span>, <span class="string">"wx/wx/upload"</span>&#125;, method = &#123;RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS&#125;)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">upload</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">    MultipartFile file = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (request <span class="keyword">instanceof</span> MultipartHttpServletRequest) &#123;</span><br><span class="line">        file = ((MultipartHttpServletRequest) request).getFile(<span class="string">"image"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (file == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"图片不能为空!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>简单来说，主要是利用<code>HttpServletRequest</code>来获取上传的文件</p>
+<p><strong>注意：</strong></p>
+<ul>
+<li>如果接口必须要求上传文件，可以直接把参数声明为 <code>MultipartHttpServletRequest</code>， 此时调用方如果不传参数，会被异常拦截（可以通过@ControllerAdvice来拦截全局异常）</li>
+<li>如果可以不上传文件，则可以用上面的这种猥琐姿势，内部进行判断</li>
+<li><code>((MultipartHttpServletRequest) request).getFile(xxx)</code>来获取指定名的上传文件</li>
+</ul>
+<h2 id="IV-小结"><a href="#IV-小结" class="headerlink" title="IV. 小结"></a>IV. 小结</h2><h3 id="1-五种获取参数的姿势"><a href="#1-五种获取参数的姿势" class="headerlink" title="1. 五种获取参数的姿势"></a>1. 五种获取参数的姿势</h3><table>
+<thead>
+<tr>
+<th>方式</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HttpServletRequest获取参数</td>
+<td>最常见通用</td>
+</tr>
+<tr>
+<td>方法参数与请求参数同名</td>
+<td>注意参数名统一，注意类型一致，尽量不用非包装基本类型</td>
+</tr>
+<tr>
+<td>@RequestParam注解</td>
+<td>同上，可注解内指定http参数名</td>
+</tr>
+<tr>
+<td>Bean方式</td>
+<td>定义一个bean，会将同名的http参数赋值进去，推荐</td>
+</tr>
+<tr>
+<td>@PathVariable 注解</td>
+<td>请求url参数</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-传文件使用姿势"><a href="#2-传文件使用姿势" class="headerlink" title="2. 传文件使用姿势"></a>2. 传文件使用姿势</h3><p>使用<code>MultipartHttpServletRequest</code>来获取上传的文件，当然也可以获取基本的请求参数</p>
+<h2 id="V-其他"><a href="#V-其他" class="headerlink" title="V. 其他"></a>V. 其他</h2><h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/Spring/">Spring</a>
+		  
+			<a href="/hexblog/tags/RequestParam/">RequestParam</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/01/14/Redis实现分布式锁相关注意事项/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Redis实现分布式锁相关注意事项</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/01/03/jvm调优的工具介绍/">
+        <span class="next-text nav-default">jvm调优的工具介绍</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

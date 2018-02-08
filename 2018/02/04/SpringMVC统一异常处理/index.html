@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="SpringMVC统一异常处理"/>
+
+
+
+
+  <meta name="keywords" content="Java,Spring,Exception," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/02/04/SpringMVC统一异常处理/"/>
+
+
+<meta name="description" content="统一异常拦截处理方式 项目中不可避免会出现一些异常情况，而一个web项目，若不拦截异常，糟糕的情况下可能直接将堆栈抛给前端，从而导致各种鬼畜的问题">
+<meta name="keywords" content="Java,Spring,Exception">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringMVC统一异常处理">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/02/04/SpringMVC统一异常处理/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="统一异常拦截处理方式 项目中不可避免会出现一些异常情况，而一个web项目，若不拦截异常，糟糕的情况下可能直接将堆栈抛给前端，从而导致各种鬼畜的问题">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-02-04T12:30:54.422Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringMVC统一异常处理">
+<meta name="twitter:description" content="统一异常拦截处理方式 项目中不可避免会出现一些异常情况，而一个web项目，若不拦截异常，糟糕的情况下可能直接将堆栈抛给前端，从而导致各种鬼畜的问题">
+<meta name="twitter:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> SpringMVC统一异常处理 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          SpringMVC统一异常处理
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-02-04
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/Spring/">Spring</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="统一异常拦截处理方式"><a href="#统一异常拦截处理方式" class="headerlink" title="统一异常拦截处理方式"></a>统一异常拦截处理方式</h1><blockquote>
+<p>项目中不可避免会出现一些异常情况，而一个web项目，若不拦截异常，糟糕的情况下可能直接将堆栈抛给前端，从而导致各种鬼畜的问题</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="I-借助-ControllerAdvice拦截异常"><a href="#I-借助-ControllerAdvice拦截异常" class="headerlink" title="I. 借助@ControllerAdvice拦截异常"></a>I. 借助<code>@ControllerAdvice</code>拦截异常</h2><p>给一个简单的demo，便可以很容易的了解这种手段如何处理了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ControllerAdvice</span></span><br><span class="line"><span class="meta">@Slf</span>4j</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActionExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(value = Exception.class)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">defaultHandler</span><span class="params">(HttpServletRequest request, Exception e)</span> </span>&#123;</span><br><span class="line">        log.error(<span class="string">"unexpected exception! request: &#123;&#125;, params: &#123;&#125; refer: &#123;&#125;, e: &#123;&#125;"</span>,</span><br><span class="line">                request.getRequestURI(),</span><br><span class="line">                request.getParameterMap(),</span><br><span class="line">                request.getHeader(<span class="string">"referer"</span>),</span><br><span class="line">                e);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(e.getMessage())) &#123;</span><br><span class="line">            <span class="keyword">return</span> ResponseWrapper.errorReturn(<span class="keyword">new</span> Status(<span class="number">500</span>, <span class="string">"内部异常"</span>));</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> ResponseWrapper.errorReturn(<span class="keyword">new</span> Status(<span class="number">500</span>, e.getMessage()));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里主要借助两个注解来实现，ControllerAdvice 和 ExceptionHandler </p>
+<h2 id="II-其他"><a href="#II-其他" class="headerlink" title="II. 其他"></a>II. 其他</h2><h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/Spring/">Spring</a>
+		  
+			<a href="/hexblog/tags/Exception/">Exception</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/02/07/Java中变量的初始化顺序/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Java中变量的初始化顺序</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/01/26/JavaWeb三大组件之Filter学习详解/">
+        <span class="next-text nav-default"> JavaWeb三大组件之Filter学习详解</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

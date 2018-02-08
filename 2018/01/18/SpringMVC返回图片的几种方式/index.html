@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="SpringMVC返回图片的几种方式"/>
+
+
+
+
+  <meta name="keywords" content="Java,Spring,Response," />
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/01/18/SpringMVC返回图片的几种方式/"/>
+
+
+<meta name="description" content="SpringMVC返回图片的几种方式 后端提供服务，通常返回的json串，但是某些场景下可能需要直接返回二进制流，如一个图片编辑接口，希望直接将图片流返回给前端；如果要求返回base64，此时可以怎么处理？">
+<meta name="keywords" content="Java,Spring,Response">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringMVC返回图片的几种方式">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/01/18/SpringMVC返回图片的几种方式/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="SpringMVC返回图片的几种方式 后端提供服务，通常返回的json串，但是某些场景下可能需要直接返回二进制流，如一个图片编辑接口，希望直接将图片流返回给前端；如果要求返回base64，此时可以怎么处理？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+<meta property="og:updated_time" content="2018-01-18T03:24:32.127Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringMVC返回图片的几种方式">
+<meta name="twitter:description" content="SpringMVC返回图片的几种方式 后端提供服务，通常返回的json串，但是某些场景下可能需要直接返回二进制流，如一个图片编辑接口，希望直接将图片流返回给前端；如果要求返回base64，此时可以怎么处理？">
+<meta name="twitter:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> SpringMVC返回图片的几种方式 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          SpringMVC返回图片的几种方式
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          2018-01-18
+          
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/Spring/">Spring</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <h1 id="SpringMVC返回图片的几种方式"><a href="#SpringMVC返回图片的几种方式" class="headerlink" title="SpringMVC返回图片的几种方式"></a>SpringMVC返回图片的几种方式</h1><blockquote>
+<p>后端提供服务，通常返回的json串，但是某些场景下可能需要直接返回二进制流，如一个图片编辑接口，希望直接将图片流返回给前端；如果要求返回base64，此时可以怎么处理？</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="I-返回二进制图片"><a href="#I-返回二进制图片" class="headerlink" title="I. 返回二进制图片"></a>I. 返回二进制图片</h2><p>主要借助的是 HttpServletResponse这个对象，实现case如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = &#123;<span class="string">"/img/render"</span>&#125;, method = &#123;RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS&#125;)</span><br><span class="line"><span class="meta">@CrossOrigin</span>(origins = <span class="string">"*"</span>)</span><br><span class="line"><span class="meta">@ResponseBody</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">execute</span><span class="params">(HttpServletRequest httpServletRequest,</span></span></span><br><span class="line"><span class="function"><span class="params">             HttpServletResponse httpServletResponse)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// img为图片的二进制流</span></span><br><span class="line">    <span class="keyword">byte</span>[] img = xxx;</span><br><span class="line">    httpServletResponse.setContentType(<span class="string">"image/png"</span>);</span><br><span class="line">    OutputStream os = httpServletResponse.getOutputStream();</span><br><span class="line">    os.write(img);</span><br><span class="line">    os.flush();</span><br><span class="line">    os.close();</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"success"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意事项</p>
+<ul>
+<li>注意ContentType定义了图片类型</li>
+<li>将二进制写入 <code>httpServletResponse#getOutputStream</code></li>
+<li>写完之后，<code>flush()</code>, <code>close()</code>请务必执行一次</li>
+</ul>
+<h2 id="II-返回图片的几种方式封装"><a href="#II-返回图片的几种方式封装" class="headerlink" title="II. 返回图片的几种方式封装"></a>II. 返回图片的几种方式封装</h2><p>一般来说，一个后端提供的服务接口，往往是返回json数据的居多，前面提到了直接返回图片的场景，那么常见的返回图片有哪些方式呢？</p>
+<ul>
+<li>返回图片的http地址</li>
+<li>返回base64格式的图片</li>
+<li>直接返回二进制的图片</li>
+<li>其他…（我就见过上面三种，别的还真不知道）</li>
+</ul>
+<p>那么我们提供的一个Controller，应该如何同时支持上面这三种使用姿势呢？</p>
+<h3 id="1-bean定义"><a href="#1-bean定义" class="headerlink" title="1. bean定义"></a>1. bean定义</h3><p>因为有几种不同的返回方式，至于该选择哪一个，当然是由前端来指定了，所以，可以定义一个请求参数的bean对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseRequest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1146303518394712013L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 输出图片方式:</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     *  url : http地址 （默认方式）</span></span><br><span class="line"><span class="comment">     *  base64 : base64编码</span></span><br><span class="line"><span class="comment">     *  stream : 直接返回图片</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String outType;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回图片的类型</span></span><br><span class="line"><span class="comment">     * jpg | png | webp | gif</span></span><br><span class="line"><span class="comment">     */</span> </span><br><span class="line">    <span class="keyword">private</span> String mediaType;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ReturnTypeEnum <span class="title">returnType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ReturnTypeEnum.getEnum(outType);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> MediaTypeEnum <span class="title">mediaType</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> MediaTypeEnum.getEnum(mediaType);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为了简化判断，定义了两个注解，一个ReturnTypeEnum, 一个 MediaTypeEnum， 当然必要性不是特别大，下面是两者的定义</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> ReturnTypeEnum &#123;</span><br><span class="line"></span><br><span class="line">    URL(<span class="string">"url"</span>),</span><br><span class="line">    STREAM(<span class="string">"stream"</span>),</span><br><span class="line">    BASE64(<span class="string">"base"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String type;</span><br><span class="line"></span><br><span class="line">    ReturnTypeEnum(String type) &#123;</span><br><span class="line">        <span class="keyword">this</span>.type = type;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, ReturnTypeEnum&gt; map;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        map = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">3</span>);</span><br><span class="line">        <span class="keyword">for</span>(ReturnTypeEnum e: ReturnTypeEnum.values()) &#123;</span><br><span class="line">            map.put(e.type, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ReturnTypeEnum <span class="title">getEnum</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> URL;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ReturnTypeEnum e = map.get(type.toLowerCase());</span><br><span class="line">        <span class="keyword">return</span> e == <span class="keyword">null</span> ? URL : e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> MediaTypeEnum &#123;</span><br><span class="line">    ImageJpg(<span class="string">"jpg"</span>, <span class="string">"image/jpeg"</span>, <span class="string">"FFD8FF"</span>),</span><br><span class="line">    ImageGif(<span class="string">"gif"</span>, <span class="string">"image/gif"</span>, <span class="string">"47494638"</span>),</span><br><span class="line">    ImagePng(<span class="string">"png"</span>, <span class="string">"image/png"</span>, <span class="string">"89504E47"</span>),</span><br><span class="line">    ImageWebp(<span class="string">"webp"</span>, <span class="string">"image/webp"</span>, <span class="string">"52494646"</span>),</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String ext;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String mime;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String magic;</span><br><span class="line"></span><br><span class="line">    MediaTypeEnum(String ext, String mime, String magic) &#123;</span><br><span class="line">        <span class="keyword">this</span>.ext = ext;</span><br><span class="line">        <span class="keyword">this</span>.mime = mime;</span><br><span class="line">        <span class="keyword">this</span>.magic = magic;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String, MediaTypeEnum&gt; map;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        map = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">4</span>);</span><br><span class="line">        <span class="keyword">for</span> (MediaTypeEnum e: values()) &#123;</span><br><span class="line">            map.put(e.getExt(), e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> MediaTypeEnum <span class="title">getEnum</span><span class="params">(String type)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (type == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> ImageJpg;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        MediaTypeEnum e = map.get(type.toLowerCase());</span><br><span class="line">        <span class="keyword">return</span> e == <span class="keyword">null</span> ? ImageJpg : e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面是请求参数封装的bean，返回当然也有一个对应的bean</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseResponse</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回图片的相对路径</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String path;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 返回图片的https格式</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * base64格式的图片</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String base;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong></p>
+<p>实际的项目环境中，请求参数和返回肯定不会像上面这么简单，所以可以通过继承上面的bean或者自己定义对应的格式来实现</p>
+<h3 id="2-返回的封装方式"><a href="#2-返回的封装方式" class="headerlink" title="2. 返回的封装方式"></a>2. 返回的封装方式</h3><p>既然目标明确，封装可算是这个里面最清晰的一个步骤了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">buildResponse</span><span class="params">(BaseRequest request,</span></span></span><br><span class="line"><span class="function"><span class="params">                             BaseResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">                             <span class="keyword">byte</span>[] bytes)</span> <span class="keyword">throws</span> SelfError </span>&#123;</span><br><span class="line">    <span class="keyword">switch</span> (request.returnType()) &#123;</span><br><span class="line">        <span class="keyword">case</span> URL:</span><br><span class="line">            upload(bytes, response);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> BASE64:</span><br><span class="line">            base64(bytes, response);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> STREAM:</span><br><span class="line">            stream(bytes, request);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">upload</span><span class="params">(<span class="keyword">byte</span>[] bytes, BaseResponse response)</span> <span class="keyword">throws</span> SelfError </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 上传到图片服务器，根据各自的实际情况进行替换</span></span><br><span class="line">        String path = UploadUtil.upload(bytes);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(path)) &#123; <span class="comment">// 上传失败</span></span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(<span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        response.setPath(path);</span><br><span class="line">        response.setUrl(CdnUtil.img(path));</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123; <span class="comment">// cdn异常</span></span><br><span class="line">        log.error(<span class="string">"upload to cdn error! e:&#123;&#125;"</span>, e);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CDNUploadError(e.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回base64</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">base64</span><span class="params">(<span class="keyword">byte</span>[] bytes, BaseResponse response)</span> </span>&#123;</span><br><span class="line">    String base = Base64.getEncoder().encodeToString(bytes);</span><br><span class="line">    response.setBase(base);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回二进制图片</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">stream</span><span class="params">(<span class="keyword">byte</span>[] bytes, BaseRequest request)</span> <span class="keyword">throws</span> SelfError </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        MediaTypeEnum mediaType = request.mediaType();</span><br><span class="line">        HttpServletResponse servletResponse = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();</span><br><span class="line">        servletResponse.setContentType(mediaType.getMime());</span><br><span class="line">        OutputStream os = servletResponse.getOutputStream();</span><br><span class="line">        os.write(bytes);</span><br><span class="line">        os.flush();</span><br><span class="line">        os.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        log.error(<span class="string">"general return stream img error! req: &#123;&#125;, e:&#123;&#125;"</span>, request, e);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isNotBlank(e.getMessage())) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(e.getMessage());</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(<span class="keyword">null</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>说明：</strong></p>
+<p>请无视上面的几个自定义异常方式，需要使用时，完全可以干掉这些自定义异常即可；这里简单说一下，为什么会在实际项目中使用这种自定义异常的方式，主要是有以下几个优点</p>
+<ol>
+<li>配合全局异常捕获(ControllerAdvie)，使用起来非常方便简单</li>
+<li><p>所有的异常集中处理，方便信息统计和报警 </p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如，在统一的地方进行异常计数，然后超过某个阀值之后，报警给负责人，这样就不需要在每个出现异常case的地方来主动埋点了</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>避免错误状态码的层层传递</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- 这个主要针对web服务，一般是在返回的json串中，会包含对应的错误状态码，错误信息</span><br><span class="line">- 而异常case是可能出现在任何地方的，为了保持这个异常信息，要么将这些数据层层传递到controller；要么就是存在ThreadLocal中；显然这两种方式都没有抛异常的使用方便</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>有优点当然就有缺点了：</p>
+<ol>
+<li><p>异常方式，额外的性能开销，所以在自定义异常中，我都覆盖了下面这个方法，不要完整的堆栈</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> Throwable <span class="title">fillInStackTrace</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编码习惯问题，有些人可能就非常不喜欢这种使用方式</p>
+</li>
+</ol>
+<h2 id="III-项目相关"><a href="#III-项目相关" class="headerlink" title="III. 项目相关"></a>III. 项目相关</h2><p>只说不练好像没什么意思，上面的这个设计，完全体现在了我一直维护的开源项目 Quick-Media中，当然实际和上面有一些不同，毕竟与业务相关较大，有兴趣的可以参考</p>
+<ul>
+<li><p>QuickMedia: <a href="https://github.com/liuyueyi/quick-media" target="_blank" rel="noopener">https://github.com/liuyueyi/quick-media</a> : </p>
+</li>
+<li><p>BaseAction: <code>com.hust.hui.quickmedia.web.wxapi.WxBaseAction#buildReturn</code></p>
+</li>
+</ul>
+<h2 id="IV-其他"><a href="#IV-其他" class="headerlink" title="IV. 其他"></a>IV. 其他</h2><h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
+<h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+			<a href="/hexblog/tags/Spring/">Spring</a>
+		  
+			<a href="/hexblog/tags/Response/">Response</a>
+		  
+		</div>
+		
+
+        
+        
+  <nav class="post-nav">
+    
+      <a class="prev" href="/hexblog/2018/01/19/SpringMVC支持跨域的几种姿势/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">SpringMVC支持跨域的几种姿势</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/hexblog/2018/01/17/2017年全年回顾小结/">
+        <span class="next-text nav-default">2017年全年回顾小结</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
