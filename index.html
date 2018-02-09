@@ -112,6 +112,199 @@
     <header class="post-header">
       <h1 class="post-title">
         
+          <a class="post-link" href="/hexblog/2018/02/09/报警系统QuickAlarm之报警规则的设定与加载/">报警系统QuickAlarm之报警规则的设定与加载</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          <i class="fa fa-calendar"></i>
+          2018-02-09
+          
+              | <i class="fa fa-folder"></i>
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/QuickAlarm/">QuickAlarm</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+        <div class="post-excerpt">
+            
+            
+              
+            
+
+            
+              <p>前面一篇是报警执行器的定义与加载已经完成，但与之对应的报警规则有是如何定义和加载的呢？</p>
+<p>此外，既然命名为规则，那么就需要有对应的解析器，以根据报警规则和报警类型等相关输入条件，来选择对应的报警执行器，因此本文主要包括的内容就比较清晰了</p>
+<ul>
+<li>报警规则的定义</li>
+<li>报警规则的加载</li>
+<li>报警规则的解析以及报警执行器选择</li>
+</ul>
+        </div>
+
+        <nav class="pagination">
+          <a class="next" href="/hexblog/2018/02/09/报警系统QuickAlarm之报警规则的设定与加载/" style="color:#E84D1C">
+            <span class="next-text">Read more</span>
+            <i class="fa fa-fighter-jet"></i>
+            <i class="fa fa-fighter-jet"></i>
+            <i class="fa fa-fighter-jet"></i>
+          </a>
+        </nav>
+        
+        
+
+            
+          
+
+    
+  </article>
+
+        
+            
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/hexblog/2018/02/09/报警系统QuickAlarm之报警执行器的设计与实现/">报警系统QuickAlarm之报警执行器的设计与实现</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          <i class="fa fa-calendar"></i>
+          2018-02-09
+          
+              | <i class="fa fa-folder"></i>
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/QuickAlarm/">QuickAlarm</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+        <div class="post-excerpt">
+            
+            
+              
+            
+
+            
+              <p>根据前面一篇总纲的博文，将整体结构划分为了四大块，本文则主要目标集中在第一块，报警执行器（AlarmExecute）的设计与加载上了</p>
+<p>主要的关注点无外乎 定义-》加载-》实现逻辑三块了：</p>
+<ul>
+<li>AlarmExecute 的接口定义</li>
+<li>如何加载用户自定义的AlarmExecute</li>
+<li>AlarmExecute的内部实现</li>
+</ul>
+        </div>
+
+        <nav class="pagination">
+          <a class="next" href="/hexblog/2018/02/09/报警系统QuickAlarm之报警执行器的设计与实现/" style="color:#E84D1C">
+            <span class="next-text">Read more</span>
+            <i class="fa fa-fighter-jet"></i>
+            <i class="fa fa-fighter-jet"></i>
+            <i class="fa fa-fighter-jet"></i>
+          </a>
+        </nav>
+        
+        
+
+            
+          
+
+    
+  </article>
+
+        
+            
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          <a class="post-link" href="/hexblog/2018/02/09/报警系统QuickAlarm总纲/">报警系统QuickAlarm总纲</a>
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          <i class="fa fa-calendar"></i>
+          2018-02-09
+          
+              | <i class="fa fa-folder"></i>
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/QuickAlarm/">QuickAlarm</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+        <div class="post-excerpt">
+            
+            
+              
+            
+
+            
+              <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>日常的系统中，报警是不可缺少的一环，目前报警方式很多，最常见的有直接打日志，微信报警，短信报警，邮件报警等；而涉及到报警，一般不可避免的需要提前设置一些基本信息，如报警方式，报警频率，报警用户，开关等；</p>
+<p>另外一个常见的问题是一般采用的是单一的报警方式，比如不管什么类型的报警全部都用短信方式触达，然后就会发现手机时常处于被淹没的状态了，久而久之对报警短信就不会敏感了</p>
+        </div>
+
+        <nav class="pagination">
+          <a class="next" href="/hexblog/2018/02/09/报警系统QuickAlarm总纲/" style="color:#E84D1C">
+            <span class="next-text">Read more</span>
+            <i class="fa fa-fighter-jet"></i>
+            <i class="fa fa-fighter-jet"></i>
+            <i class="fa fa-fighter-jet"></i>
+          </a>
+        </nav>
+        
+        
+
+            
+          
+
+    
+  </article>
+
+        
+            
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
           <a class="post-link" href="/hexblog/2018/02/08/Java可以如何实现文件变动的监听/">Java可以如何实现文件变动的监听</a>
         
       </h1>
@@ -549,192 +742,6 @@
   </article>
 
         
-            
-  <article class="post">
-
-
-
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/hexblog/2018/01/20/Batik渲染png图片异常的bug修复/">Batik渲染png图片异常的bug修复</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          <i class="fa fa-calendar"></i>
-          2018-01-20
-          
-              | <i class="fa fa-folder"></i>
-              
-                - <a href="/hexblog/categories/Java/">Java</a>
-              
-                - <a href="/hexblog/categories/Java/BugFix/">BugFix</a>
-              
-          
-        </span>
-
-      </div>
-    </header>
-
-
-
-    
-        <div class="post-excerpt">
-            
-            
-              
-            
-
-            
-              <h1 id="Batik渲染png图片异常的bug修复"><a href="#Batik渲染png图片异常的bug修复" class="headerlink" title="Batik渲染png图片异常的bug修复"></a>Batik渲染png图片异常的bug修复</h1><p>batik是apache的一个开源项目，可以实现svg的渲染，后端借助它可以比较简单的实现图片渲染，当然和java一贯处理图片不太方便一样，使用起来也有不少坑</p>
-<p>下面记录一个bug的修复过程</p>
-        </div>
-
-        <nav class="pagination">
-          <a class="next" href="/hexblog/2018/01/20/Batik渲染png图片异常的bug修复/" style="color:#E84D1C">
-            <span class="next-text">Read more</span>
-            <i class="fa fa-fighter-jet"></i>
-            <i class="fa fa-fighter-jet"></i>
-            <i class="fa fa-fighter-jet"></i>
-          </a>
-        </nav>
-        
-        
-
-            
-          
-
-    
-  </article>
-
-        
-            
-  <article class="post">
-
-
-
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/hexblog/2018/01/19/SpringMVC支持跨域的几种姿势/">SpringMVC支持跨域的几种姿势</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          <i class="fa fa-calendar"></i>
-          2018-01-19
-          
-              | <i class="fa fa-folder"></i>
-              
-                - <a href="/hexblog/categories/Java/">Java</a>
-              
-                - <a href="/hexblog/categories/Java/Spring/">Spring</a>
-              
-          
-        </span>
-
-      </div>
-    </header>
-
-
-
-    
-        <div class="post-excerpt">
-            
-            
-              
-            
-
-            
-              <h1 id="SpringMVC支持跨域的几种姿势"><a href="#SpringMVC支持跨域的几种姿势" class="headerlink" title="SpringMVC支持跨域的几种姿势"></a>SpringMVC支持跨域的几种姿势</h1><blockquote>
-<p>跨域好像是一个前端的问题，通常是a域名下向b域名的服务发起请求，然后处于浏览器的安全原则，被拦截了，而这种场景，在实际的项目中并不少见，那么作为后端可以怎么去支持跨域的case呢？</p>
-</blockquote>
-<p>后端需要支持跨域，一个是支持jsonp请求；还有一个就是设置responseHeader中crossOrigin等相关参数</p>
-        </div>
-
-        <nav class="pagination">
-          <a class="next" href="/hexblog/2018/01/19/SpringMVC支持跨域的几种姿势/" style="color:#E84D1C">
-            <span class="next-text">Read more</span>
-            <i class="fa fa-fighter-jet"></i>
-            <i class="fa fa-fighter-jet"></i>
-            <i class="fa fa-fighter-jet"></i>
-          </a>
-        </nav>
-        
-        
-
-            
-          
-
-    
-  </article>
-
-        
-            
-  <article class="post">
-
-
-
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/hexblog/2018/01/18/SpringMVC返回图片的几种方式/">SpringMVC返回图片的几种方式</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          <i class="fa fa-calendar"></i>
-          2018-01-18
-          
-              | <i class="fa fa-folder"></i>
-              
-                - <a href="/hexblog/categories/Java/">Java</a>
-              
-                - <a href="/hexblog/categories/Java/Spring/">Spring</a>
-              
-          
-        </span>
-
-      </div>
-    </header>
-
-
-
-    
-        <div class="post-excerpt">
-            
-            
-              
-            
-
-            
-              <h1 id="SpringMVC返回图片的几种方式"><a href="#SpringMVC返回图片的几种方式" class="headerlink" title="SpringMVC返回图片的几种方式"></a>SpringMVC返回图片的几种方式</h1><blockquote>
-<p>后端提供服务，通常返回的json串，但是某些场景下可能需要直接返回二进制流，如一个图片编辑接口，希望直接将图片流返回给前端；如果要求返回base64，此时可以怎么处理？</p>
-</blockquote>
-        </div>
-
-        <nav class="pagination">
-          <a class="next" href="/hexblog/2018/01/18/SpringMVC返回图片的几种方式/" style="color:#E84D1C">
-            <span class="next-text">Read more</span>
-            <i class="fa fa-fighter-jet"></i>
-            <i class="fa fa-fighter-jet"></i>
-            <i class="fa fa-fighter-jet"></i>
-          </a>
-        </nav>
-        
-        
-
-            
-          
-
-    
-  </article>
-
-        
         
   <nav class="pagination">
     
@@ -758,14 +765,14 @@
     
     <section id="tags" class="widget-area widget_categories">
         <h3 class="widget-title">Categories</h3>
-        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Android/">Android</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Android/一封/">一封</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/">Java</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/BugFix/">BugFix</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/JDK/">JDK</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/Tool/">Tool</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Shell/">Shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Android/">Android</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Android/一封/">一封</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/">Java</a><span class="category-list-count">17</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/BugFix/">BugFix</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/JDK/">JDK</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/QuickAlarm/">QuickAlarm</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Java/Tool/">Tool</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/Shell/">Shell</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/redis/">redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
     </section>
 
 
     
     <section id="tags" class="widget-area widget_tags">
         <h3 class="widget-title">Tags</h3>
-        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/File/">File</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/日记/">日记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/一封/">一封</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/RelativeLayout/">RelativeLayout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/CountDownTimer/">CountDownTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Bugfix/">Bugfix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Java/">Java</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/batik/">batik</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Png/">Png</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Gitbook/">Gitbook</a><span class="tag-list-count">1</span></li></ul>
+        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ScheduledExecutorService/">ScheduledExecutorService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/日记/">日记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/一封/">一封</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/RelativeLayout/">RelativeLayout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/CountDownTimer/">CountDownTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Bugfix/">Bugfix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Java/">Java</a><span class="tag-list-count">17</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/batik/">batik</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Png/">Png</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Gitbook/">Gitbook</a><span class="tag-list-count">1</span></li></ul>
     </section>
 
 
