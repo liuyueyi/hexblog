@@ -44,7 +44,7 @@
 <meta property="og:description" content="Java可以如何实现文件变动的监听应用中使用logback作为日志输出组件的话，大部分会去配置 logback.xml 这个文件，而且生产环境下，直接去修改logback.xml文件中的日志级别，不用重启应用就可以生效 那么，这个功能是怎么实现的呢？">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg">
-<meta property="og:updated_time" content="2018-02-08T04:06:14.096Z">
+<meta property="og:updated_time" content="2018-02-09T04:02:04.407Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java可以如何实现文件变动的监听">
 <meta name="twitter:description" content="Java可以如何实现文件变动的监听应用中使用logback作为日志输出组件的话，大部分会去配置 logback.xml 这个文件，而且生产环境下，直接去修改logback.xml文件中的日志级别，不用重启应用就可以生效 那么，这个功能是怎么实现的呢？">
@@ -202,7 +202,7 @@
 <p>为了避免上面这个情况，一个可以做的实现是借助EventBus的异步消息通知来实现，当文件变动之后，发送一个消息即可，然后在具体的重新加载文件内容的方法上，添加一个 <code>@Subscribe</code>注解即可，这样既实现了解耦，也避免了异常导致的服务异常 （如果对这个实现有兴趣的可以评论说明）</p>
 <h2 id="V-其他"><a href="#V-其他" class="headerlink" title="V. 其他"></a>V. 其他</h2><h3 id="参考项目"><a href="#参考项目" class="headerlink" title="参考项目"></a>参考项目</h3><ul>
 <li>项目： <a href="https://github.com/liuyueyi/quick-alarm" target="_blank" rel="noopener">quick-alarm</a></li>
-<li>测试类： <a href="com.hust.hui.alarm.core.test.FileUpTest">FileUpTest.java</a></li>
+<li>测试类： <a href="https://github.com/liuyueyi/quick-alarm/blob/master/core/src/test/java/com/hust/hui/alarm/core/test/FileUpTest.java" target="_blank" rel="noopener">FileUpTest.java</a></li>
 </ul>
 <h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见解不全，如有问题，欢迎批评指正</p>
 <h3 id="扫描关注，java分享"><a href="#扫描关注，java分享" class="headerlink" title="扫描关注，java分享"></a>扫描关注，java分享</h3><p><img src="https://s10.mogucdn.com/mlcdn/c45406/180103_61hi8f7kldkl202fked3k2g0ial1e_640x340.jpg" alt="QrCode"></p>
@@ -226,6 +226,24 @@
 		  
 		</div>
 		
+
+        
+        <div style="text-align:center">
+        <button id="rewardButton" style="color:red;background-color: #f44336;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 30px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;" 
+    disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"><span>打赏</span></button>
+        </div>
+        
+        <div id="QR" class="row" style="display:none;margin-top:20px"><div id="wechat" style="display: inline-block;width:45%;text-align:right;">
+        <a href="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" rel="group"><img id="wechat_qr" src="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" alt="WeChat Pay" style="width:220px;height:220px"></a><p style="text-align:center">微信打赏</p></div>
+        <div id="alipay" style="display: inline-block;width:40%;text-align:center"><a href="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" rel="group" style="width:80%"><img id="alipay_qr" src="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" alt="Alipay" style="width:220px;height:220px"></a><p style="text-align:center">支付宝打赏</p></div></div>
+
 
         
         
