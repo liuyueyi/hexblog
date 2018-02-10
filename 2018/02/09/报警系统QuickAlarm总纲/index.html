@@ -85,6 +85,7 @@
       <header id="masthead"><div class="site-header-inner">
     <h1 class="site-title">
         <a href="/hexblog/." class="logo">Z+ | Blog</a>
+        <span style="margin-left:20px;color:#E02222;font-size:18px">一灰灰个人博客</span>
     </h1>
 
     <nav id="nav-top">
@@ -125,9 +126,11 @@
 
     <header class="post-header">
       <h1 class="post-title">
+        <nav class="pagination" style="max-height:12px">
         
           报警系统QuickAlarm总纲
         
+        </nav>
       </h1>
 
       <div class="post-meta">
@@ -265,22 +268,26 @@
 		</div>
 		
 
-        
-        <div style="text-align:center">
-        <button id="rewardButton" style="color:red;background-color: #f44336;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    padding: 10px 30px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 16px;" 
-    disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"><span>打赏</span></button>
+
+      
+      <div style="text-align:center">
+        <button id="rewardButton" style="color:red;background-color: #f44336;border: none;border-radius: 8px;color: white;padding: 10px 30px;text-align: center;text-decoration: none;font-size: 16px;" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"><span>打赏</span>
+        </button>
+      </div>
+      <div id="QR" class="row" style="display: none; margin-top: 20px;">
+        <div id="wechat" style="display: inline-block;width:44%;margin-left:6%;text-align:center;">
+          <a href="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" rel="group">  <img id="wechat_qr" src="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" alt="WeChat Pay" style="width:80%;height:80%;max-height:200px;max-width:200px">
+          </a>
+          <p style="text-align:center">微信打赏</p>
         </div>
-        
-        <div id="QR" class="row" style="display: none; margin-top: 20px;"><div id="wechat" style="display: inline-block;width:44%;margin-left:6%;text-align:center;">
-        <a href="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" rel="group"><img id="wechat_qr" src="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" alt="WeChat Pay" style="width:80%;height:80%;max-height:200px;max-width:200px"></a><p style="text-align:center">微信打赏</p></div>
-        <div id="alipay" style="display: inline-block;width:44%;text-align:center"><a href="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" rel="group" style="width:80%"><img id="alipay_qr" src="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" alt="Alipay" style="width:80%;height:80%;max-height:200px;max-width:200px"></a><p style="text-align:center">支付宝打赏</p></div></div>
+        <div id="alipay" style="display: inline-block;width:44%;text-align:center">
+          <a href="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" rel="group" style="width:80%">
+            <img id="alipay_qr" src="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" alt="Alipay" style="width:80%;height:80%;max-height:200px;max-width:200px">
+          </a>
+          <p style="text-align:center">支付宝打赏</p>
+        </div>
+      </div>
+      
 
 
         
