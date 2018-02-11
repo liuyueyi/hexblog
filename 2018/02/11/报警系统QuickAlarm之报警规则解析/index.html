@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="4. 报警系统QuickAlarm之报警规则解析"/>
+
+
+
+
+  <meta name="keywords" content="Java,SPI,QuickAlarm," />
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?028d9e53f991d9739ecc7cc42e13c500";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+
+  <link rel="alternate" href="/hexblog/atom.xml" title="Z+ | Blog">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexblog/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://zbang.online/hexblog/2018/02/11/报警系统QuickAlarm之报警规则解析/"/>
+
+
+<meta name="description" content="前面两篇分别说了报警执行器和报警规则的定义及用户扩展加载，接下来就是比较核心的一块了，如何将报警规则和报警执行器关联起来，即当发生报警时，应该call哪一个报警执行器">
+<meta name="keywords" content="Java,SPI,QuickAlarm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4. 报警系统QuickAlarm之报警规则解析">
+<meta property="og:url" content="https://zbang.online/hexblog/2018/02/11/报警系统QuickAlarm之报警规则解析/index.html">
+<meta property="og:site_name" content="Z+ | Blog">
+<meta property="og:description" content="前面两篇分别说了报警执行器和报警规则的定义及用户扩展加载，接下来就是比较核心的一块了，如何将报警规则和报警执行器关联起来，即当发生报警时，应该call哪一个报警执行器">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://s17.mogucdn.com/mlcdn/c45406/180209_74fic633aebgh5dgfhid2fiiggc99_1220x480.png">
+<meta property="og:updated_time" content="2018-02-11T08:12:00.158Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="4. 报警系统QuickAlarm之报警规则解析">
+<meta name="twitter:description" content="前面两篇分别说了报警执行器和报警规则的定义及用户扩展加载，接下来就是比较核心的一块了，如何将报警规则和报警执行器关联起来，即当发生报警时，应该call哪一个报警执行器">
+<meta name="twitter:image" content="https://s17.mogucdn.com/mlcdn/c45406/180209_74fic633aebgh5dgfhid2fiiggc99_1220x480.png">
+
+
+<link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> 4. 报警系统QuickAlarm之报警规则解析 - Z+ | Blog </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/hexblog/." class="logo">Z+ | Blog</a>
+        <span style="margin-left:20px;color:#E02222;font-size:18px">一灰灰个人博客</span>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/hexblog/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+
+
+
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          4. 报警系统QuickAlarm之报警规则解析
+        
+        
+      </h1>
+
+      <div class="post-meta">
+        <span class="post-time">
+          <i class="fa fa-calendar"></i>
+          2018-02-11
+          
+              | <i class="fa fa-folder"></i>
+              
+                - <a href="/hexblog/categories/Java/">Java</a>
+              
+                - <a href="/hexblog/categories/Java/QuickAlarm/">QuickAlarm</a>
+              
+          
+        </span>
+
+      </div>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>前面两篇分别说了报警执行器和报警规则的定义及用户扩展加载，接下来就是比较核心的一块了，如何将报警规则和报警执行器关联起来，即当发生报警时，应该call哪一个报警执行器</p>
+<a id="more"></a>
+<h2 id="I-背景知识点"><a href="#I-背景知识点" class="headerlink" title="I. 背景知识点"></a>I. 背景知识点</h2><h3 id="0-声明"><a href="#0-声明" class="headerlink" title="0. 声明"></a>0. 声明</h3><p>在正式进入之前，有必要额外声明一下，因为目前的v1版本，没有开放报警规则的自定义，也就是说，目前只支持默认的报警规则，所以接下来的主要内容将集中在</p>
+<ul>
+<li>系统默认的报警规则的解析</li>
+<li>即基于报警频率阀值，自动选择报警执行器的规则解析</li>
+</ul>
+<h3 id="1-报警规则"><a href="#1-报警规则" class="headerlink" title="1. 报警规则"></a>1. 报警规则</h3><p>如果对于报警规则，依然不是很清晰的，可以阅读一下<a href="https://liuyueyi.github.io/hexblog/2018/02/09/报警系统QuickAlarm之报警规则的设定与加载/" target="_blank" rel="noopener">《报警系统QuickAlarm之报警规则的设定与加载》</a></p>
+<p>这里简单的进行说明，系统中默认的报警规则结构为：</p>
+<ul>
+<li>key为报警类型（即用户执行报警时，传进来的报警类型参数）</li>
+<li>value为具体报警规则<ul>
+<li>每个报警执行器拥有一个报警频率区间，通过报警频率映射到报警执行器的区间来选择对应的AlarmExecutor，这就是系统定义的报警规则</li>
+</ul>
+</li>
+</ul>
+<h2 id="II-报警规则解析"><a href="#II-报警规则解析" class="headerlink" title="II. 报警规则解析"></a>II. 报警规则解析</h2><p>通过前面的报警规则的简单说明，基本上也可以捞出报警规则的解析原则了</p>
+<ul>
+<li>每种报警类型，对应一个报警规则</li>
+<li>每个报警规则中，可以有多个报警执行器</li>
+<li>每个报警执行器都有一个对应的报警频率的阀值</li>
+<li>根据阀值对所有的报警执行器排序</li>
+<li>计算报警频率，映射到哪个区间，则选择哪个报警执行器</li>
+</ul>
+<p>上面是一个简单的解析规则，当然实际上和这个差不多，但有一些问题需要额外注意</p>
+<ol>
+<li>只想选择一种报警方式，是否可以支持？</li>
+<li>多重报警方式同时调用怎么处理？（如我希望用短信提示说有问题，同时用邮件包含详细的异常堆栈）</li>
+<li>频率限制</li>
+<li>报警类型没有设置报警规则如何处理？</li>
+<li>报警规则中使用了一个未注册的报警执行器会怎样？</li>
+</ol>
+<h3 id="1-实现方案说明"><a href="#1-实现方案说明" class="headerlink" title="1. 实现方案说明"></a>1. 实现方案说明</h3><p>再次将报警规则类拿出来看一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 报警用户</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> List&lt;String&gt; users;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 报警的阀值</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> List&lt;AlarmThreshold&gt; alarmThreshold;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 最小的报警数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> minLimit;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 最大的报警数</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> maxLimit;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 报警类型 &#123;<span class="doctag">@link</span> IExecute#getName()&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> String alarmLevel;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * true 表示当报警超过当前的阀值之后, 将提升报警的程度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">boolean</span> autoIncEmergency;</span><br></pre></td></tr></table></figure>
+<p>针对上面的问题，逐一说明</p>
+<ul>
+<li>首先是 <code>autoIncEmergency</code> 这个参数，如果为true，则表示可以走上面的哪个区间映射的规则；否则就全部走AlarmConfig中默认的报警类型了</li>
+<li>minLimit : 表示发生报警的频率下限值，小于这个值就不会执行具体的报警逻辑</li>
+<li>maxLimit : 最大的报警频率，超过了也不报警（简单的频率控制）</li>
+<li>alarmLevel: 对应的就是具体的报警类型</li>
+<li>alarmThreshold: 这个只有在<code>autoIncEmergency=true</code>时，才有小，也就是我们前面说的不同的报警执行器，根据阀值区间进行排序，开启之后，遍历，判断频率是否在这个区间内，若在，则表示可以选择它了</li>
+<li>如果不存在报警规则，则采用默认的兜底规则</li>
+<li>若报警执行器也不存在，就直接采用系统定义的日志报警执行器</li>
+</ul>
+<h3 id="2-实现"><a href="#2-实现" class="headerlink" title="2. 实现"></a>2. 实现</h3><p>基本上前面已经将整个逻辑都说了，所以实际的编码反而比较清晰了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取具体的报警执行器</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * 1. 未开启严重等级上升时, 直接返回</span></span><br><span class="line"><span class="comment"> * 2. 开启之后, 判断当前的计数 范围</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> alarmConfig 报警配置项, 内部所有的参数都不可能为null</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ExecuteHelper <span class="title">getExecute</span><span class="params">(<span class="keyword">final</span> AlarmConfig alarmConfig, </span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="keyword">int</span> count)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 未达到报警的下限 or 超过报警的上限时</span></span><br><span class="line">    <span class="keyword">if</span> (count &lt; alarmConfig.getMinLimit() || count &gt; alarmConfig.getMaxLimit()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ExecuteHelper(SimpleExecuteFactory.getExecute(NoneExecute.NAME), </span><br><span class="line">        alarmConfig.getUsers());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 未开启报警升级, 直接返回</span></span><br><span class="line">    <span class="keyword">if</span> (!alarmConfig.isAutoIncEmergency()) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ExecuteHelper(SimpleExecuteFactory.</span><br><span class="line">          getExecute(alarmConfig.getAlarmLevel()),</span><br><span class="line">          alarmConfig.getUsers());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 报警等级开启上升之趋势</span></span><br><span class="line">    <span class="comment">// 1. 获取设置的默认等级</span></span><br><span class="line">    <span class="comment">// 2. 判断当前的报警次数, 选择对应的报警类型</span></span><br><span class="line">    <span class="comment">// 3. 选择具体的报警类型</span></span><br><span class="line">    String defaultLevel = alarmConfig.getAlarmLevel();</span><br><span class="line">    String selectLevel = <span class="keyword">null</span>;</span><br><span class="line">    List&lt;String&gt; selectUser = alarmConfig.getUsers();</span><br><span class="line"></span><br><span class="line">    List&lt;AlarmThreshold&gt; list = alarmConfig.getAlarmThreshold();</span><br><span class="line">    <span class="keyword">boolean</span> useNew = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">boolean</span> containDefaultLevel = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">for</span> (AlarmThreshold alarmThreshold : list) &#123;</span><br><span class="line">        <span class="keyword">if</span> (Objects.equals(alarmThreshold.getAlarmLevel(), defaultLevel)) &#123;</span><br><span class="line">            containDefaultLevel = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (AlarmThreshold alarmThreshold : list) &#123;</span><br><span class="line">        <span class="comment">// 表示当前的报警等级已经赶上默认的报警等级了, 所以要选择新的报警类型</span></span><br><span class="line">        <span class="keyword">if</span> (Objects.equals(alarmThreshold.getAlarmLevel(), defaultLevel)) &#123;</span><br><span class="line">            useNew = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (count &lt; alarmThreshold.getThreshold()) &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        selectLevel = alarmThreshold.getAlarmLevel();</span><br><span class="line">        <span class="comment">// 选择新的报警类型时, 需要更新报警用户</span></span><br><span class="line">        selectUser = alarmThreshold.getUsers(); </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 阀值列表中不包含默认报警类型，则根据新的来</span></span><br><span class="line">    <span class="keyword">if</span> (!containDefaultLevel &amp;&amp; selectLevel != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ExecuteHelper(SimpleExecuteFactory.getExecute(selectLevel), selectUser);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 如果阀值列表中包含了默认报警类型, 且已经超过默认阀值</span></span><br><span class="line">    <span class="keyword">if</span> (useNew &amp;&amp; selectLevel != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ExecuteHelper(SimpleExecuteFactory.getExecute(selectLevel), selectUser);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ExecuteHelper(SimpleExecuteFactory.getExecute(defaultLevel), alarmConfig.getUsers());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>具体的实现基本和我们前面分析的一样，但有一个地方需要额外注意</strong></p>
+<ul>
+<li>默认报警阀值，可以直接决定是否需要报警</li>
+<li>因此定义的其他报警方式的阀值，应该在默认的阀值区间内</li>
+<li>当然<code>AlarmThreshold</code>中不包含默认报警方式时，优先选择阀值区间的报警方式</li>
+<li>当然<code>AlarmThreshold</code>中包含默认报警方式时，根据新的规则做处理</li>
+</ul>
+<p>（吐槽：上面这个实现有点绕，后面想办法规避下，搞得不太好理解了）</p>
+<p><strong>另外一个问题就是，上面的实现没有支持可以同时选择多个报警执行器的情况</strong></p>
+<p>因为考虑到后面肯定会对报警规则的定义和解析放开，所以先实现了一个简单的场景，具体的放在后面处理</p>
+<h2 id="III-小结"><a href="#III-小结" class="headerlink" title="III. 小结"></a>III. 小结</h2><p>到这里报警规则和报警执行器之间的解析关系已确定，剩下的东西就简单了，一个维持报警频率计数，一个报警线程池，再加上一个对外接口的封装而言</p>
+<p>基本上，到这里主要的核心逻辑已经完成，小结一下本系统中的核心设计理念 – 一切可自定义（当然目前差得有点远）</p>
+<h3 id="1-报警执行器"><a href="#1-报警执行器" class="headerlink" title="1. 报警执行器"></a>1. 报警执行器</h3><ul>
+<li>通过SPI机制支持用户自定义扩展</li>
+<li>要求 Executor 拥有唯一标识</li>
+<li>因为报警执行器支持扩展，所以Executor的内部实现，完全可以由用户决定</li>
+</ul>
+<h3 id="2-报警规则"><a href="#2-报警规则" class="headerlink" title="2. 报警规则"></a>2. 报警规则</h3><ul>
+<li>目前报警规则只提供默认的基于频率区间的选择方案</li>
+<li>报警规则通过报警执行器的name与之唯一对应，若对应不上，则选择默认执行器</li>
+<li>报警规则的加载同样基于SPI，支持自定义，因此报警规则可以存在任何地方</li>
+<li>报警规则加载器，提供一个报警规则变动的钩子(load()),若采用自定义的加载类，则确保规则变动时，主动回调这个方法</li>
+<li>默认的报警规则加载类，是基于系统的配置文件实现，内部托管了文件的变动更新事件（使用commons-io实现）</li>
+</ul>
+<h2 id="IV-其他"><a href="#IV-其他" class="headerlink" title="IV. 其他"></a>IV. 其他</h2><h3 id="项目-QuickAlarm"><a href="#项目-QuickAlarm" class="headerlink" title="项目: QuickAlarm"></a>项目: QuickAlarm</h3><ul>
+<li>项目地址： <a href="https://github.com/liuyueyi/quick-alarm" target="_blank" rel="noopener">Quick-Alarm</a></li>
+<li>博客地址： <a href="https://liuyueyi.github.io/hexblog/" target="_blank" rel="noopener">小灰灰Blog</a></li>
+</ul>
+<h3 id="个人博客：-Z-blog"><a href="#个人博客：-Z-blog" class="headerlink" title="个人博客： Z+|blog"></a>个人博客： <a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">Z+|blog</a></h3><p>基于hexo + github pages搭建的个人博客，记录所有学习和工作中的博文，欢迎大家前去逛逛</p>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见识有限，如发现bug或者有更好的建议，随时欢迎批评指正，我的微博地址: <a href="https://weibo.com/p/1005052169825577/home" target="_blank" rel="noopener">小灰灰Blog</a></p>
+<h3 id="扫描关注"><a href="#扫描关注" class="headerlink" title="扫描关注"></a>扫描关注</h3><p><img src="https://s17.mogucdn.com/mlcdn/c45406/180209_74fic633aebgh5dgfhid2fiiggc99_1220x480.png" alt="QrCode"></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+		
+		<div class="post-tags">
+		  
+      <i class="fa fa-tags"></i>
+			<a href="/hexblog/tags/Java/">Java</a>
+		  
+      <i class="fa fa-tags"></i>
+			<a href="/hexblog/tags/SPI/">SPI</a>
+		  
+      <i class="fa fa-tags"></i>
+			<a href="/hexblog/tags/QuickAlarm/">QuickAlarm</a>
+		  
+		</div>
+		
+
+
+      
+      <div style="text-align:center">
+        <button id="rewardButton" style="color:red;background-color: #f44336;border: none;border-radius: 8px;color: white;padding: 10px 30px;text-align: center;text-decoration: none;font-size: 16px;" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"><span>打赏</span>
+        </button>
+      </div>
+      <div id="QR" class="row" style="display: none; margin-top: 20px;">
+        <div id="wechat" style="display: inline-block;width:44%;margin-left:6%;text-align:center;">
+          <a href="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" rel="group">  <img id="wechat_qr" src="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" alt="WeChat Pay" style="width:80%;height:80%;max-height:200px;max-width:200px">
+          </a>
+          <p style="text-align:center">微信打赏</p>
+        </div>
+        <div id="alipay" style="display: inline-block;width:44%;text-align:center">
+          <a href="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" rel="group" style="width:80%">
+            <img id="alipay_qr" src="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" alt="Alipay" style="width:80%;height:80%;max-height:200px;max-width:200px">
+          </a>
+          <p style="text-align:center">支付宝打赏</p>
+        </div>
+      </div>
+      
+
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/hexblog/2018/02/09/报警系统QuickAlarm之报警规则的设定与加载/">
+        <span class="next-text nav-default">3. 报警系统QuickAlarm之报警规则的设定与加载</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2017 -
+    
+    2018
+    <span class="footer-author">YiHui.</span>
+    <span class="power-by">
+        由 <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a> 强力驱动
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/hexblog/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+
+<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <script type="text/javascript" src="/hexblog/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/hexblog/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
