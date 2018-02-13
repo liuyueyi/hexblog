@@ -321,21 +321,28 @@ body {
   padding: 2px;
 }
 #sidebar .widget .tagcloud .tag-list-item {
-  padding: 0 4px 0 0;
+  margin-left: 4px;
+  padding: 0 4px 0 4px;
   font-size: 13px;
-  border: 1px solid #fff;
   display: inline-block;
-  background: #fff;
+  text-align: center;
+  border: 1px solid #40a9ff;
+  background: #f7f7f7;
+  border-radius: 20px;
+  color: #40a9ff;
+}
+#sidebar .widget .tagcloud .tag-list-item:before {
+  class: 'fa fa-gui';
+}
+#sidebar .widget .tagcloud .tag-list-item a {
+  color: #40a9ff;
 }
 #sidebar .widget .tagcloud .tag-list-count {
-  padding-left: 3px;
-  color: #40759b;
-}
-#sidebar .widget .tagcloud .tag-list-count:before {
-  content: "(";
-}
-#sidebar .widget .tagcloud .tag-list-count:after {
-  content: ")";
+  vertical-align: super;
+  font-size: 0.6em;
+  opacity: 0.6;
+  top: -0.5em;
+  color: #b51439;
 }
 #sidebar .widget ul,
 #sidebar .widget ol {
