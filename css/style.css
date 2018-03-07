@@ -228,6 +228,19 @@ body {
 .content_container {
   padding-right: 40px;
 }
+.save_img {
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 18px;
+  padding-left: 5px;
+  padding-right: 5px;
+  line-height: 18px;
+  margin: 3px;
+  border-bottom: 1px solid #e5e5e5;
+  display: inline-block;
+  text-align: center;
+  color: #40a9ff;
+}
 /* header */
 #header {
   text-align: left;
