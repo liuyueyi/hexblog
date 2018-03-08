@@ -389,6 +389,19 @@ body {
 #sidebar .widget .category-list-child {
   padding-left: 20px;
 }
+#sidebar .widget .archive-list-count {
+  vertical-align: super;
+  font-size: 0.6em;
+  opacity: 0.6;
+  top: -0.5em;
+  color: #b51439;
+}
+#sidebar .widget .archive-list-count:before {
+  content: ' (';
+}
+#sidebar .widget .archive-list-count:after {
+  content: ')';
+}
 #sidebar .search-pla {
   display: block;
   height: 52px;
@@ -615,6 +628,25 @@ body {
   border-bottom: 1px solid #40759b;
 }
 .post .comment-count span:after {
+  content: '';
+  display: none;
+}
+.post .saveImg-icon {
+  float: right;
+  display: inline-block;
+  text-indent: 0.15em;
+}
+.post .saveImg-icon:before {
+  vertical-align: bottom;
+  font-family: "iconfont" !important;
+  content: "\e009";
+  padding-right: 0.3em;
+}
+.post .saveImg-icon:hover {
+  color: #40759b;
+  border-bottom: 1px solid #40759b;
+}
+.post .saveImg-icon span:after {
   content: '';
   display: none;
 }
