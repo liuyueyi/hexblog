@@ -1102,6 +1102,65 @@ body {
   content: "\e00e";
   padding-left: 0.3em;
 }
+/* toast弹窗 */
+.bw-toast {
+  box-sizing: border-box;
+  position: fixed;
+  right: calc(50% - 200px);
+  height: 36px;
+  width: 400px;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  padding: 10px 10px;
+  background-color: rgba(0,0,0,0.45);
+  transition: all 0.1s;
+  margin: 0.5em;
+  text-align: center;
+}
+/* render */
+#render {
+  z-index: 10;
+  position: fixed;
+  right: 2em;
+  bottom: 2em;
+}
+#render .rInput {
+  display: inline-block;
+}
+#render #choose-id {
+  display: block;
+  width: 100%;
+  font-size: 1em;
+  line-height: 20px;
+  resize: none;
+  font-family: inherit;
+  color: inherit;
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0.3em;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #44779c;
+  border-image: initial;
+  border-radius: 4px 0px 0px 4px;
+}
+#render .rSendBtn {
+  display: inline-block;
+}
+#render #rImgBtn {
+  background-color: #44779c;
+  color: #fff;
+  width: 80px;
+  height: 30px;
+  display: inline-block;
+  text-align: center;
+  line-height: 30px;
+  cursor: pointer;
+  z-index: 9999999;
+  border-radius: 0px 4px 4px 0px;
+}
 /* back-to-top */
 #totop {
   position: fixed;
