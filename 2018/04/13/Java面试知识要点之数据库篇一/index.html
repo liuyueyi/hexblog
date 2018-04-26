@@ -1,0 +1,426 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="google-site-verification" content="PR6S72-htn-N1oDn9ENMcwi5niLKk0uebDzmRS-oivs"><meta property="wb:webmaster" content="320520520031fedd"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="好好学习，努力搬砖，天天吃草"><title>Java面试知识要点之数据库篇一 | 一灰灰Blog</title><link rel="stylesheet" type="text/css" href="//fonts.neworld.org/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/hexblog/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/hexblog/favicon.ico"><link rel="bookmark" href="/hexblog/favicon.ico"><link rel="apple-touch-icon" href="/hexblog/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/hexblog/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java面试知识要点之数据库篇一</h1><a id="logo" href="/hexblog/.">一灰灰Blog</a><p style="font-size:18px" class="description">一灰灰的个人博客网站</p></div><div id="nav-menu"><a href="/hexblog/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/hexblog/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/hexblog/about/"><i class="fa fa-user"> 关于</i></a><a href="http://liuyueyi.gitee.io/zweb/#/index"><i class="fa fa-rss"> 网站</i></a><a href="http://liuyueyi.gitee.io/mweb/#/"><i class="fa fa-you"> 古诗选</i></a><hr><br><div id="nav-sub-menu"><a href="/hexblog/categories/技术"><i class="fa fa-right"> 技术</i></a><a href="/hexblog/categories/工作"><i class="fa fa-right"> 工作</i></a><a href="/hexblog/categories/生活"><i class="fa fa-right"> 生活</i></a><a href="/hexblog/categories/杂记"><i class="fa fa-right"> 杂记</i></a></div></div>
+<div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/hexblog/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">Java面试知识要点之数据库篇一 <span style="font-size:14px;color:#40759b;font-style:italic;border-bottom: 1px solid #e5e5e5;">&gt;&gt;&gt; by 一灰灰Blog</span></h1><div class="post-meta"><a href="/hexblog/2018/04/13/Java面试知识要点之数据库篇一/#saveImg" class="saveImg-icon"></a><a href="/hexblog/2018/04/13/Java面试知识要点之数据库篇一/#comments" class="comment-count"></a><p><span class="date">Apr 13, 2018</span><span><a href="/hexblog/categories/工作/" class="category">工作</a><a href="/hexblog/categories/工作/面试/" class="category">面试</a><a href="/hexblog/categories/工作/面试/DB/" class="category">DB</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><h1 id="Java知识要点汇总之数据库"><a href="#Java知识要点汇总之数据库" class="headerlink" title="Java知识要点汇总之数据库"></a>Java知识要点汇总之数据库</h1><p>针对网上的一些题目，根据自己的理解进行作答，从而加深理解</p>
+<a id="more"></a>
+<h2 id="I-问题列表"><a href="#I-问题列表" class="headerlink" title="I. 问题列表"></a>I. 问题列表</h2><p>问题1： </p>
+<ul>
+<li>事务四大特性（ACID）原子性、一致性、隔离性、持久性？</li>
+<li>事务的并发？事务隔离级别，每个级别会引发什么问题，MySQL默认是哪个级别？</li>
+<li>MySQL常见的三种存储引擎（InnoDB、MyISAM、MEMORY）的区别？</li>
+<li>MySQL的MyISAM与InnoDB两种存储引擎在，事务、锁级别，各自的适用场景？</li>
+<li>查询语句不同元素（where、jion、limit、group by、having等等）执行先后顺序？</li>
+<li>什么是临时表，临时表什么时候删除?</li>
+<li>MySQL B+Tree索引和Hash索引的区别？</li>
+<li>聚集索引和非聚集索引区别？</li>
+<li>有哪些锁（乐观锁悲观锁），select 时怎么加排它锁？</li>
+<li>非关系型数据库和关系型数据库区别，优势比较？</li>
+<li>数据库三范式，根据某个场景设计数据表？</li>
+<li>数据库的读写分离、主从复制，主从复制分析的 7 个问题？</li>
+<li>使用explain优化sql和索引？</li>
+<li>MySQL慢查询怎么解决？</li>
+<li>什么是 内连接、外连接、交叉连接、笛卡尔积等？</li>
+<li>mysql都有什么锁，死锁判定原理和具体场景，死锁怎么解决？</li>
+<li>varchar和char的使用场景？</li>
+<li>mysql 高并发环境解决方案？</li>
+<li>数据库崩溃时事务的恢复机制（REDO日志和UNDO日志）？</li>
+</ul>
+<p>问题2：</p>
+<ul>
+<li>常见的数据库优化手段</li>
+<li>索引的优缺点，什么字段上建立索引</li>
+<li>数据库连接池。</li>
+<li>durid的常用配置。</li>
+<li>MySQL 索引使用的注意事项</li>
+<li>说说反模式设计</li>
+<li>说说分库与分表设计</li>
+<li>分库与分表带来的分布式困境与应对之策</li>
+<li>说说 SQL 优化之道</li>
+<li>MySQL 遇到的死锁问题</li>
+<li>存储引擎的 InnoDB 与 MyISAM</li>
+<li>数据库索引的原理</li>
+<li>为什么要用 B-tree</li>
+<li>聚集索引与非聚集索引的区别</li>
+<li>limit 20000 加载很慢怎么解决</li>
+<li>选择合适的分布式主键方案</li>
+<li>选择合适的数据存储方案</li>
+<li>ObjectId 规则</li>
+<li>聊聊 MongoDB 使用场景</li>
+<li>倒排索引</li>
+<li>聊聊 ElasticSearch 使用场景</li>
+</ul>
+<h2 id="II-问题解答"><a href="#II-问题解答" class="headerlink" title="II. 问题解答"></a>II. 问题解答</h2><h3 id="1-事务四大特性（ACID）原子性、一致性、隔离性、持久性？"><a href="#1-事务四大特性（ACID）原子性、一致性、隔离性、持久性？" class="headerlink" title="1. 事务四大特性（ACID）原子性、一致性、隔离性、持久性？"></a>1. 事务四大特性（ACID）原子性、一致性、隔离性、持久性？</h3><p>首先这个问题需要了解什么是事务，然后才能更好的分析四个特性</p>
+<p><strong>事务</strong></p>
+<ul>
+<li>简单来说就是一组sql，要么全部执行，要么全部不执行</li>
+</ul>
+<p><strong>原子性</strong></p>
+<ul>
+<li>一个事务要么保证其中的操作要么全部执行，要么全部不执行</li>
+</ul>
+<p><strong>一致性</strong></p>
+<ul>
+<li>要求数据从一个一致性状态达到另一个一致性状态</li>
+</ul>
+<p><strong>隔离性</strong></p>
+<ul>
+<li>一个事务未执行完毕，通常保证其他的session无法获取这个事务执行结果</li>
+</ul>
+<p><strong>持久性</strong></p>
+<ul>
+<li>一旦事务提交，那么这个结果就会保存下来，即便系统崩溃，数据也不会丢失</li>
+</ul>
+<hr>
+<h3 id="2-事务的并发？事务隔离级别，每个级别会引发什么问题，MySQL默认是哪个级别？"><a href="#2-事务的并发？事务隔离级别，每个级别会引发什么问题，MySQL默认是哪个级别？" class="headerlink" title="2. 事务的并发？事务隔离级别，每个级别会引发什么问题，MySQL默认是哪个级别？"></a>2. 事务的并发？事务隔离级别，每个级别会引发什么问题，MySQL默认是哪个级别？</h3><p>事务的并发主要指在分布式环境下多个事务同时执行的情况，事务隔离级别有四个，mysql默认为RR级别</p>
+<h4 id="a-read-uncommited（RU）"><a href="#a-read-uncommited（RU）" class="headerlink" title="a. read uncommited（RU）"></a>a. read uncommited（RU）</h4><p>未提交读，最低的一个隔离级别，一个事务可以获取到另一个事务未提交的结果</p>
+<ul>
+<li>可能导致脏读</li>
+</ul>
+<h4 id="b-read-commited-RC"><a href="#b-read-commited-RC" class="headerlink" title="b. read commited (RC)"></a>b. read commited (RC)</h4><p>提交读， 确保一个事务如果没有全部执行完毕，另外的事务无法获取这个事务的执行结果</p>
+<ul>
+<li>解决了脏读</li>
+<li>可能出现幻读</li>
+</ul>
+<h4 id="c-repeatable-read-RR"><a href="#c-repeatable-read-RR" class="headerlink" title="c. repeatable read (RR)"></a>c. repeatable read (RR)</h4><p>可重复读，这里就需要理解什么是重复读了</p>
+<p>重复读：指一个事务的执行过程中，一个sql不管执行多少次，返回的都是相同的结果</p>
+<p>RR与RC的区别就是解决了幻读的问题，也就是说一个事务T1在执行过程中，如果另一个事务T2修改了相同的数据DataA，对T1而言，不管查询多少次DataA，获取到的结果都是一样的（也就是之前的那一条记录）</p>
+<h4 id="d-serializable"><a href="#d-serializable" class="headerlink" title="d. serializable"></a>d. serializable</h4><p>最强的隔离级别，通过给事务中每次读取的行加读锁，写加写锁，保证不出现幻读，但是会导致大量的锁竞争</p>
+<hr>
+<h3 id="3-MySQL常见的三种存储引擎（InnoDB、MyISAM、MEMORY）的区别？"><a href="#3-MySQL常见的三种存储引擎（InnoDB、MyISAM、MEMORY）的区别？" class="headerlink" title="3. MySQL常见的三种存储引擎（InnoDB、MyISAM、MEMORY）的区别？"></a>3. MySQL常见的三种存储引擎（InnoDB、MyISAM、MEMORY）的区别？</h3><p>当前mysql的默认引擎为InnoDB， 相比较与MyISAM 而言，最主要的就是支持事务、行锁，在删除、更新、插入场景较多的情况下，由于MyISAM，而仅查询较多的场景下，后者更优</p>
+<p>两者对比可参考：<a href="https://blog.csdn.net/lc0817/article/details/52757194" target="_blank" rel="noopener">MySQL存储引擎中的MyISAM和InnoDB区别详解</a></p>
+<table>
+<thead>
+<tr>
+<th>对比</th>
+<th>innoDB</th>
+<th>myisam</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>存储结构</td>
+<td>表结构，索引，数据存于同一数据文件，有上限</td>
+<td>三个文件，表结构，数据文件，索引文件，无上限</td>
+</tr>
+<tr>
+<td>存储空间</td>
+<td>需要更多的内存和存储，它会在主内存中建立其专用的缓冲池用于高速缓冲数据和索引</td>
+<td>可被压缩，存储空间较小</td>
+</tr>
+<tr>
+<td>移植性，备份恢复</td>
+<td>基于binlog或sqldump进行移植，数据量大时，不太方便</td>
+<td>直接拷贝文件即可</td>
+</tr>
+<tr>
+<td>事务特性</td>
+<td>支持</td>
+<td>不支持 </td>
+</tr>
+<tr>
+<td>自增特性</td>
+<td>自增必然加索引，唯一性要求，联合索引时，要求放最前面</td>
+<td>可建立联合索引，不必须是首位</td>
+</tr>
+<tr>
+<td>表锁</td>
+<td>行锁表锁页锁</td>
+<td>只支持表锁</td>
+</tr>
+<tr>
+<td>主键</td>
+<td>没指定时，默认生成一个</td>
+<td>允许不设置主键和索引 </td>
+</tr>
+<tr>
+<td>表行</td>
+<td>需要全表扫描</td>
+<td>记录了总行数，直接返回 </td>
+</tr>
+<tr>
+<td>curd</td>
+<td>更新删除场景下更优</td>
+<td>读取和插入场景下更优</td>
+</tr>
+<tr>
+<td>外健</td>
+<td>支持</td>
+<td>不支持</td>
+</tr>
+</tbody>
+</table>
+<p><strong>说明</strong></p>
+<ul>
+<li>两者的底层存储结构都是B+树，最明显的区别是InnoDB的聚簇索引叶子节点就是数据，而MyIsam的叶子节点为数据的地址</li>
+<li>现在基本上都是用innodb，myISAM已经不太适用了，主要是MyISAM的全表锁，读写串行问题，并发效率锁表，效率低</li>
+</ul>
+<p><strong>MEMORY存储引擎</strong></p>
+<p>它使用存储在内存中的内容来创建表，而且数据全部放在内存中，默认使用hash索引，因此在查询时效率更高，当然也就存在hash索引本身的缺陷了</p>
+<p>此外就是数据在内存中，安全性不高，机器down掉之后，数据都丢了，基本上不怎么用</p>
+<p>真有这种需求场景，个人感觉redis/memcache可能更加合适</p>
+<h3 id="4-MySQL的MyISAM与InnoDB两种存储引擎在，事务、锁级别，各自的适用场景？"><a href="#4-MySQL的MyISAM与InnoDB两种存储引擎在，事务、锁级别，各自的适用场景？" class="headerlink" title="4. MySQL的MyISAM与InnoDB两种存储引擎在，事务、锁级别，各自的适用场景？"></a>4. MySQL的MyISAM与InnoDB两种存储引擎在，事务、锁级别，各自的适用场景？</h3><p>见上面的分析，简单而言</p>
+<ul>
+<li>InnoDB: 支持事务，支持行锁，表锁</li>
+<li>MyISAM: 不支持事务，只支持表锁</li>
+</ul>
+<h3 id="5-查询语句不同元素（where、jion、limit、group-by、having等等）执行先后顺序？"><a href="#5-查询语句不同元素（where、jion、limit、group-by、having等等）执行先后顺序？" class="headerlink" title="5. 查询语句不同元素（where、jion、limit、group by、having等等）执行先后顺序？"></a>5. 查询语句不同元素（where、jion、limit、group by、having等等）执行先后顺序？</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> xxx <span class="keyword">group</span> <span class="keyword">by</span> xx <span class="keyword">having</span> xxx <span class="keyword">order</span> <span class="keyword">by</span> xxx <span class="keyword">limit</span> xxx</span><br></pre></td></tr></table></figure>
+<ul>
+<li>from：选中查询的表</li>
+<li>where：过滤条件</li>
+<li>group by：对上面过滤条件的数据进行分组</li>
+<li>having: 对分组的数据进行过滤</li>
+<li>order by：对上面的结果进行排序</li>
+<li>limit：对排序的结果，截取对应分页的指定个数数据</li>
+</ul>
+<p>from后面的表关联，是自右向左解析 而where条件的解析顺序是自下而上的。</p>
+<h3 id="6-什么是临时表，临时表什么时候删除"><a href="#6-什么是临时表，临时表什么时候删除" class="headerlink" title="6. 什么是临时表，临时表什么时候删除?"></a>6. 什么是临时表，临时表什么时候删除?</h3><p>临时表只在当前连接可见，当连接关闭后，mysql会自动删除并释放空间</p>
+<p>创建方式，类似创建表，只是需要加一个 <code>TEMPORARY</code> 关键字</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TEMPORARY</span> <span class="keyword">TABLE</span> tmp_table (</span><br><span class="line">	<span class="keyword">NAME</span> <span class="built_in">VARCHAR</span> (<span class="number">10</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">	<span class="keyword">time</span> <span class="built_in">date</span> <span class="keyword">NOT</span> <span class="literal">NULL</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> tmp_table;</span><br></pre></td></tr></table></figure>
+<p>也可以手动删除</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">temporary</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">exists</span> tmp_table;</span><br></pre></td></tr></table></figure>
+<h3 id="7-MySQL-B-Tree索引和Hash索引的区别？"><a href="#7-MySQL-B-Tree索引和Hash索引的区别？" class="headerlink" title="7. MySQL B+Tree索引和Hash索引的区别？"></a>7. MySQL B+Tree索引和Hash索引的区别？</h3><p>首先从命名上可以很容易区分一点，一个是通过二叉树遍历来查询数据；一个则是基于hash值进行定位，所以有一些很明显的区别</p>
+<p><strong>hash索引</strong></p>
+<ul>
+<li>hash索引只能用于精确查询，也就是支持 =, in, &lt;&gt;； 不能使用范围查询</li>
+<li>hash索引不支持排序</li>
+<li>hash索引对组合索引的情况，不支持部分索引的列进行查询，因为hash值的计算会用到所有完整的列进行计算，只用其中部分列，无法计算获得hash值</li>
+<li>hash碰撞比较频繁时，性能退化严重；</li>
+</ul>
+<p><strong>B+Tree索引</strong></p>
+<ul>
+<li>支持范围查询，支持 =, &gt;, &lt;, &lt;&gt;, in, not in 等各种查询条件</li>
+<li>支持排序，支持分组，支持部分索引</li>
+<li>非叶子节点存放key和下一层的地址，数据存放在叶子节点上，且叶子与叶子之间维持一个链表</li>
+</ul>
+<p>mysql中，只有heap/memory引擎显示支持hash索引，常见的innoDO采用的b+树索引，他们两的区别比较明显</p>
+<ul>
+<li>hash索引更加适合精确的查询; B+树除了精确查询之外，对于范围查询，模糊查询(like语句)，部分索引的情况更加友好</li>
+<li>hash索引不支持排序的场景；b+树因为叶子节点的链表结构，支持排序</li>
+<li>hash索引在hash碰撞严重时，性能就会有波动；而B+树则相对较稳</li>
+</ul>
+<h3 id="8-聚集索引和非聚集索引区别？"><a href="#8-聚集索引和非聚集索引区别？" class="headerlink" title="8. 聚集索引和非聚集索引区别？"></a>8. 聚集索引和非聚集索引区别？</h3><p>聚集索引和非聚集索引的根本区别是表记录的排列顺序和与索引的排列顺序是否一致</p>
+<p><strong>聚集索引</strong></p>
+<ul>
+<li>聚集索引表记录的排列顺序和索引的排列顺序一致，所以查询效率快，只要找到第一个索引值记录，其余就连续性的记录在物理也一样连续存放。</li>
+<li>聚集索引对应的缺点就是修改慢，因为为了保证表中记录的物理和索引顺序一致，在记录插入的时候，会对数据页重新排序</li>
+</ul>
+<p><strong>非聚集索引</strong></p>
+<ul>
+<li>非聚集索引制定了表中记录的逻辑顺序，但是记录的物理和索引不一定一致，</li>
+<li>两种索引都采用B+树结构，非聚集索引的叶子层并不和实际数据页相重叠，而采用叶子层包含一个指向表中的记录在数据页中的指针方式。</li>
+<li>非聚集索引层次多，不会造成数据重排。</li>
+</ul>
+<h3 id="9-有哪些锁（乐观锁悲观锁），select-时怎么加排它锁？"><a href="#9-有哪些锁（乐观锁悲观锁），select-时怎么加排它锁？" class="headerlink" title="9. 有哪些锁（乐观锁悲观锁），select 时怎么加排它锁？"></a>9. 有哪些锁（乐观锁悲观锁），select 时怎么加排它锁？</h3><p>数据库中我们常说的有读锁，写锁，行锁，表锁，gaplock, next key lock</p>
+<ul>
+<li>读锁：读锁允许多个连接同时读取相同的资源，但有写资源的链接则会被阻塞</li>
+<li>写锁：同一时刻，只允许有一个连接访问和操作资源</li>
+<li>行锁：表示锁住的是某些行记录</li>
+<li>表锁：表示整个表都被锁住了，不允许请求这个表上的读锁和写锁</li>
+<li>gaplock: 主要是为了解决重复读问题，不允许插入满足相同条件的数据</li>
+<li>next key lock: 锁住一个范围，如 (<code>where id&gt;10 and id&lt;20</code>，则不允许插入id在10,20之间的行)</li>
+</ul>
+<p>mysql的mvvc策略，使常见的<code>select * from table</code>为拷贝读，不加锁</p>
+<ul>
+<li><code>select * from table lock in share mode;</code>  加读锁</li>
+<li><code>select * from table for update;</code> 加写锁</li>
+</ul>
+<p>下面回到题中说的乐观锁和悲观所</p>
+<p><strong>乐观锁</strong></p>
+<p>在多线程中经常出现这个概念，特别是CAS，DB中的乐观锁也差不多这个概念，其表示先尝试去执行事务，在执行过程中，发现有其他的事务也修改了数据，则事务回滚</p>
+<p>简单来说，就是不加锁，先尝试去操作，如果操作成功，则over；如果失败，则回滚</p>
+<p>一般会借助一个version来区分当前事务操作的数据版本，并将version作为sql的定位条件；每次修改，version都会+1</p>
+<p>因此，当本事务在执行修改时，如果其他事务修改了数据，则db中version值将不会匹配当前事务的查询条件，因此修改失败，此时需要在业务逻辑中，触发回滚</p>
+<p><strong>悲观锁</strong></p>
+<p>悲观锁，则表示在操作之前，先获取锁，那么其他的事务操作同样的数据，就会有锁的竞争，一般使用 <code>select for update</code>来使用悲观锁</p>
+<p><strong>对比</strong></p>
+<p>乐观锁和悲观锁是实际业务开放中常见的两个技术手段，其中悲观所mysql层面上支持了，而乐观锁一般是由业务方自己来实现；根据不同的应用场景进行选择</p>
+<ul>
+<li>响应速度：如果需要非常高的响应速度，显然乐观锁更加合适（因为不加锁，要么成功，要么回滚）</li>
+<li>冲突频率：如果冲突频率较高，则推荐使用悲观锁（冲突太高，那么乐观锁的失败率就高，需要业务上做较多的重试逻辑）</li>
+<li>重试代价：重试代价如果特别大，则采用悲观锁</li>
+</ul>
+<h3 id="10-非关系型数据库和关系型数据库区别，优势比较？"><a href="#10-非关系型数据库和关系型数据库区别，优势比较？" class="headerlink" title="10. 非关系型数据库和关系型数据库区别，优势比较？"></a>10. 非关系型数据库和关系型数据库区别，优势比较？</h3><p><strong>非关系型数据库</strong></p>
+<ul>
+<li>kv键值结构</li>
+<li>扩展性方便</li>
+<li>性能高</li>
+</ul>
+<p><strong>关系型数据库</strong></p>
+<ul>
+<li>支持复杂查询</li>
+<li>支持事务特性</li>
+</ul>
+<h3 id="11-数据库三范式，根据某个场景设计数据表？"><a href="#11-数据库三范式，根据某个场景设计数据表？" class="headerlink" title="11. 数据库三范式，根据某个场景设计数据表？"></a>11. 数据库三范式，根据某个场景设计数据表？</h3><p>三范式，实际生产环境中，并不一定严格按照这个来做，简单的说一下三个定义</p>
+<ul>
+<li>第一范式：每个元素是最小不可分割的</li>
+<li>第二范式：每列数据都与主键有关联</li>
+<li>第三范式：每列与主键是直接关联的，而非间接关联</li>
+</ul>
+<p>谈一下个人理解，在实际的生产环境中，打破三个范式的场景还是比较多的，需知跨表的查询肯定是没有单表的查询性能优越，因此一些表中经常会冗余一些可能并不是直接关联的数据</p>
+<p><strong>实例分析</strong></p>
+<p>如电商的一个评价表的设计：</p>
+<p>评价信息的显示中，经常会显示评价对应的订单快照信息（购买时的商品sku信息，如尺码，颜色等），而这些信息又都是不可修改的</p>
+<ul>
+<li>按照第三范式，订单快照肯定是与评价非直接关联的，所以不应该丢在表中，而是在展示时，额外从订单表中查询；但在实际环境中，更常见是将快照直接冗余到评价表中，这样就避免了跨表查询</li>
+</ul>
+<p>评价的表记录中，我们可能会关系提交评价时的一些附属信息（如评价的渠道，app版本，设备id等），而这些信息单独的放在一张表中，成本又太大；如果在评价表中创建很多这样的列，又得不偿失（因为这些数据可能随时增加or减少）；因此一个手段是：</p>
+<ul>
+<li>在评价表中，创建一个字段 extraInfo, 设置为text(或varchar)类型，将所有的附属信息按照某种结构（如json）塞进去</li>
+<li>上面这种方式在实际生产环境中比较常见，多这么个字段，以后随着业务发展，需要新增数据类型时，也避免了频繁的新增列了</li>
+<li>明显不符合第一范式的要求</li>
+</ul>
+<h3 id="12-数据库的读写分离、主从复制，主从复制分析的-7-个问题？"><a href="#12-数据库的读写分离、主从复制，主从复制分析的-7-个问题？" class="headerlink" title="12. 数据库的读写分离、主从复制，主从复制分析的 7 个问题？"></a>12. 数据库的读写分离、主从复制，主从复制分析的 7 个问题？</h3><p>一般来讲，单机上的数据库，再怎么牛也有个性能瓶颈，所以常见的是搞多个数据库，搭建一个集群，其中一个数据库设置为主库，其他的设置为从库</p>
+<p>一般的使用场景：</p>
+<ul>
+<li>数据库的新增，更新 &gt;&gt; 操作主库  &gt;&gt;&gt;&gt; 主库更新之后，同步到从库</li>
+<li>数据库的查询 &gt;&gt; 查询从库</li>
+</ul>
+<h4 id="a-问题1：master的写操作，slaves被动的进行一样的操作，保持数据一致性，那么slave是否可以主动的进行写操作？"><a href="#a-问题1：master的写操作，slaves被动的进行一样的操作，保持数据一致性，那么slave是否可以主动的进行写操作？" class="headerlink" title="a. 问题1：master的写操作，slaves被动的进行一样的操作，保持数据一致性，那么slave是否可以主动的进行写操作？"></a>a. 问题1：master的写操作，slaves被动的进行一样的操作，保持数据一致性，那么slave是否可以主动的进行写操作？</h4><p>slave库通常不进行写操作，不然就会出现不一致的问题；简单来讲就是写操作是主库；读操作是从库</p>
+<h4 id="b-问题2：主从复制中，可以有N个slave-可是这些slave又不能进行写操作，要他们干嘛？"><a href="#b-问题2：主从复制中，可以有N个slave-可是这些slave又不能进行写操作，要他们干嘛？" class="headerlink" title="b. 问题2：主从复制中，可以有N个slave,可是这些slave又不能进行写操作，要他们干嘛？"></a>b. 问题2：主从复制中，可以有N个slave,可是这些slave又不能进行写操作，要他们干嘛？</h4><p>实际的环境中，读的操作往往是远大于写操作的，读写分离，可以较少锁开销竞争导致性能开销</p>
+<p>其次，如果master跪了，还可以选择一个slave重新设置为master，这样就减轻故障严重性</p>
+<h4 id="c-问题3：主从复制中有master-slave1-slave2-…等等这么多MySQL数据库，那比如一个JAVA-WEB应用到底应该连接哪个数据库"><a href="#c-问题3：主从复制中有master-slave1-slave2-…等等这么多MySQL数据库，那比如一个JAVA-WEB应用到底应该连接哪个数据库" class="headerlink" title="c. 问题3：主从复制中有master,slave1,slave2,…等等这么多MySQL数据库，那比如一个JAVA WEB应用到底应该连接哪个数据库"></a>c. 问题3：主从复制中有master,slave1,slave2,…等等这么多MySQL数据库，那比如一个JAVA WEB应用到底应该连接哪个数据库</h4><p>很常见的一个问题，到底选择哪个呢？</p>
+<p>就是个负载均衡的问题，传说中的路由就上线了，常见的是轮询、hash映射、权重等手段</p>
+<h4 id="d-问题4：如果MySQL-proxy-direct-master他们中的某些挂了怎么办？"><a href="#d-问题4：如果MySQL-proxy-direct-master他们中的某些挂了怎么办？" class="headerlink" title="d. 问题4：如果MySQL proxy , direct , master他们中的某些挂了怎么办？"></a>d. 问题4：如果MySQL proxy , direct , master他们中的某些挂了怎么办？</h4><p>设置备份</p>
+<h4 id="e-问题5：当master的二进制日志每产生一个事件，都需要发往slave，如果我们有N个slave-那是发N次，还是只发一次？"><a href="#e-问题5：当master的二进制日志每产生一个事件，都需要发往slave，如果我们有N个slave-那是发N次，还是只发一次？" class="headerlink" title="e. 问题5：当master的二进制日志每产生一个事件，都需要发往slave，如果我们有N个slave,那是发N次，还是只发一次？"></a>e. 问题5：当master的二进制日志每产生一个事件，都需要发往slave，如果我们有N个slave,那是发N次，还是只发一次？</h4><p>发n次，分别发给其他的n个slave</p>
+<p>一个问题随知而来，对master的性能负担加重了，所以实际的场景中，再选择一个slaveA，master发送的事件只发一次，给slaveA，然后由slaveA发送n-1次给剩余的slave，这样就可以减少master的性能开销了</p>
+<h4 id="f-问题6：当一个select发往MySQL-proxy，可能这次由slave-2响应，下次由slave-3响应，这样的话，就无法利用查询缓存了。"><a href="#f-问题6：当一个select发往MySQL-proxy，可能这次由slave-2响应，下次由slave-3响应，这样的话，就无法利用查询缓存了。" class="headerlink" title="f. 问题6：当一个select发往MySQL proxy，可能这次由slave-2响应，下次由slave-3响应，这样的话，就无法利用查询缓存了。"></a>f. 问题6：当一个select发往MySQL proxy，可能这次由slave-2响应，下次由slave-3响应，这样的话，就无法利用查询缓存了。</h4><p>应该找一个共享式的缓存，比如memcache来解决。将slave-2,slave-3,…这些查询的结果都缓存至mamcache中。</p>
+<h4 id="g-问题7：随着应用的日益增长，读操作很多，我们可以扩展slave，但是如果master满足不了写操作了，怎么办呢"><a href="#g-问题7：随着应用的日益增长，读操作很多，我们可以扩展slave，但是如果master满足不了写操作了，怎么办呢" class="headerlink" title="g. 问题7：随着应用的日益增长，读操作很多，我们可以扩展slave，但是如果master满足不了写操作了，怎么办呢"></a>g. 问题7：随着应用的日益增长，读操作很多，我们可以扩展slave，但是如果master满足不了写操作了，怎么办呢</h4><p>其实很多问题都是可以通过堆钱堆机器来解决，一个非常好的解决方案：</p>
+<ul>
+<li>机械硬盘换固态硬盘 （性能会极大提高，缺点就是贵）</li>
+</ul>
+<p>言归正传，当数据量非常大时，分库分表是最好的选择</p>
+<ul>
+<li>水平分表</li>
+<li>垂直分表</li>
+</ul>
+<h3 id="13-使用explain优化sql和索引？"><a href="#13-使用explain优化sql和索引？" class="headerlink" title="13. 使用explain优化sql和索引？"></a>13. 使用explain优化sql和索引？</h3><p>explain 关键词，可以很好的用于查询sql是否走索引，对慢sql的分析有很好的帮助，用法也比较简单，在sql最前面加上explain即可</p>
+<h3 id="14-MySQL慢查询怎么解决？"><a href="#14-MySQL慢查询怎么解决？" class="headerlink" title="14. MySQL慢查询怎么解决？"></a>14. MySQL慢查询怎么解决？</h3><ul>
+<li>slow_query_log 慢查询开启状态。</li>
+<li>slow_query_log_file 慢查询日志存放的位置（这个目录需要MySQL的运行帐号的可写权限，一般设置为MySQL的数据存放目录）。</li>
+<li>long_query_time 查询超过多少秒才记录。</li>
+</ul>
+<p>实际上要具体问题具体分析，常见的优化手段</p>
+<ul>
+<li>没走索引时看是否可以有必要加索引</li>
+<li>优化sql写法，比如 !=, or, 范围查询，排序等，看实际场景是否能优化</li>
+</ul>
+<h3 id="15-什么是-内连接、外连接、交叉连接、笛卡尔积等？"><a href="#15-什么是-内连接、外连接、交叉连接、笛卡尔积等？" class="headerlink" title="15. 什么是 内连接、外连接、交叉连接、笛卡尔积等？"></a>15. 什么是 内连接、外连接、交叉连接、笛卡尔积等？</h3><p>主要是指跨表查询时，怎么返回数据的场景</p>
+<ul>
+<li>内连接：只返回满足条件的数据</li>
+<li>左外链接：返回左表所有的数据 + 右表中满足条件的数据</li>
+<li>右外链接：返回坐标符合条件的数据 + 右表中所有的数据</li>
+<li>全外链接：包含左、右两个表的全部行，不管另外一边的表中是否存在与它们匹配的行。</li>
+<li>交叉链接：生成笛卡尔积－它不使用任何匹配或者选取条件，而是直接将一个数据源中的每个行与另一个数据源的每个行都一一匹配</li>
+</ul>
+<p>一个实际的case进行分析，两张表 userA, userB，两者数据如下</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">select * from userA;</span><br><span class="line">+----+-----------+----------+---------+</span><br><span class="line">| id | username  | password | address |</span><br><span class="line">+----+-----------+----------+---------+</span><br><span class="line">|  4 | 一灰      | 1        | 杭州    |</span><br><span class="line">|  5 | 一灰灰    | 2        | 西湖    |</span><br><span class="line">+----+-----------+----------+---------+</span><br><span class="line"></span><br><span class="line">select * from userB;</span><br><span class="line">+----+-----------+------+</span><br><span class="line">| id | uname     | <span class="built_in">pwd</span>  |</span><br><span class="line">+----+-----------+------+</span><br><span class="line">|  4 | 一灰灰    | a    |</span><br><span class="line">|  5 | 二灰      | b    |</span><br><span class="line">+----+-----------+------+</span><br></pre></td></tr></table></figure>
+<h4 id="a-内连接方式"><a href="#a-内连接方式" class="headerlink" title="a. 内连接方式"></a>a. 内连接方式</h4><p>– 语法：<code>select 表1 inner join 表2 on 查询条件</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> userA a <span class="keyword">inner</span> <span class="keyword">join</span> userB b <span class="keyword">on</span> a.username=b.uname;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 输出</span></span><br><span class="line"><span class="comment">-- +----+-----------+----------+---------+----+-----------+------+</span></span><br><span class="line"><span class="comment">-- | id | username  | password | address | id | uname     | pwd  |</span></span><br><span class="line"><span class="comment">-- +----+-----------+----------+---------+----+-----------+------+</span></span><br><span class="line"><span class="comment">-- |  5 | 一灰灰    | 2        | 西湖    |  4 | 一灰灰    | a    |</span></span><br><span class="line"><span class="comment">-- +----+-----------+----------+---------+----+-----------+------+</span></span><br></pre></td></tr></table></figure>
+<h4 id="b-左外连接"><a href="#b-左外连接" class="headerlink" title="b. 左外连接"></a>b. 左外连接</h4><p>– 语法：<code>select 表1 left join 表2 on 查询条件</code></p>
+<p>注意下面的返回，左表的数据都返回了</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> userA a <span class="keyword">left</span> <span class="keyword">join</span> userB b <span class="keyword">on</span> a.username=b.uname;</span><br><span class="line"></span><br><span class="line">+<span class="comment">----+-----------+----------+---------+------+-----------+------+</span></span><br><span class="line">| id | username  | password | address | id   | uname     | pwd  |</span><br><span class="line">+<span class="comment">----+-----------+----------+---------+------+-----------+------+</span></span><br><span class="line">|  5 | 一灰灰    | 2        | 西湖    |    4 | 一灰灰    | a    |</span><br><span class="line">|  4 | 一灰      | 1        | 杭州    | NULL | NULL      | NULL |</span><br><span class="line">+<span class="comment">----+-----------+----------+---------+------+-----------+------+</span></span><br></pre></td></tr></table></figure>
+<h4 id="c-右外链接"><a href="#c-右外链接" class="headerlink" title="c. 右外链接"></a>c. 右外链接</h4><p>– 语法：<code>select 表1 right join 表2 on 查询条件</code></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> userA a <span class="keyword">right</span> <span class="keyword">join</span> userB b <span class="keyword">on</span> a.username=b.uname;</span><br><span class="line"></span><br><span class="line">+<span class="comment">------+-----------+----------+---------+----+-----------+------+</span></span><br><span class="line">| id   | username  | password | address | id | uname     | pwd  |</span><br><span class="line">+<span class="comment">------+-----------+----------+---------+----+-----------+------+</span></span><br><span class="line">|    5 | 一灰灰    | 2        | 西湖    |  4 | 一灰灰    | a    |</span><br><span class="line">| NULL | NULL      | NULL     | NULL    |  5 | 二灰      | b    |</span><br><span class="line">+<span class="comment">------+-----------+----------+---------+----+-----------+------+</span></span><br></pre></td></tr></table></figure>
+<h4 id="d-全外链接"><a href="#d-全外链接" class="headerlink" title="d. 全外链接"></a>d. 全外链接</h4><p>– 语法：<code>select 表1 full join 表2 on 查询条件</code></p>
+<p>mysql不支持full join，会抛语法错误，可以借助left join 和 right join 来实现</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> userA a <span class="keyword">left</span> <span class="keyword">join</span> userB b <span class="keyword">on</span> a.username=b.uname  </span><br><span class="line"><span class="keyword">union</span> </span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> userA a <span class="keyword">right</span> <span class="keyword">join</span> userB b <span class="keyword">on</span> a.username=b.uname;</span><br><span class="line"></span><br><span class="line">+<span class="comment">------+-----------+----------+---------+------+-----------+------+</span></span><br><span class="line">| id   | username  | password | address | id   | uname     | pwd  |</span><br><span class="line">+<span class="comment">------+-----------+----------+---------+------+-----------+------+</span></span><br><span class="line">|    5 | 一灰灰    | 2        | 西湖    |    4 | 一灰灰    | a    |</span><br><span class="line">|    4 | 一灰      | 1        | 杭州    | NULL | NULL      | NULL |</span><br><span class="line">| NULL | NULL      | NULL     | NULL    |    5 | 二灰      | b    |</span><br><span class="line">+<span class="comment">------+-----------+----------+---------+------+-----------+------+</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 因为union会去重，所以更体检的是直接使用union all， 然后业务中去重</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> userA a <span class="keyword">left</span> <span class="keyword">join</span> userB b <span class="keyword">on</span> a.username=b.uname  </span><br><span class="line"><span class="keyword">union</span> all </span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> userA a <span class="keyword">right</span> <span class="keyword">join</span> userB b <span class="keyword">on</span> a.username=b.uname;</span><br><span class="line"></span><br><span class="line">+<span class="comment">------+-----------+----------+---------+------+-----------+------+</span></span><br><span class="line">| id   | username  | password | address | id   | uname     | pwd  |</span><br><span class="line">+<span class="comment">------+-----------+----------+---------+------+-----------+------+</span></span><br><span class="line">|    5 | 一灰灰    | 2        | 西湖    |    4 | 一灰灰    | a    |</span><br><span class="line">|    4 | 一灰      | 1        | 杭州    | NULL | NULL      | NULL |</span><br><span class="line">|    5 | 一灰灰    | 2        | 西湖    |    4 | 一灰灰    | a    |</span><br><span class="line">| NULL | NULL      | NULL     | NULL    |    5 | 二灰      | b    |</span><br><span class="line">+<span class="comment">------+-----------+----------+---------+------+-----------+------+</span></span><br></pre></td></tr></table></figure>
+<h4 id="e-交叉连接（笛卡儿积）"><a href="#e-交叉连接（笛卡儿积）" class="headerlink" title="e. 交叉连接（笛卡儿积）"></a>e. 交叉连接（笛卡儿积）</h4><p>– 语法： cross join </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> userA a <span class="keyword">cross</span> <span class="keyword">join</span> userB b;</span><br><span class="line"></span><br><span class="line">+<span class="comment">----+-----------+----------+---------+----+-----------+------+</span></span><br><span class="line">| id | username  | password | address | id | uname     | pwd  |</span><br><span class="line">+<span class="comment">----+-----------+----------+---------+----+-----------+------+</span></span><br><span class="line">|  4 | 一灰      | 1        | 杭州    |  4 | 一灰灰    | a    |</span><br><span class="line">|  5 | 一灰灰    | 2        | 西湖    |  4 | 一灰灰    | a    |</span><br><span class="line">|  4 | 一灰      | 1        | 杭州    |  5 | 二灰      | b    |</span><br><span class="line">|  5 | 一灰灰    | 2        | 西湖    |  5 | 二灰      | b    |</span><br><span class="line">+<span class="comment">----+-----------+----------+---------+----+-----------+------+</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 带上比较条件时, 不等则可以有笛卡儿积的组合，如果相等，则就和内连接</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> userA a <span class="keyword">cross</span> <span class="keyword">join</span> userB b <span class="keyword">on</span> a.username&lt;&gt;b.uname;</span><br><span class="line">+<span class="comment">----+-----------+----------+---------+----+-----------+------+</span></span><br><span class="line">| id | username  | password | address | id | uname     | pwd  |</span><br><span class="line">+<span class="comment">----+-----------+----------+---------+----+-----------+------+</span></span><br><span class="line">|  4 | 一灰      | 1        | 杭州    |  4 | 一灰灰    | a    |</span><br><span class="line">|  4 | 一灰      | 1        | 杭州    |  5 | 二灰      | b    |</span><br><span class="line">|  5 | 一灰灰    | 2        | 西湖    |  5 | 二灰      | b    |</span><br></pre></td></tr></table></figure>
+<h3 id="16-mysql都有什么锁，死锁判定原理和具体场景，死锁怎么解决？"><a href="#16-mysql都有什么锁，死锁判定原理和具体场景，死锁怎么解决？" class="headerlink" title="16. mysql都有什么锁，死锁判定原理和具体场景，死锁怎么解决？"></a>16. mysql都有什么锁，死锁判定原理和具体场景，死锁怎么解决？</h3><ul>
+<li>页锁<ul>
+<li>开销和加锁时间界于表锁和行锁之间；会出现死锁；锁定粒度界于表锁和行锁之间，并发度一般 </li>
+</ul>
+</li>
+<li>表锁<ul>
+<li>不会出现死锁</li>
+<li>场景：表结构修改，非索引的全表写</li>
+</ul>
+</li>
+<li>行锁<ul>
+<li>会出现死锁</li>
+<li>场景：某些具体列的写操作</li>
+</ul>
+</li>
+</ul>
+<h3 id="17-varchar和char的使用场景？"><a href="#17-varchar和char的使用场景？" class="headerlink" title="17. varchar和char的使用场景？"></a>17. varchar和char的使用场景？</h3><p>char的长度是不可变的，而varchar的长度是可变的</p>
+<ul>
+<li>char的存取数度还是要比varchar要快得多，因为其长度固定，方便程序的存储与查找</li>
+<li>char长度固定，因此实际塞入数据小于指定长度时，会由空格填充；获取数据时，会trim掉空格</li>
+<li>char的存储方式是：对英文字符（ASCII）占用1个字节，对一个汉字占用两个字节。</li>
+<li>varchar的存储方式是：对每个英文字符占用2个字节，汉字也占用2个字节。</li>
+</ul>
+<h3 id="18-mysql-高并发环境解决方案？"><a href="#18-mysql-高并发环境解决方案？" class="headerlink" title="18. mysql 高并发环境解决方案？"></a>18. mysql 高并发环境解决方案？</h3><p>MySQL 高并发环境解决方案  分库  分表  分布式  增加二级缓存。。。。。<br>需求分析：互联网单位 每天大量数据读取，写入，并发性高。</p>
+<ul>
+<li>现有解决方式：水平分库分表，由单点分布到多点数据库中，从而降低单点数据库压力。</li>
+<li>集群方案：解决DB宕机带来的单点DB不能访问问题。</li>
+<li>读写分离策略：极大限度提高了应用中Read数据的速度和并发量。无法解决高写入压力。</li>
+</ul>
+<h3 id="19-数据库崩溃时事务的恢复机制（REDO日志和UNDO日志）？"><a href="#19-数据库崩溃时事务的恢复机制（REDO日志和UNDO日志）？" class="headerlink" title="19. 数据库崩溃时事务的恢复机制（REDO日志和UNDO日志）？"></a>19. 数据库崩溃时事务的恢复机制（REDO日志和UNDO日志）？</h3><h4 id="a-undo-log"><a href="#a-undo-log" class="headerlink" title="a. undo log"></a>a. undo log</h4><p>在操作数据之前，将记录之前的数据持久化在undo log中，然后进行修改，如果出现问题，则根据undo log中记录的备份数据，恢复到事务开始之前的状态</p>
+<p>流程演示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">A.事务开始.</span><br><span class="line">B.记录A=1到undo log.</span><br><span class="line">C.修改A=3.</span><br><span class="line">D.记录B=2到undo log.</span><br><span class="line">E.修改B=4.</span><br><span class="line">F.将undo log写到磁盘。</span><br><span class="line">G.将数据写到磁盘。</span><br><span class="line">H.事务提交</span><br></pre></td></tr></table></figure>
+<p>重点步骤：</p>
+<ul>
+<li>在操作数据之前，记录备份数据到undo log（否则拿不到之前的数据）</li>
+<li>在事务提交之前，undo log持久化，接着数据更新到数据库</li>
+<li>出现错误或者接受到rollback命令时，根据undo log进行备份恢复</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>要去在undo log持久化之前，并没有直接操作数据库中的记录，相反操作的只是内存中拷贝，避免在undo log没有持久化时，系统崩溃导致无法恢复</li>
+<li>会出现大量的磁盘io</li>
+</ul>
+<h4 id="b-redo-log"><a href="#b-redo-log" class="headerlink" title="b. redo log"></a>b. redo log</h4><p>相比较与undo log记录之前的记录，redo log记录新数据的备份，在数据提交之前，持久化redo log即可，不需要写到db</p>
+<p>流程演示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">A.事务开始.</span><br><span class="line">B.记录A=1到undo log.</span><br><span class="line">C.修改A=3.</span><br><span class="line">D.记录A=3到redo log.</span><br><span class="line">E.记录B=2到undo log.</span><br><span class="line">F.修改B=4.</span><br><span class="line">G.记录B=4到redo log.</span><br><span class="line">H.将redo log写入磁盘。</span><br><span class="line">I.事务提交</span><br></pre></td></tr></table></figure>
+<p>分析：</p>
+<ul>
+<li>事务提交后，数据更新db成功前崩溃，可以通过redo log更新新的数据</li>
+<li>在redo log写入磁盘之前崩溃，即没有提交事务就崩溃了，也就不需要恢复（认为这次是不合法的数据操作，此时DB中数据也没有变动）</li>
+</ul>
+<p>缺点：</p>
+<p>同样有io写磁盘的问题</p>
+<h3 id="20-问题II见下一篇"><a href="#20-问题II见下一篇" class="headerlink" title="20. 问题II见下一篇"></a>20. 问题II见下一篇</h3><h2 id="III-其他"><a href="#III-其他" class="headerlink" title="III. 其他"></a>III. 其他</h2><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="https://juejin.im/post/5ab50d9b6fb9a028c812cc78?utm_source=gold_browser_extension" target="_blank" rel="noopener">20个数据库常见面试题讲解</a></li>
+<li><a href="https://juejin.im/post/5a9ca0d6518825555c1d1acd#heading-3" target="_blank" rel="noopener">数据库面试题(开发者必看)</a></li>
+</ul>
+<h3 id="相关博文"><a href="#相关博文" class="headerlink" title="相关博文"></a>相关博文</h3><ul>
+<li><a href="https://liuyueyi.github.io/hexblog/2018/03/22/mysql基本语法学习小结/" target="_blank" rel="noopener">mysql基本语法学习小结</a></li>
+<li><a href="https://liuyueyi.github.io/hexblog/2018/03/22/mysql之索引的工作机制/" target="_blank" rel="noopener">mysql之索引的工作机制</a></li>
+<li><a href="https://liuyueyi.github.io/hexblog/2018/03/23/mysql之锁与事务详解/" target="_blank" rel="noopener">mysql之锁与事务详解</a></li>
+</ul>
+<h3 id="个人博客：-Z-blog"><a href="#个人博客：-Z-blog" class="headerlink" title="个人博客： Z+|blog"></a>个人博客： <a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">Z+|blog</a></h3><p>基于hexo + github pages搭建的个人博客，记录所有学习和工作中的博文，欢迎大家前去逛逛</p>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见识有限，如发现bug或者有更好的建议，随时欢迎批评指正</p>
+<ul>
+<li>微博地址: <a href="https://weibo.com/p/1005052169825577/home" target="_blank" rel="noopener">小灰灰Blog</a></li>
+<li>QQ： 一灰灰/3302797840</li>
+</ul>
+<h3 id="扫描关注"><a href="#扫描关注" class="headerlink" title="扫描关注"></a>扫描关注</h3><p><img src="https://raw.githubusercontent.com/liuyueyi/Source/master/img/info/blogInfoV2.png" alt="QrCode"></p>
+</div><div class="tags"><a href="/hexblog/tags/面试/">面试</a><a href="/hexblog/tags/知识点汇总/">知识点汇总</a><a href="/hexblog/tags/数据库/">数据库</a></div><div style="text-align:center"><br><button style="color:red;background-color: #f44336;border: none;border-radius: 8px;color: white;padding: 10px 30px;text-align: center;text-decoration: none;font-size: 16px;" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">打赏</button><br><span style="display: block;color: #9d9d9d;font: 14px/2 &amp;quot;Microsoft Yahei&amp;quot;">如果觉得我的文章对您有帮助，请随意打赏。</span><br><div id="QR" style="display: none; margin-top: 20px;" class="row"><div id="wechat" style="display: inline-block;width:44%;margin-left:6%;text-align:center;"><a href="javascript:void(0)"><img src="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" alt="WeChat Pay" style="width:80%;height:80%;max-height:200px;max-width:200px"></a><p style="text-align:center">微信打赏</p></div><div id="alipay" style="display: inline-block;width:44%;text-align:center"><a href="javascript:void(0)"><img src="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" alt="Alipay" style="width:80%;height:80%;max-height:200px;max-width:200px"></a><p style="text-align:center">支付宝打赏</p></div></div></div><div class="article-footer-copyright"><url><li>版权声明：本文由<b> 一灰灰 </b><span>发表于</span><a href="/hexblog/"> 一灰灰Blog </a></li><li>转载声明：自由转载-非商用-非衍生-保持署名，非商业转载请注明作者及出处，商业转载请联系作者本人。</li><li id="blogTitleCp">文章标题：<a style="word-wrap:break-word">Java面试知识要点之数据库篇一</a></li><li>文章链接：<a id="blogLink" style="word-wrap:break-word"></a><script>var blogLink = decodeURI(window.location.href);
+var doc = document.getElementById('blogLink');
+doc.setAttribute("href", blogLink);
+doc.innerHTML=blogLink;</script></li></url></div><div class="post-share"><div><script src="https://s3.mogucdn.com/mlcdn/c45406/1520387600580_dom-to-image.min.js" charset="utf-8"></script><script>var url;
+console.log('start--->',(new Date()).valueOf());
+domtoimage.toPng(document.getElementsByClassName('layout-l')[0])
+    .then(function (dataUrl) {
+        url = dataUrl;
+        console.log('end--->',(new Date()).valueOf());
+     })
+    .catch(function (error) {});
+function link() {
+    var title = document.getElementById('blogTitleCp').children[0].innerText;
+    console.log("blog title: ", title);
+    window.open().document.write('<html><head><title>'+ title + '</title></head><body><div style=\'text-align:center\' ><a download="一灰灰Blog博文_' + title + '.png" href="'+url+'"><img title="点击下载博文图：' + title + '" src="' + url + '" /></a></div></body></html>');
+}</script><span style="float:center;font-size:20px;font-weight:solid;color:gray">渲染：</span><a id="saveImg" href="javascript:void(0)" onclick="link()" class="save_img">保存图片</a></div><div id="share" class="soshm social-share"><span style="float:center;font-size:20px;font-weight:solid;color:gray">分享：</span></div></div><div class="post-nav"><a href="/hexblog/2018/04/13/生产环境分库分表的实际操作全记录/" class="pre">生产环境分库分表的实际操作全记录</a><a href="/hexblog/2018/04/11/Mybatis框架学习之使用篇二：标签语法/" class="next">Mybatis框架学习之使用篇二：标签语法</a></div><div id="comments"><div id="lv-container" data-id="city" data-uid="MTAyMC8zNDY0OC8xMTE4NQ=="></div></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei"> 文章目录</i><a title="点击展开或隐藏分类" href="javascript:void(0)" onclick="showOrHide('toc', 'toc-expand', 'none')"><span id="toc-expand" style="font-size:12px;color:red"> 点击收起 </span></a></div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Java知识要点汇总之数据库"><span class="toc-text">Java知识要点汇总之数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#I-问题列表"><span class="toc-text">I. 问题列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#II-问题解答"><span class="toc-text">II. 问题解答</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-事务四大特性（ACID）原子性、一致性、隔离性、持久性？"><span class="toc-text">1. 事务四大特性（ACID）原子性、一致性、隔离性、持久性？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-事务的并发？事务隔离级别，每个级别会引发什么问题，MySQL默认是哪个级别？"><span class="toc-text">2. 事务的并发？事务隔离级别，每个级别会引发什么问题，MySQL默认是哪个级别？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-read-uncommited（RU）"><span class="toc-text">a. read uncommited（RU）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-read-commited-RC"><span class="toc-text">b. read commited (RC)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-repeatable-read-RR"><span class="toc-text">c. repeatable read (RR)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#d-serializable"><span class="toc-text">d. serializable</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-MySQL常见的三种存储引擎（InnoDB、MyISAM、MEMORY）的区别？"><span class="toc-text">3. MySQL常见的三种存储引擎（InnoDB、MyISAM、MEMORY）的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-MySQL的MyISAM与InnoDB两种存储引擎在，事务、锁级别，各自的适用场景？"><span class="toc-text">4. MySQL的MyISAM与InnoDB两种存储引擎在，事务、锁级别，各自的适用场景？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-查询语句不同元素（where、jion、limit、group-by、having等等）执行先后顺序？"><span class="toc-text">5. 查询语句不同元素（where、jion、limit、group by、having等等）执行先后顺序？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-什么是临时表，临时表什么时候删除"><span class="toc-text">6. 什么是临时表，临时表什么时候删除?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-MySQL-B-Tree索引和Hash索引的区别？"><span class="toc-text">7. MySQL B+Tree索引和Hash索引的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-聚集索引和非聚集索引区别？"><span class="toc-text">8. 聚集索引和非聚集索引区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-有哪些锁（乐观锁悲观锁），select-时怎么加排它锁？"><span class="toc-text">9. 有哪些锁（乐观锁悲观锁），select 时怎么加排它锁？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-非关系型数据库和关系型数据库区别，优势比较？"><span class="toc-text">10. 非关系型数据库和关系型数据库区别，优势比较？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-数据库三范式，根据某个场景设计数据表？"><span class="toc-text">11. 数据库三范式，根据某个场景设计数据表？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-数据库的读写分离、主从复制，主从复制分析的-7-个问题？"><span class="toc-text">12. 数据库的读写分离、主从复制，主从复制分析的 7 个问题？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-问题1：master的写操作，slaves被动的进行一样的操作，保持数据一致性，那么slave是否可以主动的进行写操作？"><span class="toc-text">a. 问题1：master的写操作，slaves被动的进行一样的操作，保持数据一致性，那么slave是否可以主动的进行写操作？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-问题2：主从复制中，可以有N个slave-可是这些slave又不能进行写操作，要他们干嘛？"><span class="toc-text">b. 问题2：主从复制中，可以有N个slave,可是这些slave又不能进行写操作，要他们干嘛？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-问题3：主从复制中有master-slave1-slave2-…等等这么多MySQL数据库，那比如一个JAVA-WEB应用到底应该连接哪个数据库"><span class="toc-text">c. 问题3：主从复制中有master,slave1,slave2,…等等这么多MySQL数据库，那比如一个JAVA WEB应用到底应该连接哪个数据库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#d-问题4：如果MySQL-proxy-direct-master他们中的某些挂了怎么办？"><span class="toc-text">d. 问题4：如果MySQL proxy , direct , master他们中的某些挂了怎么办？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#e-问题5：当master的二进制日志每产生一个事件，都需要发往slave，如果我们有N个slave-那是发N次，还是只发一次？"><span class="toc-text">e. 问题5：当master的二进制日志每产生一个事件，都需要发往slave，如果我们有N个slave,那是发N次，还是只发一次？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#f-问题6：当一个select发往MySQL-proxy，可能这次由slave-2响应，下次由slave-3响应，这样的话，就无法利用查询缓存了。"><span class="toc-text">f. 问题6：当一个select发往MySQL proxy，可能这次由slave-2响应，下次由slave-3响应，这样的话，就无法利用查询缓存了。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#g-问题7：随着应用的日益增长，读操作很多，我们可以扩展slave，但是如果master满足不了写操作了，怎么办呢"><span class="toc-text">g. 问题7：随着应用的日益增长，读操作很多，我们可以扩展slave，但是如果master满足不了写操作了，怎么办呢</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-使用explain优化sql和索引？"><span class="toc-text">13. 使用explain优化sql和索引？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#14-MySQL慢查询怎么解决？"><span class="toc-text">14. MySQL慢查询怎么解决？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#15-什么是-内连接、外连接、交叉连接、笛卡尔积等？"><span class="toc-text">15. 什么是 内连接、外连接、交叉连接、笛卡尔积等？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-内连接方式"><span class="toc-text">a. 内连接方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-左外连接"><span class="toc-text">b. 左外连接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#c-右外链接"><span class="toc-text">c. 右外链接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#d-全外链接"><span class="toc-text">d. 全外链接</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#e-交叉连接（笛卡儿积）"><span class="toc-text">e. 交叉连接（笛卡儿积）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#16-mysql都有什么锁，死锁判定原理和具体场景，死锁怎么解决？"><span class="toc-text">16. mysql都有什么锁，死锁判定原理和具体场景，死锁怎么解决？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#17-varchar和char的使用场景？"><span class="toc-text">17. varchar和char的使用场景？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#18-mysql-高并发环境解决方案？"><span class="toc-text">18. mysql 高并发环境解决方案？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#19-数据库崩溃时事务的恢复机制（REDO日志和UNDO日志）？"><span class="toc-text">19. 数据库崩溃时事务的恢复机制（REDO日志和UNDO日志）？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#a-undo-log"><span class="toc-text">a. undo log</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#b-redo-log"><span class="toc-text">b. redo log</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#20-问题II见下一篇"><span class="toc-text">20. 问题II见下一篇</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#III-其他"><span class="toc-text">III. 其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#参考"><span class="toc-text">参考</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#相关博文"><span class="toc-text">相关博文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人博客：-Z-blog"><span class="toc-text">个人博客： Z+|blog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#声明"><span class="toc-text">声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扫描关注"><span class="toc-text">扫描关注</span></a></li></ol></li></ol></li></ol></div><div class="widget"><div class="widget-title"><a href="/hexblog/about/"><i class="fa fa-user"> 一灰灰Blog</i></a><a title="点击展开或收起条目" href="javascript:void(0)" onclick="showOrHide('info-list', 'info-list-expand', 'none')"><span id="info-list-expand" style="font-size:12px;color:red"> 点击收起 </span></a></div><ul class="post-list info-list"><li style="text-align:center"><img src="//s3.mogucdn.com/mlcdn/c45406/170419_637cgff527i8k9k8h512iaf36cdia_600x600.jpg" style="max-width:80px;radius:80px"/><p style="text-align:center">好好学习，天天搬砖</p><hr style="height:0.1px;border:none;border-top:1px dashed #0066CC;"/></li><li class="post-list-item"><a href="mailto:bangzewu@126.com" title="126邮箱" class="post-list-link"><i class="fa fa-email">  bangzewu@126.com</i></a></li><li class="post-list-item"><a href="//github.com/liuyueyi" title="Git主页" target="_blank" class="post-list-link"><i class="fa fa-github">  github.com/liuyueyi</i></a></li><li class="post-list-item"><a href="" title="QQ" class="post-list-link"><i class="fa fa-you">  QQ:3302797840</i></a></li><li class="post-list-item"><a href="//weibo.com/p/1005052169825577/home" title="微博主页" target="_blank" class="post-list-link"><i class="fa fa-weibo">  微博:小灰灰Blog</i></a></li><li class="post-list-item"><i class="fa fa-weixin">  微信公众号</i></li><li style="text-align:center" class="post-list-item"><img src="https://s10.mogucdn.com/mlcdn/c45406/171229_1cgld3igbelkbc70cd8af1j3809kb_150x150.jpg"/></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章(10)</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/26/Java面试知识要点之Redis篇/">Java面试知识要点之Redis篇</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/24/redis安装/">redis安装</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/24/redis环境搭建/">redis安装</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/18/18年4月18日离杭小记/">18年4月18日离杭小记</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/17/Java-借助ImageMagic实现图片编辑服务/">Java 借助ImageMagic实现图片编辑服务</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/16/CSS图片点击拷贝/">CSS图片点击拷贝</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/13/Java面试知识要点之数据库篇二/">Java面试知识要点之数据库篇二</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/13/生产环境分库分表的实际操作全记录/">生产环境分库分表的实际操作全记录</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/13/Java面试知识要点之数据库篇一/">Java面试知识要点之数据库篇一</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/11/Mybatis框架学习之使用篇二：标签语法/">Mybatis框架学习之使用篇二：标签语法</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类(74)</i><a title="点击展开或隐藏分类" href="javascript:void(0)" onclick="showOrHide('category-list-child', 'category-expand', 'block')"><span id="category-expand" style="font-size:12px;color:red"> 点击展开 </span></a></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/">工作</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/分库分表/">分库分表</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/技术尝鲜/">技术尝鲜</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/面试/">面试</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/面试/DB/">DB</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/面试/Java/">Java</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/面试/缓存/">缓存</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/">技术</a><span class="category-list-count">53</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Android/">Android</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Android/一封/">一封</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/BugFix/">BugFix</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/BugFix/Java/">Java</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/BugFix/Java/Image/">Image</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/DB/">DB</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/DB/Mybatis/">Mybatis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/DB/Mysql/">Mysql</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/">Java</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/IO/">IO</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/JDK/">JDK</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/JVM/">JVM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/JavaWeb/">JavaWeb</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/并发/">并发</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Quick系列项目/">Quick系列项目</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Quick系列项目/QuickAlarm/">QuickAlarm</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Quick系列项目/QuickMedia/">QuickMedia</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Quick系列项目/QuickSpi/">QuickSpi</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/">Shell</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/Git/">Git</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/Git/Maven/">Maven</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/Nginx/">Nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/环境搭建/">环境搭建</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/前端/">前端</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/前端/Chrome/">Chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/前端/Css/">Css</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/前端/Jquery/">Jquery</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/杂记/">杂记</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/杂记/idea/">idea</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/杂记/吐槽/">吐槽</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/杂记/小工具/">小工具</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/生活/">生活</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/生活/随笔/">随笔</a><span class="category-list-count">2</span></li></ul></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签墙(74)</i><a title="点击展开或隐藏分类" href="javascript:void(0)" onclick="showOrHide('tagcloud', 'tag-expand', 'none')"><span id="tag-expand" style="font-size:12px;color:red"> 点击收起 </span></a></div><div class="tagcloud"><!--!= tagcloud({min_font: 15, max_font: 15, amount: 100, orderby: 'count'})--><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Initialize/">Initialize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/面试/">面试</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/知识点汇总/">知识点汇总</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/数据库/">数据库</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/JVM/">JVM</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/容器/">容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/多线程/">多线程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/小记/">小记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/日记/">日记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Android/">Android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/一封/">一封</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/RelativeLayout/">RelativeLayout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/CountDownTimer/">CountDownTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Bugfix/">Bugfix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Java/">Java</a><span class="tag-list-count">34</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/batik/">batik</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Png/">Png</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/拷贝/">拷贝</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Gitbook/">Gitbook</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Centos/">Centos</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/教程/">教程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Chrome/">Chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/工具/">工具</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/css/">css</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/笔记/">笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/并发/">并发</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ForkJoin/">ForkJoin</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Reflect/">Reflect</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Jquery/">Jquery</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/双亲委托/">双亲委托</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/内存结构/">内存结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/垃圾回收/">垃圾回收</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ImageMagic/">ImageMagic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/JavaWeb/">JavaWeb</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Filter/">Filter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Servlet/">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/JDK/">JDK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/知识汇总/">知识汇总</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/File/">File</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ScheduledExecutorService/">ScheduledExecutorService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/IO/">IO</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/clone/">clone</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/beancopy/">beancopy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Email/">Email</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/mybatis/">mybatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Nginx/">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/配置/">配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Redis/">Redis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/distributeLock/">distributeLock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/SPI/">SPI</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/整体设计/">整体设计</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/使用手册/">使用手册</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Spring/">Spring</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/RequestParam/">RequestParam</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Jsonp/">Jsonp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/CORS/">CORS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Exception/">Exception</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Response/">Response</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ffmpeg/">ffmpeg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/imagemagic/">imagemagic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/mysql/">mysql</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/索引/">索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/锁/">锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/事务/">事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/redis/">redis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Github/">Github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Maven/">Maven</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/BugFix/">BugFix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/BufferedImage/">BufferedImage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Jpeg/">Jpeg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/杂记/">杂记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Okhttp/">Okhttp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/QuickAlarm/">QuickAlarm</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/hystrix/">hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/分库分表/">分库分表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档(74)</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2018/04/">四月 2018</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2018/03/">三月 2018</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2018/02/">二月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2018/01/">一月 2018</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2017/12/">十二月 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2017/05/">五月 2017</a><span class="archive-list-count">4</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 更多链接</i></div><ul style="padding-top:10px"></ul><li style="padding-top:2px"><a href="//my.oschina.net/u/566591" title="开源中国" target="_blank">开源中国</a></li><li style="padding-top:2px"><a href="//blog.csdn.net/liuyueyi25" title="CSDN" target="_blank">CSDN</a></li><li style="padding-top:2px"><a href="//www.jianshu.com/u/5902ab08e670" title="简书" target="_blank">简书</a></li><li style="padding-top:2px"><a href="//juejin.im/user/5a2a4b095188252ae93adbbf/posts" title="掘金" target="_blank">掘金</a></li><li style="padding-top:2px"><a href="//www.toutiao.com/c/user/69862071663/#mid=1579653107239950" title="头条" target="_blank">头条</a></li><li style="padding-top:2px"><a href="//cloud.tencent.com/developer/column/1847" title="云+" target="_blank">云+</a></li><li style="padding-top:2px"><a href="//github.com/liuyueyi" title="Github" target="_blank">Github</a></li><li style="padding-top:2px"><a href="//gitee.com/liuyueyi" title="Gitee" target="_blank">Gitee</a></li></div><div class="widget"><div class="widget-title"><i onclick="var qr = document.getElementById('qrcode'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}" style="cursor:pointer" class="fa fa-hit"> 点赞(点击展开)</i></div><ul id="qrcode" style="display:none;" class="post-list"><br/><li style="text-align:center" class="post-list-item"><a href="javascript:void(0)" target="_blank"><img src="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" alt="WeChat Pay" style="width:75%"/><br/><p style="text-align:center">微信打赏</p></a></li><li style="text-align:center" class="post-list-item"><a href="javascript:void(0)" target="_blank"><img src="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" alt="Alipay" style="width:75%"/><br/><p style="text-align:center">支付宝打赏</p></a></li></ul></div></div></div></div><a id="totop" href="#top"></a><div id="render"><script src="https://s3.mogucdn.com/mlcdn/c45406/1520387600580_dom-to-image.min.js" charset="utf-8"></script><div class="rInput"><input id="choose-id" type="text" placeholder="cid: | id: + 标签" onkeydown="if(event.keyCode==13) {doRender();}"></div><div class="rSendBtn"><a id="rImgBtn" onclick="doRender()">渲染</a></div></div><script type="text/javascript" src="/hexblog/js/render.js?v=2.0.1" async></script><div id="footer"><div class="footer-info"><p><a href="https://zbang.online/webs"><img src="//s3.mogucdn.com/mlcdn/c45406/170419_637cgff527i8k9k8h512iaf36cdia_600x600.jpg" style="max-width: 44px;border-radius:44px"></a></p><p><a href="https://github.com/liuyueyi" target="_blank">GitHub</a> |  <a href="mailto:bangzewu@126.com">email</a> |  <a href="/hexblog/about/">关于 |</a><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次</p></p><p><span> Copyright &copy;<a href="/hexblog/." rel="nofollow">YiHui.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?028d9e53f991d9739ecc7cc42e13c500";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();
+</script><script type="text/javascript" src="/hexblog/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/hexblog/js/toctotop.js?v=2.0.1" async></script><script src="https://s3.mogucdn.com/mlcdn/c45406/1520407228303_social-share.min.js" charset="utf-8"></script><link rel="stylesheet" href="https://s3.mogucdn.com/mlcdn/c45406/1518422561591_share.min.css"><script>(function(d, s) {
+  var j, e = d.getElementsByTagName('body')[0];
+  if (typeof LivereTower === 'function') { return; }
+  j = d.createElement(s);
+  j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+  j.async = true;
+  e.appendChild(j);
+})(document, 'script');
+</script></body><script type="text/javascript" src="/hexblog/js/common.js?v=2.0.1" async></script></html>

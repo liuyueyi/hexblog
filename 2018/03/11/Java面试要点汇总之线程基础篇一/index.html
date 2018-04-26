@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="google-site-verification" content="PR6S72-htn-N1oDn9ENMcwi5niLKk0uebDzmRS-oivs"><meta property="wb:webmaster" content="320520520031fedd"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="好好学习，努力搬砖，天天吃草"><title>Java面试要点汇总之线程基础篇 | 一灰灰Blog</title><link rel="stylesheet" type="text/css" href="//fonts.neworld.org/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/hexblog/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/hexblog/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/hexblog/favicon.ico"><link rel="bookmark" href="/hexblog/favicon.ico"><link rel="apple-touch-icon" href="/hexblog/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/hexblog/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Java面试要点汇总之线程基础篇</h1><a id="logo" href="/hexblog/.">一灰灰Blog</a><p style="font-size:18px" class="description">一灰灰的个人博客网站</p></div><div id="nav-menu"><a href="/hexblog/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/hexblog/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/hexblog/about/"><i class="fa fa-user"> 关于</i></a><a href="http://liuyueyi.gitee.io/zweb/#/index"><i class="fa fa-rss"> 网站</i></a><a href="http://liuyueyi.gitee.io/mweb/#/"><i class="fa fa-you"> 古诗选</i></a><hr><br><div id="nav-sub-menu"><a href="/hexblog/categories/技术"><i class="fa fa-right"> 技术</i></a><a href="/hexblog/categories/工作"><i class="fa fa-right"> 工作</i></a><a href="/hexblog/categories/生活"><i class="fa fa-right"> 生活</i></a><a href="/hexblog/categories/杂记"><i class="fa fa-right"> 杂记</i></a></div></div>
+<div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="search"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/hexblog/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">Java面试要点汇总之线程基础篇 <span style="font-size:14px;color:#40759b;font-style:italic;border-bottom: 1px solid #e5e5e5;">&gt;&gt;&gt; by 一灰灰Blog</span></h1><div class="post-meta"><a href="/hexblog/2018/03/11/Java面试要点汇总之线程基础篇一/#saveImg" class="saveImg-icon"></a><a href="/hexblog/2018/03/11/Java面试要点汇总之线程基础篇一/#comments" class="comment-count"></a><p><span class="date">Mar 11, 2018</span><span><a href="/hexblog/categories/工作/" class="category">工作</a><a href="/hexblog/categories/工作/面试/" class="category">面试</a><a href="/hexblog/categories/工作/面试/Java/" class="category">Java</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><h2 id="I-基础篇线程相关"><a href="#I-基础篇线程相关" class="headerlink" title="I. 基础篇线程相关"></a>I. 基础篇线程相关</h2><p>主要是并发相关的问题汇总，包括一些辅助工具 Synchronized, Lock, CountDownLatch, CyclicBarrier, Semaphore, Exchanger, CAS, AQS, volatile 以及线程、线程池相关知识点，比较重要的就是悲观锁、乐观锁的区别，各自的优劣性等</p>
+<a id="more"></a>
+<h3 id="0-创建线程的方式及实现"><a href="#0-创建线程的方式及实现" class="headerlink" title="0. 创建线程的方式及实现"></a>0. 创建线程的方式及实现</h3><blockquote>
+<p>创建线程作为并发的第一步，可以参考：</p>
+<ul>
+<li><a href="https://my.oschina.net/u/566591/blog/1576410" target="_blank" rel="noopener">Java并发学习之四种线程创建方式的实现与对比</a></li>
+</ul>
+</blockquote>
+<p>从大的方面来看，一般有两种方式来创建线程</p>
+<ul>
+<li>实现 Callable, Runnable 接口</li>
+<li>继承 Thread类来实现</li>
+</ul>
+<p><strong>实现接口方式</strong></p>
+<ul>
+<li>Callable ：一般是有返回结构的方式，配合 FutrueTask 来使用</li>
+<li>Runnable ：比较常见的一种case了，无序关注返回</li>
+</ul>
+<p><strong>继承Thread</strong></p>
+<ul>
+<li>注意到 Thread实际上也是实现Runnable接口，所以当然也是可以直接通过继承Thread来实现</li>
+</ul>
+<p><strong>对比</strong></p>
+<p>实际上上面两种方式并没有实质的区别，在使用方面来将实现接口的方式，最终的调度需要借助 <code>Thread#start()</code> 来运行线程（当然也可以提交线程池）</p>
+<p>此外，从表现形式来看，通过线程池创建线程，通过<code>Timer &amp; TimerTask</code>创建计划线程也算是创建线程的不同手段</p>
+<hr>
+<h3 id="1-sleep-、join（）、yield（）有什么区别"><a href="#1-sleep-、join（）、yield（）有什么区别" class="headerlink" title="1. sleep() 、join（）、yield（）有什么区别"></a>1. sleep() 、join（）、yield（）有什么区别</h3><blockquote>
+<p><a href="https://my.oschina.net/u/566591/blog/1576946" target="_blank" rel="noopener">Java并发学习之线程状态及Thread常用方法详解</a></p>
+</blockquote>
+<h4 id="sleep方法"><a href="#sleep方法" class="headerlink" title="sleep方法"></a>sleep方法</h4><p>睡眠一段时间，不会释放线程持有的锁</p>
+<p>让出CUP的使用、目的是不让当前线程独自霸占该进程所获的CPU资源，以留一定时间给其他线程执行的机会</p>
+<h4 id="join方法"><a href="#join方法" class="headerlink" title="join方法"></a>join方法</h4><p>等待线程执行完毕</p>
+<h4 id="yield方法"><a href="#yield方法" class="headerlink" title="yield方法"></a>yield方法</h4><p>暂停当前正在执行的线程对象，让当前运行线程回到可运行状态，以允许具有相同优先级的其他线程获得运行机会</p>
+<hr>
+<h3 id="2-说说-CountDownLatch-原理"><a href="#2-说说-CountDownLatch-原理" class="headerlink" title="2. 说说 CountDownLatch 原理"></a>2. 说说 CountDownLatch 原理</h3><blockquote>
+<p>同步辅助类，在完成一组正在其他线程中执行的操作之前，它允许一个或多个线程一直等待</p>
+<p>参考博文： <a href="https://my.oschina.net/u/566591/blog/1560140" target="_blank" rel="noopener">Java并发学习之CountDownLatch实现原理及使用姿势</a></p>
+</blockquote>
+<p>这个主要用在多个线程协同工作的场景</p>
+<ul>
+<li>某个线程执行完毕之后，调用<code>countDown</code>方法实现计数-1</li>
+<li>调用<code>CountDownLatch#await</code>方法的线程，为期望计数为0之后才开始执行的线程</li>
+<li>当CountDownLatch设置的计数state大于0时，会将调用线程塞入阻塞AQS队列</li>
+<li>当计数==0时，所有被阻塞的线程会被唤醒</li>
+</ul>
+<p>内部主要是借助AQS来实现线程的阻塞唤醒</p>
+<hr>
+<h3 id="3-说说-CyclicBarrier-原理"><a href="#3-说说-CyclicBarrier-原理" class="headerlink" title="3. 说说 CyclicBarrier 原理"></a>3. 说说 CyclicBarrier 原理</h3><blockquote>
+<p>让一组线程到达一个屏障（也可以叫同步点）时被阻塞，直到最后一个线程到达屏障时，屏障才会开门，所有被屏障拦截的线程才会继续干活</p>
+<p>参考: <a href="https://www.cnblogs.com/nullzx/p/5271964.html" target="_blank" rel="noopener">Java并发包中CyclicBarrier的工作原理、使用示例</a></p>
+</blockquote>
+<ul>
+<li>CyclicBarrier默认的构造方法是CyclicBarrier(int parties)，其参数表示屏障拦截的线程数量，每个线程调用await方法告诉CyclicBarrier我已经到达了屏障，然后当前线程被阻塞</li>
+<li>线程进入屏障通过CyclicBarrier的await()方法</li>
+</ul>
+<p>实现原理：</p>
+<p>在CyclicBarrier的内部定义了一个Lock对象，</p>
+<ul>
+<li>每当一个线程调用CyclicBarrier的await方法时，将剩余拦截的线程数减1，</li>
+<li>然后判断剩余拦截数是否为0，</li>
+<li>如果不是，进入Lock对象的条件队列等待。</li>
+<li>如果是，执行barrierAction对象的Runnable方法（在创建CyclicBarrier的时候指定的线程），<ul>
+<li>然后将锁的条件队列中的所有线程放入锁等待队列中，</li>
+<li>这些线程会依次的获取锁、释放锁，接着先从await方法返回，再从CyclicBarrier的await方法中返回</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-说说-CountDownLatch-与-CyclicBarrier-区别"><a href="#4-说说-CountDownLatch-与-CyclicBarrier-区别" class="headerlink" title="4. 说说 CountDownLatch 与 CyclicBarrier 区别"></a>4. 说说 CountDownLatch 与 CyclicBarrier 区别</h3><h4 id="适用场景有所不同："><a href="#适用场景有所不同：" class="headerlink" title="适用场景有所不同："></a>适用场景有所不同：</h4><ul>
+<li>CountDownLatch: 主要用于在某一组线程执行完毕之前，莫个（或某几个）线程一直处于等待状态</li>
+<li>CyclicBarrier: 同样用于多线程的同步，但更多的是让多个线程达到某一个临界点之前，都处于等待状态；多个都达到之后，可以各自干各自的事情了</li>
+</ul>
+<p>举个例子加以说明：</p>
+<p><strong>case1:</strong> 一个班20个人去坐大巴去春游，要求所有人都到了集合点之后，才能出发</p>
+<p>这个case看着更适用于CyclicBarrier，但如果我们换一个角度来，把每个人都集合点看做一个线程，把做大巴出发看做另一个线程，上面的case就转变成了当所有人集合完毕（一组线程执行完毕），大巴开始出发（开始执行另一个线程）</p>
+<p><strong>case2:</strong> 多个侦探玩一个解密游戏，规则是只有三个侦探报名之后，才能开始他们各自的解密环节</p>
+<p>这种场景很明显用CyclicBarrier就比较清晰了，每个侦探的解密看成一个线程，每次报名就调用<code>CyclicBarrier#await</code>，那么屏障就是要三个人报名完毕，才能各自进行自己的解密环节</p>
+<p>那么用CountDownLatch可以么？当然也可以在报名之后计数-1，然后调用await进行等待，一样可以实现合格逻辑</p>
+<p>简单来说，一个是通过-1来实现，一个是通过+1</p>
+<h4 id="是否可重用"><a href="#是否可重用" class="headerlink" title="是否可重用"></a>是否可重用</h4><ul>
+<li>CountDownLatch 是无法重用的，减到0就完了</li>
+<li>CyclicBarrier可以重用，即一轮条件达成之后；可以接着来下一轮</li>
+</ul>
+<hr>
+<h3 id="5-说说-Semaphore-原理"><a href="#5-说说-Semaphore-原理" class="headerlink" title="5. 说说 Semaphore 原理"></a>5. 说说 Semaphore 原理</h3><blockquote>
+<p>Semaphore翻译成字面意思为 信号量，Semaphore可以控同时访问的线程个数，通过 acquire() 获取一个许可，如果没有就等待，而 release() 释放一个许可</p>
+<p>参考: <a href="https://www.cnblogs.com/nullzx/p/5270233.html" target="_blank" rel="noopener">Java并发包中Semaphore的工作原理、源码分析及使用示例</a></p>
+</blockquote>
+<p>主要通过AQS来实现线程管理，内部state值表示允许访问的线程数</p>
+<ul>
+<li>state == 0 时，其他线程将无法获取许可</li>
+<li>state &gt; 0 则线程可正常执行</li>
+</ul>
+<p>在创建Semaphore对象的时候还可以指定它的公平性。一般常用非公平的信号量，非公平信号量是指在获取许可时先尝试获取许可，而不必关心是否已有需要获取许可的线程位于等待队列中，如果获取失败，才会入列。而公平的信号量在获取许可时首先要查看等待队列中是否已有线程，如果有则入列。</p>
+<p><strong>使用场景</strong></p>
+<p>主要用在资源受限的情况，比如办公司只有三个打印机，每个人的电脑都可以连接答应机打印东西，那么就可以用Semaphore来做了，打印机被占用(acquire)之后，计数-1，当计数到0的时候就不能用了，而当打印机使用完毕之后释放掉(release)那么计数可以+1，其他的人又可以来使用了</p>
+<hr>
+<h3 id="6-说说-Exchanger-原理"><a href="#6-说说-Exchanger-原理" class="headerlink" title="6. 说说 Exchanger 原理"></a>6. 说说 Exchanger 原理</h3><blockquote>
+<p>Exchanger（交换者）是一个用于线程间协作的工具类。</p>
+<p><a href="http://ifeve.com/concurrency-exchanger/" target="_blank" rel="noopener">并发工具类（四）两个线程进行数据交换的Exchanger</a></p>
+</blockquote>
+<p>Exchanger用于进行线程间的数据交换。它提供一个同步点，在这个同步点两个线程可以交换彼此的数据。</p>
+<ul>
+<li>这两个线程通过exchange方法交换数据， 如果第一个线程先执行exchange方法，它会一直等待第二个线程也执行exchange</li>
+<li>当两个线程都到达同步点时，这两个线程就可以交换数据，将本线程生产出来的数据传递给对方</li>
+</ul>
+<p><strong>说明</strong></p>
+<p>只能在两个线程之间进行数据交换</p>
+<p>在Exchanger中，如果一个线程已经到达了exchanger节点时，对于它的伙伴节点的情况有三种：</p>
+<ol>
+<li>如果它的伙伴节点在该线程到达之前已经调用了exchanger方法，则它会唤醒它的伙伴然后进行数据交换，得到各自数据返回。</li>
+<li>如果它的伙伴节点还没有到达交换点，则该线程将会被挂起，等待它的伙伴节点到达被唤醒，完成数据交换。</li>
+<li>如果当前线程被中断了则抛出异常，或者等待超时了，则抛出超时异常。</li>
+</ol>
+<p>（待深入）</p>
+<hr>
+<h3 id="7-ThreadLocal-原理分析"><a href="#7-ThreadLocal-原理分析" class="headerlink" title="7. ThreadLocal 原理分析"></a>7. ThreadLocal 原理分析</h3><blockquote>
+<p>线程本地变量，每个线程保存变量的副本，对副本的改动，对其他的线程而言是透明的（即隔离的）</p>
+<p><a href="https://my.oschina.net/u/566591/blog/1580020" target="_blank" rel="noopener">Java并发学习之ThreadLocal使用及原理介绍</a></p>
+</blockquote>
+<p>内部有一个HashMap，其中key为当前线程，value为存入的线程本地变量，从而实现多线程之间的数据隔离</p>
+<p>这个比较适合的是使用链路比较长的应用场景，如web服务的用户身份信息，就可以保存在 <code>ThreadLocal</code> 中，在用户发起请求的完整链路中，任何地方都可以通过它获取用户信息，优点是</p>
+<ul>
+<li>不用将用户信息层层透传</li>
+<li>不会出现数据串掉的问题</li>
+</ul>
+<p>在使用ThreadLocal的时候，需要注意的是用完之后主动销毁存储的变量，避免线程池中线程复用，导致数据脏掉</p>
+<hr>
+<h3 id="8-讲讲线程池的实现原理"><a href="#8-讲讲线程池的实现原理" class="headerlink" title="8. 讲讲线程池的实现原理"></a>8. 讲讲线程池的实现原理</h3><blockquote>
+<p><a href="https://liuyueyi.github.io/hexblog/2018/03/06/Java并发学习之线程池ThreadPoolExecutor的小结/" target="_blank" rel="noopener">Java并发学习之线程池ThreadPoolExecutor的小结</a></p>
+</blockquote>
+<p>线程池主要就是为了实现线程复用，减少频繁的线程创建、销毁带来的性能开销</p>
+<p>在说明实现原理之前有必要了解下其主要的几个参数：</p>
+<ul>
+<li>核心线程数：没有任务时，线程池中允许存在的最小空闲线程数 </li>
+<li>最大工作线程数：线程池中允许出现的最大工作线程数量 </li>
+<li>最大存活时间：空闲线程最多存货的时间</li>
+<li>任务队列：工作线程数超过核心线程数时，新来的任务就放入这个队列中</li>
+<li>线程创建工厂：创建线程的工厂类，可以在里面设置工作线程名，设置守护线程，设置异常处理方式等</li>
+<li>拒绝策略：当线程池中工作线程达到上线，队列已满时，新任务的处理策略</li>
+</ul>
+<p>从上面的几个参数也可以大致的推出线程池的工作原理：</p>
+<ul>
+<li>提交任务，若核心线程数未达标，则直接创建线程执行</li>
+<li>若核心线程已满，则塞入任务队列</li>
+<li>若任务队列满，则创建新线程执行任务</li>
+<li>若线程数达到上限，则根据拒绝策略来执行</li>
+</ul>
+<hr>
+<h3 id="9-线程池的几种方式"><a href="#9-线程池的几种方式" class="headerlink" title="9. 线程池的几种方式"></a>9. 线程池的几种方式</h3><ul>
+<li>直接通过构造方法创建</li>
+<li>借助 Executors来创建jdk定义的几种线程池: 固定大小线程池，缓存线程池，调度线程池，单线程池等</li>
+</ul>
+<hr>
+<h3 id="10-线程的生命周期"><a href="#10-线程的生命周期" class="headerlink" title="10. 线程的生命周期"></a>10. 线程的生命周期</h3><ul>
+<li>创建线程 -&gt; 就绪状态 -&gt; 运行状态</li>
+<li>运行状态 -&gt; 阻塞状态 -&gt; 就绪状态 -&gt; 运行状态</li>
+<li>运行状态 -&gt; 结束状态</li>
+</ul>
+<p>对应的图如下</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/1405936-f188bd0074484a64.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="11-AQS的原理"><a href="#11-AQS的原理" class="headerlink" title="11. AQS的原理"></a>11. AQS的原理</h3><blockquote>
+<p><code>AbstractQueuedSynchronizer</code><br>抽象的队列式的同步器，AQS定义了一套多线程访问共享资源的同步器框架，许多同步类实现都依赖于它，如常用的ReentrantLock/Semaphore/CountDownLatch</p>
+<p><a href="https://www.cnblogs.com/waterystone/p/4920797.html" target="_blank" rel="noopener">Java并发之AQS详解</a></p>
+</blockquote>
+<p>维护了一个volatile int state（代表共享资源）和一个FIFO线程等待队列（多线程争用资源被阻塞时会进入此队列）</p>
+<p>一般来讲，通过state的计数来表示是否为锁定状态，如ReentrantLock中当state为0，表示没有线程持有锁，这个时候如果有人来获取锁则会成功，然后可以做自己的事情；当持有锁之后，其他线程再尝试获取锁，就会失败，塞入队列中，并阻塞</p>
+<hr>
+<h2 id="II-线程安全问题"><a href="#II-线程安全问题" class="headerlink" title="II. 线程安全问题"></a>II. 线程安全问题</h2><h3 id="1-volatile-实现原理"><a href="#1-volatile-实现原理" class="headerlink" title="1. volatile 实现原理"></a>1. volatile 实现原理</h3><blockquote>
+<p><a href="https://my.oschina.net/u/566591/blog/1560145" target="_blank" rel="noopener">Java并发学习之Volatile及内存模型探究</a></p>
+</blockquote>
+<h4 id="主要作用"><a href="#主要作用" class="headerlink" title="主要作用"></a>主要作用</h4><ul>
+<li>变量修改对多线程可见性</li>
+<li>防止指令重排</li>
+</ul>
+<h4 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h4><p>每个线程有一个自己的缓存空间，持有保存在内存中的变量的一个副本，所以某个线程修改自己变量时，其他线程持有的副本不一定会同步修改，因此就容易出现不一致的问题</p>
+<p>所以这个关键词要干的一件事就是当发生修改时，保证其他线程持有的副本也会同步更新</p>
+<h4 id="指令重排可能带来什么问题？"><a href="#指令重排可能带来什么问题？" class="headerlink" title="指令重排可能带来什么问题？"></a>指令重排可能带来什么问题？</h4><p>一个明显的case</p>
+<p>线程A进行初始化</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Object con = <span class="keyword">new</span> XXX();</span><br><span class="line"><span class="keyword">int</span> init = <span class="keyword">true</span>;</span><br></pre></td></tr></table></figure>
+<p>线程B执行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(init) &#123;</span><br><span class="line">    con.xxx();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果指令重排，导致init先赋值完成，而con后赋值，那么线程B的执行就会抛出一个npe</p>
+<hr>
+<h3 id="2-synchronize-实现原理"><a href="#2-synchronize-实现原理" class="headerlink" title="2. synchronize 实现原理"></a>2. synchronize 实现原理</h3><blockquote>
+<p>同步关键字</p>
+<p><a href="https://my.oschina.net/u/566591/blog/1557163" target="_blank" rel="noopener">Java并发学习之synchronized使用小结</a></p>
+</blockquote>
+<p>可以用来修饰方法，代码块，主要是强制多线程在访问这些方法or代码块时，串行操作（即同一时刻，只能有一个线程执行）</p>
+<p>底层实现主要也是依赖锁来确保同步，简单来说就是一个线程访问synchronized修饰的方法or代码块之后，就获取到了锁，在执行完毕之前，其他线程无法获取到这个锁，因此会阻塞</p>
+<p>jdk为了提高性能，设计了锁的进阶</p>
+<p><strong>偏向锁 -&gt; 轻量级锁 -&gt; 重量级锁</strong></p>
+<blockquote>
+<p>简单来讲，单线程时，使用偏向锁，如果这个时候，又来了一个线程访问这个代码块，那么就要升级为轻量锁，如果这个线程在访问代码块同时，又来了一个线程来访问这个代码块，那么就要升级为重量锁了</p>
+</blockquote>
+<hr>
+<h3 id="3-lock-condition-ReentrantLock-的说明"><a href="#3-lock-condition-ReentrantLock-的说明" class="headerlink" title="3. lock, condition, ReentrantLock 的说明"></a>3. lock, condition, ReentrantLock 的说明</h3><blockquote>
+<p>锁，可重入锁，条件</p>
+<p>参考：<a href="https://my.oschina.net/u/566591/blog/1557978" target="_blank" rel="noopener">Java并发学习之ReentrantLock的工作原理及使用姿势</a></p>
+</blockquote>
+<ul>
+<li><p>lock（锁），简单来讲，当某个线程持有锁之后，在释放锁之前，其他的人尝试获取锁会被阻塞</p>
+</li>
+<li><p>ReentrantLock可重入锁。jdk中ReentrantLock是唯一实现了Lock接口的类，可重入的意思是一个线程拥有锁之后，可以再次获取锁</p>
+</li>
+<li><p>Condition 可以由ReentrantLock进行生成，通常与Lock配合使用，用于多个线程之间的协同（如一个线程A的执行，依赖线程B执行的结果，就可以通过Condition来做处理）</p>
+</li>
+</ul>
+<hr>
+<h3 id="4-synchronized-与-lock-的区别"><a href="#4-synchronized-与-lock-的区别" class="headerlink" title="4. synchronized 与 lock 的区别"></a>4. synchronized 与 lock 的区别</h3><blockquote>
+<p>参考 <a href="https://www.cnblogs.com/iyyy/p/7993788.html" target="_blank" rel="noopener">https://www.cnblogs.com/iyyy/p/7993788.html</a></p>
+</blockquote>
+<ul>
+<li>一个是关键字，用来修饰代码块或者方法；而lock则是锁对象</li>
+<li>synchronized无法判断是否获取锁的状态，Lock可以判断是否获取到锁</li>
+<li>synchronized会自动释放锁，lock则需要主动释放锁</li>
+<li>synchronized的锁可重入、不可中断、非公平，而Lock锁可重入、可判断、可公平（两者皆可）</li>
+<li>Lock锁适合大量同步的代码的同步问题，synchronized锁适合代码少量的同步问题</li>
+</ul>
+<p>简单来讲就是lock使用起来更加灵活，配置或扩展更加方便，而synchronized则偏向于简单的同步场景</p>
+<hr>
+<h3 id="5-CAS-乐观锁"><a href="#5-CAS-乐观锁" class="headerlink" title="5. CAS 乐观锁"></a>5. CAS 乐观锁</h3><blockquote>
+<p><code>compareAndSet</code>比较并设置</p>
+</blockquote>
+<p>CAS有3个操作数，内存值V，旧的预期值A，要修改的新值B。当且仅当预期值A和内存值V相同时，将内存值V修改为B，否则什么都不做。</p>
+<p>简单来讲，就是在实际更新之前，判断内存值是否发生过修改（即与我们预期的待修改值A是否相同），若过没有则修改它，否则不处理</p>
+<p>上面这个判断有漏洞，因为cas是乐观锁，即在比较并修改的过程中，其他线程也可以修改这个值，所以直接通过判断内存值V是否等于预期值A，可能导致ABA问题</p>
+<hr>
+<h3 id="6-乐观锁的业务场景及实现方式"><a href="#6-乐观锁的业务场景及实现方式" class="headerlink" title="6. 乐观锁的业务场景及实现方式"></a>6. 乐观锁的业务场景及实现方式</h3><ul>
+<li><p>独占锁：是一种悲观锁，synchronized就是一种独占锁，会导致其它所有需要锁的线程挂起，等待持有锁的线程释放锁。</p>
+</li>
+<li><p>乐观锁：每次不加锁，假设没有冲突去完成某项操作，如果因为冲突失败就重试，直到成功为止</p>
+</li>
+</ul>
+<h3 id="7-ABA-问题"><a href="#7-ABA-问题" class="headerlink" title="7. ABA 问题"></a>7. ABA 问题</h3><blockquote>
+<p><a href="https://www.cnblogs.com/549294286/p/3766717.html" target="_blank" rel="noopener">Java CAS 和ABA问题</a></p>
+</blockquote>
+<p>首先得知道什么是ABA问题了，举例说明</p>
+<p>线程1准备用CAS将变量的值由A替换为B，在此之前，线程2将变量的值由A替换为C，又由C替换为A，然后线程1执行CAS时发现变量的值仍然为A，所以CAS成功。但实际上这时的现场已经和最初不同了，尽管CAS成功，但可能存在潜藏的问题</p>
+<p>一般来讲，会借助一个递增的版本来避免出现ABA问题，比如每次修改的时候，版本值都+1，那么在cas的时候，除了判断内存值和预期是否相同之外，还判断一下版本是否相同</p>
+<p>jdk中提供<code>AtomicStampedReference</code>来提供基于时间戳的版本方案，避免ABA问题</p>
+<hr>
+<h2 id="III-问题补充"><a href="#III-问题补充" class="headerlink" title="III. 问题补充"></a>III. 问题补充</h2><h3 id="1-Java实现多线程有哪几种方式。"><a href="#1-Java实现多线程有哪几种方式。" class="headerlink" title="1.Java实现多线程有哪几种方式。"></a>1.Java实现多线程有哪几种方式。</h3><p>上面已有，简单来讲就是实现Runnable/Callable接口或者集成Thread类</p>
+<hr>
+<h3 id="2-Callable和Future的了解。"><a href="#2-Callable和Future的了解。" class="headerlink" title="2.Callable和Future的了解。"></a>2.Callable和Future的了解。</h3><p>实现Callable接口主要是针对有返回结果的场景，线程运行后返回一个Future包装的对象，通过这个包装对象获取线程的返回</p>
+<ul>
+<li><code>Futrure#get</code> 获取返回对象，如果尚没有返回则会阻塞</li>
+<li><code>Future#cancel</code> 取消任务(当然如果线程不允许中断，则并不会有用)</li>
+</ul>
+<p>通常他们是配合起来一起使用，特别是当提交的任务耗时较长时，可以先执行后续不依赖返回的代码，然后在需要使用返回结果的地方调用<code>Futrue#get</code>来获取结果，提高性能</p>
+<hr>
+<h3 id="3-线程池的参数有哪些，在线程池创建一个线程的过程。"><a href="#3-线程池的参数有哪些，在线程池创建一个线程的过程。" class="headerlink" title="3.线程池的参数有哪些，在线程池创建一个线程的过程。"></a>3.线程池的参数有哪些，在线程池创建一个线程的过程。</h3><p>参数说明件上文</p>
+<p>线程池中，提交一个任务，首先会看核心工作线程是否已满，若没有，则根据线程创建工厂来创建一个线程来执行任务；如果核心工作线程满了，则塞入任务队列，等待工作线程空闲后从任务队列中后去任务来执行；当任务队列已满，则判断工作线程数是否达到上限，没有时创建一个工作线程来执行任务；否则采用拒绝策略的方案执行</p>
+<hr>
+<h3 id="4-volitile关键字的作用，原理。"><a href="#4-volitile关键字的作用，原理。" class="headerlink" title="4.volitile关键字的作用，原理。"></a>4.volitile关键字的作用，原理。</h3><p>见上文，主要两个作用</p>
+<ul>
+<li>变量的修改对气态线程可见</li>
+<li>禁止指令重排</li>
+</ul>
+<hr>
+<h3 id="5-synchronized关键字的用法，优缺点。"><a href="#5-synchronized关键字的用法，优缺点。" class="headerlink" title="5.synchronized关键字的用法，优缺点。"></a>5.synchronized关键字的用法，优缺点。</h3><p>修饰方法，静态方法，代码块，静态代码块，同一个线程允许多次访问被修饰的代码，在访问期间，其他线程都无法访问（会被阻塞）；访问完毕之后，自动释放锁，其他线程可以尝试竞争获取锁</p>
+<ul>
+<li>优点：使用简单</li>
+<li>缺点：不够灵活</li>
+</ul>
+<hr>
+<h3 id="6-Lock接口有哪些实现类，使用场景是什么。"><a href="#6-Lock接口有哪些实现类，使用场景是什么。" class="headerlink" title="6.Lock接口有哪些实现类，使用场景是什么。"></a>6.Lock接口有哪些实现类，使用场景是什么。</h3><p>ReentrantLock 可重入锁</p>
+<p>对灵活性要求更高的，有更多特定需求的场景，或者锁竞争比较激烈的场景，使用lock更加合适</p>
+<hr>
+<h3 id="7-可重入锁的用处及实现原理，CopyOnWrite的过程，读写锁，分段锁（ConcurrentHashMap中的segment）。"><a href="#7-可重入锁的用处及实现原理，CopyOnWrite的过程，读写锁，分段锁（ConcurrentHashMap中的segment）。" class="headerlink" title="7.可重入锁的用处及实现原理，CopyOnWrite的过程，读写锁，分段锁（ConcurrentHashMap中的segment）。"></a>7.可重入锁的用处及实现原理，CopyOnWrite的过程，读写锁，分段锁（ConcurrentHashMap中的segment）。</h3><h4 id="ReentrantLock-可重入锁"><a href="#ReentrantLock-可重入锁" class="headerlink" title="ReentrantLock 可重入锁"></a>ReentrantLock 可重入锁</h4><p>借助AQS实现，当线程持有锁之后，其他线程在尝试获取锁时，会阻塞</p>
+<p>用于多线程之间的协同工作，比 synchronized 更加灵活，阻塞队列中就用到了这个</p>
+<h4 id="CopyOnWrite-过程"><a href="#CopyOnWrite-过程" class="headerlink" title="CopyOnWrite 过程"></a>CopyOnWrite 过程</h4><p>这个比较合适的case就是CopyOnWriteArrayList了，读不加锁，写时加锁</p>
+<ul>
+<li>在修改链表时，加锁，然后拷贝一份原来的数据，在拷贝上进行修改，修改完毕之后，替换原来的数据</li>
+<li>读过程不加锁，因此读操作时，获取的是读的那一时刻获取到的数据，在这个时间点之后发生了修改，读的依然是原来的数据</li>
+</ul>
+<h4 id="锁分段"><a href="#锁分段" class="headerlink" title="锁分段"></a>锁分段</h4><p>比如jdk1.7的ConcurrentHashMap就是采用的锁分段机制，将一个大数组分为一个个的Segment，每个Segment都有自己独立的锁，因此对不同的Segment进行操作，不会引起锁的竞争</p>
+<p>读数据是不加锁：</p>
+<ul>
+<li>每个节点HashEntry除了value不是final的，其它值都是final的</li>
+<li>即只能在链表头添加数据</li>
+<li>在put时，在链表头插入；在remove时需要将要删除节点的前面所有节点整个复制一遍，最后一个节点指向要删除结点的下一个结点</li>
+<li>为了确保读操作能够看到最新的值，将value设置成volatile，这避免了加锁</li>
+</ul>
+<hr>
+<h3 id="8-悲观锁，乐观锁，优缺点，CAS有什么缺陷，该如何解决。"><a href="#8-悲观锁，乐观锁，优缺点，CAS有什么缺陷，该如何解决。" class="headerlink" title="8.悲观锁，乐观锁，优缺点，CAS有什么缺陷，该如何解决。"></a>8.悲观锁，乐观锁，优缺点，CAS有什么缺陷，该如何解决。</h3><p><strong>悲观锁：</strong>synchronized就是一种独占锁，会导致其它所有需要锁的线程挂起，等待持有锁的线程释放锁</p>
+<p><strong>乐观锁：</strong>每次不加锁，假设没有冲突去完成某项操作，如果因为冲突失败就重试，直到成功为止</p>
+<p>CAS就是采用的乐观锁机制，比较内存值和预期值是否相等，是则替换；会导致ABA问题</p>
+<p>通常ABA问题，需要借助一个递增的版本来辅助判断，详情见上文</p>
+<hr>
+<h3 id="9-ABC三个线程如何保证顺序执行。"><a href="#9-ABC三个线程如何保证顺序执行。" class="headerlink" title="9.ABC三个线程如何保证顺序执行。"></a>9.ABC三个线程如何保证顺序执行。</h3><p>通过<code>Thread#join</code>方法可以保证顺序执行，最简单的方式就是<code>a.join</code>之后，在启动b线程，待<code>b.join</code>之后在启动c线程，这样就强制顺序性了</p>
+<p>上面的缺点也明显，并发强制编程了串行，这样的话采用并发的优势就么有了</p>
+<p>通常三个线程的协同工作，大多是内部有相互依赖，用lock结合condition来实现同步是更优雅的方式，每个线程维持一个状态，根据状态的值借助condition的wait和notify方法来控制阻塞执行就会好一点了</p>
+<hr>
+<h3 id="10-线程的状态都有哪些。"><a href="#10-线程的状态都有哪些。" class="headerlink" title="10.线程的状态都有哪些。"></a>10.线程的状态都有哪些。</h3><p>详情参考上文</p>
+<ul>
+<li>启动</li>
+<li>就绪</li>
+<li>运行</li>
+<li>阻塞</li>
+<li>结束</li>
+</ul>
+<hr>
+<h3 id="11-sleep和wait的区别。"><a href="#11-sleep和wait的区别。" class="headerlink" title="11.sleep和wait的区别。"></a>11.sleep和wait的区别。</h3><ul>
+<li>sleep睡眠一段时间，会释放cpu等资源，但是不会释放持有的锁，过一段时间后继续执行</li>
+<li>wait会释放cpu资源，锁也释放，等待notify方法唤醒，必须放在 synchronized 代码块内</li>
+</ul>
+<hr>
+<h3 id="12-notify和notifyall的区别。"><a href="#12-notify和notifyall的区别。" class="headerlink" title="12.notify和notifyall的区别。"></a>12.notify和notifyall的区别。</h3><ul>
+<li>notify只会唤醒一个被阻塞线程</li>
+<li>notifyall会唤醒所有被阻塞的线程</li>
+</ul>
+<p>说明：对notifyall而言最终执行的线程也有可能只有一个，比如被阻塞的线程都在抢在同一把锁，最终也只会有一个线程成功获取并执行，其他的再次进入阻塞</p>
+<hr>
+<h3 id="13-ThreadLocal的了解，实现原理。"><a href="#13-ThreadLocal的了解，实现原理。" class="headerlink" title="13.ThreadLocal的了解，实现原理。"></a>13.ThreadLocal的了解，实现原理。</h3><p>线程本地变量，可以用来保存线程内的共享变量，方便在该线程执行的上下文中获取这些基本信息</p>
+<p>内部是维持一个HashMap， key为当前线程对象，value为线程变量，因此实现了线程之间数据的隔离</p>
+<p>需要注意的一个点就是使用完毕之后，不要忘记主动回收变量</p>
+<hr>
+<h2 id="IV-其他"><a href="#IV-其他" class="headerlink" title="IV. 其他"></a>IV. 其他</h2><h3 id="知识要点来自"><a href="#知识要点来自" class="headerlink" title="知识要点来自:"></a>知识要点来自:</h3><ul>
+<li><a href="https://juejin.im/post/5a94a8ca6fb9a0635c049e67" target="_blank" rel="noopener">Java面试通关要点汇总集</a></li>
+<li><a href="https://segmentfault.com/a/1190000013550405?utm_source=index-hottest" target="_blank" rel="noopener">一个两年Java的面试总结</a></li>
+</ul>
+<h3 id="个人博客：-Z-blog"><a href="#个人博客：-Z-blog" class="headerlink" title="个人博客： Z+|blog"></a>个人博客： <a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">Z+|blog</a></h3><p>基于hexo + github pages搭建的个人博客，记录所有学习和工作中的博文，欢迎大家前去逛逛</p>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见识有限，如发现bug或者有更好的建议，随时欢迎批评指正</p>
+<ul>
+<li>微博地址: <a href="https://weibo.com/p/1005052169825577/home" target="_blank" rel="noopener">小灰灰Blog</a></li>
+<li>QQ： 一灰灰/3302797840</li>
+</ul>
+<h3 id="扫描关注"><a href="#扫描关注" class="headerlink" title="扫描关注"></a>扫描关注</h3><p><img src="https://s17.mogucdn.com/mlcdn/c45406/180209_74fic633aebgh5dgfhid2fiiggc99_1220x480.png" alt="QrCode"></p>
+</div><div class="tags"><a href="/hexblog/tags/面试/">面试</a><a href="/hexblog/tags/知识汇总/">知识汇总</a><a href="/hexblog/tags/多线程/">多线程</a></div><div style="text-align:center"><br><button style="color:red;background-color: #f44336;border: none;border-radius: 8px;color: white;padding: 10px 30px;text-align: center;text-decoration: none;font-size: 16px;" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">打赏</button><br><span style="display: block;color: #9d9d9d;font: 14px/2 &amp;quot;Microsoft Yahei&amp;quot;">如果觉得我的文章对您有帮助，请随意打赏。</span><br><div id="QR" style="display: none; margin-top: 20px;" class="row"><div id="wechat" style="display: inline-block;width:44%;margin-left:6%;text-align:center;"><a href="javascript:void(0)"><img src="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" alt="WeChat Pay" style="width:80%;height:80%;max-height:200px;max-width:200px"></a><p style="text-align:center">微信打赏</p></div><div id="alipay" style="display: inline-block;width:44%;text-align:center"><a href="javascript:void(0)"><img src="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" alt="Alipay" style="width:80%;height:80%;max-height:200px;max-width:200px"></a><p style="text-align:center">支付宝打赏</p></div></div></div><div class="article-footer-copyright"><url><li>版权声明：本文由<b> 一灰灰 </b><span>发表于</span><a href="/hexblog/"> 一灰灰Blog </a></li><li>转载声明：自由转载-非商用-非衍生-保持署名，非商业转载请注明作者及出处，商业转载请联系作者本人。</li><li id="blogTitleCp">文章标题：<a style="word-wrap:break-word">Java面试要点汇总之线程基础篇</a></li><li>文章链接：<a id="blogLink" style="word-wrap:break-word"></a><script>var blogLink = decodeURI(window.location.href);
+var doc = document.getElementById('blogLink');
+doc.setAttribute("href", blogLink);
+doc.innerHTML=blogLink;</script></li></url></div><div class="post-share"><div><script src="https://s3.mogucdn.com/mlcdn/c45406/1520387600580_dom-to-image.min.js" charset="utf-8"></script><script>var url;
+console.log('start--->',(new Date()).valueOf());
+domtoimage.toPng(document.getElementsByClassName('layout-l')[0])
+    .then(function (dataUrl) {
+        url = dataUrl;
+        console.log('end--->',(new Date()).valueOf());
+     })
+    .catch(function (error) {});
+function link() {
+    var title = document.getElementById('blogTitleCp').children[0].innerText;
+    console.log("blog title: ", title);
+    window.open().document.write('<html><head><title>'+ title + '</title></head><body><div style=\'text-align:center\' ><a download="一灰灰Blog博文_' + title + '.png" href="'+url+'"><img title="点击下载博文图：' + title + '" src="' + url + '" /></a></div></body></html>');
+}</script><span style="float:center;font-size:20px;font-weight:solid;color:gray">渲染：</span><a id="saveImg" href="javascript:void(0)" onclick="link()" class="save_img">保存图片</a></div><div id="share" class="soshm social-share"><span style="float:center;font-size:20px;font-weight:solid;color:gray">分享：</span></div></div><div class="post-nav"><a href="/hexblog/2018/03/11/Java面试要点汇总之泛型篇/" class="pre">Java面试要点汇总之泛型篇</a><a href="/hexblog/2018/03/09/Java面试要点汇总之容器基础篇/" class="next">Java面试要点汇总之容器基础篇</a></div><div id="comments"><div id="lv-container" data-id="city" data-uid="MTAyMC8zNDY0OC8xMTE4NQ=="></div></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei"> 文章目录</i><a title="点击展开或隐藏分类" href="javascript:void(0)" onclick="showOrHide('toc', 'toc-expand', 'none')"><span id="toc-expand" style="font-size:12px;color:red"> 点击收起 </span></a></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#I-基础篇线程相关"><span class="toc-text">I. 基础篇线程相关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#0-创建线程的方式及实现"><span class="toc-text">0. 创建线程的方式及实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-sleep-、join（）、yield（）有什么区别"><span class="toc-text">1. sleep() 、join（）、yield（）有什么区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#sleep方法"><span class="toc-text">sleep方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#join方法"><span class="toc-text">join方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#yield方法"><span class="toc-text">yield方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-说说-CountDownLatch-原理"><span class="toc-text">2. 说说 CountDownLatch 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-说说-CyclicBarrier-原理"><span class="toc-text">3. 说说 CyclicBarrier 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-说说-CountDownLatch-与-CyclicBarrier-区别"><span class="toc-text">4. 说说 CountDownLatch 与 CyclicBarrier 区别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#适用场景有所不同："><span class="toc-text">适用场景有所不同：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#是否可重用"><span class="toc-text">是否可重用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-说说-Semaphore-原理"><span class="toc-text">5. 说说 Semaphore 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-说说-Exchanger-原理"><span class="toc-text">6. 说说 Exchanger 原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-ThreadLocal-原理分析"><span class="toc-text">7. ThreadLocal 原理分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-讲讲线程池的实现原理"><span class="toc-text">8. 讲讲线程池的实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-线程池的几种方式"><span class="toc-text">9. 线程池的几种方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-线程的生命周期"><span class="toc-text">10. 线程的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-AQS的原理"><span class="toc-text">11. AQS的原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#II-线程安全问题"><span class="toc-text">II. 线程安全问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-volatile-实现原理"><span class="toc-text">1. volatile 实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#主要作用"><span class="toc-text">主要作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#实现原理"><span class="toc-text">实现原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#指令重排可能带来什么问题？"><span class="toc-text">指令重排可能带来什么问题？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-synchronize-实现原理"><span class="toc-text">2. synchronize 实现原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-lock-condition-ReentrantLock-的说明"><span class="toc-text">3. lock, condition, ReentrantLock 的说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-synchronized-与-lock-的区别"><span class="toc-text">4. synchronized 与 lock 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-CAS-乐观锁"><span class="toc-text">5. CAS 乐观锁</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-乐观锁的业务场景及实现方式"><span class="toc-text">6. 乐观锁的业务场景及实现方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-ABA-问题"><span class="toc-text">7. ABA 问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#III-问题补充"><span class="toc-text">III. 问题补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Java实现多线程有哪几种方式。"><span class="toc-text">1.Java实现多线程有哪几种方式。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Callable和Future的了解。"><span class="toc-text">2.Callable和Future的了解。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-线程池的参数有哪些，在线程池创建一个线程的过程。"><span class="toc-text">3.线程池的参数有哪些，在线程池创建一个线程的过程。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-volitile关键字的作用，原理。"><span class="toc-text">4.volitile关键字的作用，原理。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-synchronized关键字的用法，优缺点。"><span class="toc-text">5.synchronized关键字的用法，优缺点。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-Lock接口有哪些实现类，使用场景是什么。"><span class="toc-text">6.Lock接口有哪些实现类，使用场景是什么。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-可重入锁的用处及实现原理，CopyOnWrite的过程，读写锁，分段锁（ConcurrentHashMap中的segment）。"><span class="toc-text">7.可重入锁的用处及实现原理，CopyOnWrite的过程，读写锁，分段锁（ConcurrentHashMap中的segment）。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ReentrantLock-可重入锁"><span class="toc-text">ReentrantLock 可重入锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CopyOnWrite-过程"><span class="toc-text">CopyOnWrite 过程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#锁分段"><span class="toc-text">锁分段</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-悲观锁，乐观锁，优缺点，CAS有什么缺陷，该如何解决。"><span class="toc-text">8.悲观锁，乐观锁，优缺点，CAS有什么缺陷，该如何解决。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-ABC三个线程如何保证顺序执行。"><span class="toc-text">9.ABC三个线程如何保证顺序执行。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-线程的状态都有哪些。"><span class="toc-text">10.线程的状态都有哪些。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-sleep和wait的区别。"><span class="toc-text">11.sleep和wait的区别。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-notify和notifyall的区别。"><span class="toc-text">12.notify和notifyall的区别。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-ThreadLocal的了解，实现原理。"><span class="toc-text">13.ThreadLocal的了解，实现原理。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#IV-其他"><span class="toc-text">IV. 其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#知识要点来自"><span class="toc-text">知识要点来自:</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#个人博客：-Z-blog"><span class="toc-text">个人博客： Z+|blog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#声明"><span class="toc-text">声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#扫描关注"><span class="toc-text">扫描关注</span></a></li></ol></li></ol></div><div class="widget"><div class="widget-title"><a href="/hexblog/about/"><i class="fa fa-user"> 一灰灰Blog</i></a><a title="点击展开或收起条目" href="javascript:void(0)" onclick="showOrHide('info-list', 'info-list-expand', 'none')"><span id="info-list-expand" style="font-size:12px;color:red"> 点击收起 </span></a></div><ul class="post-list info-list"><li style="text-align:center"><img src="//s3.mogucdn.com/mlcdn/c45406/170419_637cgff527i8k9k8h512iaf36cdia_600x600.jpg" style="max-width:80px;radius:80px"/><p style="text-align:center">好好学习，天天搬砖</p><hr style="height:0.1px;border:none;border-top:1px dashed #0066CC;"/></li><li class="post-list-item"><a href="mailto:bangzewu@126.com" title="126邮箱" class="post-list-link"><i class="fa fa-email">  bangzewu@126.com</i></a></li><li class="post-list-item"><a href="//github.com/liuyueyi" title="Git主页" target="_blank" class="post-list-link"><i class="fa fa-github">  github.com/liuyueyi</i></a></li><li class="post-list-item"><a href="" title="QQ" class="post-list-link"><i class="fa fa-you">  QQ:3302797840</i></a></li><li class="post-list-item"><a href="//weibo.com/p/1005052169825577/home" title="微博主页" target="_blank" class="post-list-link"><i class="fa fa-weibo">  微博:小灰灰Blog</i></a></li><li class="post-list-item"><i class="fa fa-weixin">  微信公众号</i></li><li style="text-align:center" class="post-list-item"><img src="https://s10.mogucdn.com/mlcdn/c45406/171229_1cgld3igbelkbc70cd8af1j3809kb_150x150.jpg"/></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章(10)</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/26/Java面试知识要点之Redis篇/">Java面试知识要点之Redis篇</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/24/redis安装/">redis安装</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/24/redis环境搭建/">redis安装</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/18/18年4月18日离杭小记/">18年4月18日离杭小记</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/17/Java-借助ImageMagic实现图片编辑服务/">Java 借助ImageMagic实现图片编辑服务</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/16/CSS图片点击拷贝/">CSS图片点击拷贝</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/13/Java面试知识要点之数据库篇二/">Java面试知识要点之数据库篇二</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/13/生产环境分库分表的实际操作全记录/">生产环境分库分表的实际操作全记录</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/13/Java面试知识要点之数据库篇一/">Java面试知识要点之数据库篇一</a></li><li class="post-list-item"><a class="post-list-link" href="/hexblog/2018/04/11/Mybatis框架学习之使用篇二：标签语法/">Mybatis框架学习之使用篇二：标签语法</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类(74)</i><a title="点击展开或隐藏分类" href="javascript:void(0)" onclick="showOrHide('category-list-child', 'category-expand', 'block')"><span id="category-expand" style="font-size:12px;color:red"> 点击展开 </span></a></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/">工作</a><span class="category-list-count">14</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/分库分表/">分库分表</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/技术尝鲜/">技术尝鲜</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/面试/">面试</a><span class="category-list-count">10</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/面试/DB/">DB</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/面试/Java/">Java</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/工作/面试/缓存/">缓存</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/">技术</a><span class="category-list-count">53</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Android/">Android</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Android/一封/">一封</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/BugFix/">BugFix</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/BugFix/Java/">Java</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/BugFix/Java/Image/">Image</a><span class="category-list-count">2</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/DB/">DB</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/DB/Mybatis/">Mybatis</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/DB/Mysql/">Mysql</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/">Java</a><span class="category-list-count">19</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/IO/">IO</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/JDK/">JDK</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/JVM/">JVM</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/JavaWeb/">JavaWeb</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/Spring/">Spring</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Java/并发/">并发</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Quick系列项目/">Quick系列项目</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Quick系列项目/QuickAlarm/">QuickAlarm</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Quick系列项目/QuickMedia/">QuickMedia</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Quick系列项目/QuickSpi/">QuickSpi</a><span class="category-list-count">4</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Redis/">Redis</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/">Shell</a><span class="category-list-count">8</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/Git/">Git</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/Git/Maven/">Maven</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/Nginx/">Nginx</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/Shell/环境搭建/">环境搭建</a><span class="category-list-count">6</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/前端/">前端</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/前端/Chrome/">Chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/前端/Css/">Css</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/技术/前端/Jquery/">Jquery</a><span class="category-list-count">1</span></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/杂记/">杂记</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/杂记/idea/">idea</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/杂记/吐槽/">吐槽</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/杂记/小工具/">小工具</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/生活/">生活</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/hexblog/categories/生活/随笔/">随笔</a><span class="category-list-count">2</span></li></ul></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签墙(74)</i><a title="点击展开或隐藏分类" href="javascript:void(0)" onclick="showOrHide('tagcloud', 'tag-expand', 'none')"><span id="tag-expand" style="font-size:12px;color:red"> 点击收起 </span></a></div><div class="tagcloud"><!--!= tagcloud({min_font: 15, max_font: 15, amount: 100, orderby: 'count'})--><ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Initialize/">Initialize</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/面试/">面试</a><span class="tag-list-count">10</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/知识点汇总/">知识点汇总</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/数据库/">数据库</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/JVM/">JVM</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/容器/">容器</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/泛型/">泛型</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/多线程/">多线程</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/小记/">小记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/日记/">日记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Android/">Android</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/一封/">一封</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/RelativeLayout/">RelativeLayout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/CountDownTimer/">CountDownTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Bugfix/">Bugfix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Java/">Java</a><span class="tag-list-count">34</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/batik/">batik</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Png/">Png</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/拷贝/">拷贝</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Gitbook/">Gitbook</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Centos/">Centos</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/教程/">教程</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Hexo/">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Chrome/">Chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/工具/">工具</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/css/">css</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/笔记/">笔记</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/并发/">并发</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ForkJoin/">ForkJoin</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Reflect/">Reflect</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Jquery/">Jquery</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ClassLoader/">ClassLoader</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/双亲委托/">双亲委托</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/内存结构/">内存结构</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/垃圾回收/">垃圾回收</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ImageMagic/">ImageMagic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/JavaWeb/">JavaWeb</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Filter/">Filter</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Servlet/">Servlet</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/JDK/">JDK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/知识汇总/">知识汇总</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/File/">File</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ScheduledExecutorService/">ScheduledExecutorService</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/IO/">IO</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/clone/">clone</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/beancopy/">beancopy</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Email/">Email</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ThreadPoolExecutor/">ThreadPoolExecutor</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/mybatis/">mybatis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Nginx/">Nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/配置/">配置</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Redis/">Redis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/distributeLock/">distributeLock</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/SPI/">SPI</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/整体设计/">整体设计</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/使用手册/">使用手册</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Spring/">Spring</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/RequestParam/">RequestParam</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Jsonp/">Jsonp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/CORS/">CORS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Exception/">Exception</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Response/">Response</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/ffmpeg/">ffmpeg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/imagemagic/">imagemagic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/mysql/">mysql</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/索引/">索引</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/锁/">锁</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/事务/">事务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/redis/">redis</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Github/">Github</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Maven/">Maven</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/BugFix/">BugFix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/BufferedImage/">BufferedImage</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Jpeg/">Jpeg</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/杂记/">杂记</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/Okhttp/">Okhttp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/QuickAlarm/">QuickAlarm</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/hystrix/">hystrix</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/分库分表/">分库分表</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/hexblog/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档(74)</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2018/04/">四月 2018</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2018/03/">三月 2018</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2018/02/">二月 2018</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2018/01/">一月 2018</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2017/12/">十二月 2017</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2017/09/">九月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2017/08/">八月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/hexblog/archives/2017/05/">五月 2017</a><span class="archive-list-count">4</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 更多链接</i></div><ul style="padding-top:10px"></ul><li style="padding-top:2px"><a href="//my.oschina.net/u/566591" title="开源中国" target="_blank">开源中国</a></li><li style="padding-top:2px"><a href="//blog.csdn.net/liuyueyi25" title="CSDN" target="_blank">CSDN</a></li><li style="padding-top:2px"><a href="//www.jianshu.com/u/5902ab08e670" title="简书" target="_blank">简书</a></li><li style="padding-top:2px"><a href="//juejin.im/user/5a2a4b095188252ae93adbbf/posts" title="掘金" target="_blank">掘金</a></li><li style="padding-top:2px"><a href="//www.toutiao.com/c/user/69862071663/#mid=1579653107239950" title="头条" target="_blank">头条</a></li><li style="padding-top:2px"><a href="//cloud.tencent.com/developer/column/1847" title="云+" target="_blank">云+</a></li><li style="padding-top:2px"><a href="//github.com/liuyueyi" title="Github" target="_blank">Github</a></li><li style="padding-top:2px"><a href="//gitee.com/liuyueyi" title="Gitee" target="_blank">Gitee</a></li></div><div class="widget"><div class="widget-title"><i onclick="var qr = document.getElementById('qrcode'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}" style="cursor:pointer" class="fa fa-hit"> 点赞(点击展开)</i></div><ul id="qrcode" style="display:none;" class="post-list"><br/><li style="text-align:center" class="post-list-item"><a href="javascript:void(0)" target="_blank"><img src="https://s3.mogucdn.com/mlcdn/c45406/180104_50136i33id9e49j1f7k2e219e3ldf_800x798.png" alt="WeChat Pay" style="width:75%"/><br/><p style="text-align:center">微信打赏</p></a></li><li style="text-align:center" class="post-list-item"><a href="javascript:void(0)" target="_blank"><img src="https://s3.mogucdn.com/mlcdn/c45406/180104_0e6afl33b23lacj6ji2d7d060aiak_798x800.png" alt="Alipay" style="width:75%"/><br/><p style="text-align:center">支付宝打赏</p></a></li></ul></div></div></div></div><a id="totop" href="#top"></a><div id="render"><script src="https://s3.mogucdn.com/mlcdn/c45406/1520387600580_dom-to-image.min.js" charset="utf-8"></script><div class="rInput"><input id="choose-id" type="text" placeholder="cid: | id: + 标签" onkeydown="if(event.keyCode==13) {doRender();}"></div><div class="rSendBtn"><a id="rImgBtn" onclick="doRender()">渲染</a></div></div><script type="text/javascript" src="/hexblog/js/render.js?v=2.0.1" async></script><div id="footer"><div class="footer-info"><p><a href="https://zbang.online/webs"><img src="//s3.mogucdn.com/mlcdn/c45406/170419_637cgff527i8k9k8h512iaf36cdia_600x600.jpg" style="max-width: 44px;border-radius:44px"></a></p><p><a href="https://github.com/liuyueyi" target="_blank">GitHub</a> |  <a href="mailto:bangzewu@126.com">email</a> |  <a href="/hexblog/about/">关于 |</a><p>本站总访问量：<i id="busuanzi_container_site_pv"><i id="busuanzi_value_site_pv"></i></i>次</p></p><p><span> Copyright &copy;<a href="/hexblog/." rel="nofollow">YiHui.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span><span> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?028d9e53f991d9739ecc7cc42e13c500";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+  })();
+</script><script type="text/javascript" src="/hexblog/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/hexblog/js/toctotop.js?v=2.0.1" async></script><script src="https://s3.mogucdn.com/mlcdn/c45406/1520407228303_social-share.min.js" charset="utf-8"></script><link rel="stylesheet" href="https://s3.mogucdn.com/mlcdn/c45406/1518422561591_share.min.css"><script>(function(d, s) {
+  var j, e = d.getElementsByTagName('body')[0];
+  if (typeof LivereTower === 'function') { return; }
+  j = d.createElement(s);
+  j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+  j.async = true;
+  e.appendChild(j);
+})(document, 'script');
+</script></body><script type="text/javascript" src="/hexblog/js/common.js?v=2.0.1" async></script></html>
