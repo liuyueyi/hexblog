@@ -682,7 +682,19 @@ body {
   word-break: normal;
 }
 .post .post-content h2 {
-  font-size: 18px;
+  box-sizing: border-box;
+  margin-right: 2px;
+  margin: 5px 5px 5px 0;
+  padding-right: 10px;
+  padding-left: 10px;
+  font-size: inherit;
+  color: #fff;
+  line-height: inherit;
+  display: inline-block;
+  font-weight: normal;
+  background: #00acc1;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 4px;
 }
 .post .post-content h3 {
   font-size: 16px;
