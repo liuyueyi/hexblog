@@ -170,6 +170,85 @@ var _hmt = _hmt || [];
                 <div class="column is-8-tablet is-8-desktop is-7-widescreen has-order-2 column-main">
     <div class="card">
     
+        <a href="/hexblog/2018/03/23/mysql之锁与事务详解/">
+            <div class="thumbnail default_logo">
+                <br>
+                <span>
+                mysql之锁与事务详解
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="font-size:0.7em">by 一灰灰</span>
+                </span>
+            </div>
+            </a>
+    
+
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-03-23T07:16:21.000Z">2018-03-23</time>
+                
+                <div class="level-item">
+                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mysql/">Mysql</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey" style="font-size: 1.2em;">
+                    
+                    
+                    28 分钟 读完 (大约 4218 个字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/hexblog/2018/03/23/mysql之锁与事务详解/">mysql之锁与事务详解</a>
+            
+        </h1>
+        <div class="content">
+            
+
+            <h1 id="Mysql之锁与事务"><a href="#Mysql之锁与事务" class="headerlink" title="Mysql之锁与事务"></a>Mysql之锁与事务</h1><p>平时的业务中，顶多也就是写写简单的sql，连事务都用的少，对锁这一块的了解就更加欠缺了，之前一个大神分享了下mysql的事务隔离级别，感觉挺有意思的，正好发现一个很棒的博文，然后也收集了一些相关知识，正好来学习下，mysql中锁与事务的神秘面纱，主要内容包括</p>
+<ol>
+<li>共享锁和排它锁的区别以及适合范围</li>
+<li>mysql的表锁和行锁的区别</li>
+<li>怎么判断一个sql是否执行了锁，执行的是表锁还是行锁</li>
+<li>事务是什么，怎么用</li>
+<li>事务的特性ACID</li>
+<li>事务的隔离级别 (RU, RC, RR, SER)</li>
+<li>如何查看mysql使用的隔离级别</li>
+</ol>
+
+            
+        </div>
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/hexblog/2018/03/23/mysql之锁与事务详解/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
         <a href="/hexblog/2018/03/22/mysql之索引的工作机制/">
             <div class="thumbnail default_logo">
                 <br>
@@ -1727,82 +1806,6 @@ var _hmt = _hmt || [];
 
 
 
-    <div class="card">
-    
-        <a href="/hexblog/2018/02/09/报警系统QuickAlarm之报警规则的设定与加载/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                3. 报警系统QuickAlarm之报警规则的设定与加载
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-02-09T11:39:43.000Z">2018-02-09</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Quick系列/">Quick系列</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Quick系列/QuickAlarm/">QuickAlarm</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    21 分钟 读完 (大约 3148 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/02/09/报警系统QuickAlarm之报警规则的设定与加载/">3. 报警系统QuickAlarm之报警规则的设定与加载</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>前面一篇是报警执行器的定义与加载已经完成，但与之对应的报警规则有是如何定义和加载的呢？</p>
-<p>此外，既然命名为规则，那么就需要有对应的解析器，以根据报警规则和报警类型等相关输入条件，来选择对应的报警执行器，因此本文主要包括的内容就比较清晰了</p>
-<ul>
-<li>报警规则的定义</li>
-<li>报警规则的加载</li>
-<li>报警规则的解析以及报警执行器选择</li>
-</ul>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/02/09/报警系统QuickAlarm之报警规则的设定与加载/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -1875,7 +1878,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/archives">
                     <p class="title has-text-weight-normal">
-                        436
+                        437
                     </p>
                     </a>
                 </div>
@@ -2089,6 +2092,19 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-03-15T11:11:33.000Z">2021-03-15</time></div>
+                    <a href="/hexblog/2021/03/15/210315-域名解析命令/" class="has-link-black-ter is-size-6">210315-域名解析命令</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-03-10T07:59:58.000Z">2021-03-10</time></div>
                     <a href="/hexblog/2021/03/10/210310-ZooKeeper安装及初体验/" class="has-link-black-ter is-size-6">210310-ZooKeeper安装及初体验</a>
                     <p class="is-size-7 is-uppercase">
@@ -2132,19 +2148,6 @@ var _hmt = _hmt || [];
                     <a href="/hexblog/2021/02/24/210224-ssh防掉线设置/" class="has-link-black-ter is-size-6">210224-ssh防掉线设置</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/hexblog/categories/Shell/">Shell</a> / <a class="has-link-grey -link" href="/hexblog/categories/Shell/环境搭建/">环境搭建</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-02-23T03:43:05.000Z">2021-02-23</time></div>
-                    <a href="/hexblog/2021/02/23/200223-docker-批量删除命令小记/" class="has-link-black-ter is-size-6">200223-docker 批量删除命令小记</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/hexblog/categories/Shell/">Shell</a> / <a class="has-link-grey -link" href="/hexblog/categories/Shell/Docker/">Docker</a>
                     </p>
                 </div>
             </div>
@@ -3544,7 +3547,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -4666,7 +4669,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>

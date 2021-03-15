@@ -170,6 +170,76 @@ var _hmt = _hmt || [];
                 <div class="column is-8-tablet is-8-desktop is-7-widescreen has-order-2 column-main">
     <div class="card">
     
+        <a href="/hexblog/2019/09/06/190906-MySql-Timestamp默认值限制问题/">
+            <div class="thumbnail default_logo">
+                <br>
+                <span>
+                190906-MySql Timestamp默认值限制问题
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="font-size:0.7em">by 一灰灰</span>
+                </span>
+            </div>
+            </a>
+    
+
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-09-06T07:50:01.000Z">2019-09-06</time>
+                
+                <div class="level-item">
+                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mysql/">Mysql</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey" style="font-size: 1.2em;">
+                    
+                    
+                    4 分钟 读完 (大约 548 个字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/hexblog/2019/09/06/190906-MySql-Timestamp默认值限制问题/">190906-MySql Timestamp默认值限制问题</a>
+            
+        </h1>
+        <div class="content">
+            
+
+            <p>今天在往mysql表中新增一列timestamp时，希望设置默认值为0，结果发现居然提示失败，记录一下</p>
+
+            
+        </div>
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/hexblog/2019/09/06/190906-MySql-Timestamp默认值限制问题/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
         <a href="/hexblog/2019/08/21/190821-ProtoStuff无法反序列化Deprecated注解成员问题记录/">
             <div class="thumbnail default_logo">
                 <br>
@@ -1530,77 +1600,6 @@ var _hmt = _hmt || [];
 
 
 
-    <div class="card">
-    
-        <a href="/hexblog/2019/07/17/190717-Python-内置函数之str/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                190717 Python 内置函数之str
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-07-17T00:12:52.000Z">2019-07-17</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Python/">Python</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Python/教程/">教程</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Python/教程/内置函数/">内置函数</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    1 分钟 读完 (大约 175 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2019/07/17/190717-Python-内置函数之str/">190717 Python 内置函数之str</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>将对象转化为字符串</p>
-<figure class="highlight python hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">&gt;&gt;&gt; </span>str([<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>])</span><br><span class="line"><span class="hljs-string">'[1, 2, 3]'</span></span><br><span class="line"><span class="hljs-meta">&gt;&gt;&gt; </span>str((<span class="hljs-number">1</span>,<span class="hljs-string">'a'</span>))</span><br><span class="line"><span class="hljs-string">"(1, 'a')"</span></span><br><span class="line"><span class="hljs-meta">&gt;&gt;&gt; </span>str(&#123;<span class="hljs-string">'a'</span>: <span class="hljs-number">123</span>, <span class="hljs-string">'b'</span>: <span class="hljs-number">456</span>&#125;)</span><br><span class="line"><span class="hljs-string">"&#123;'a': 123, 'b': 456&#125;"</span></span><br><span class="line"><span class="hljs-meta">&gt;&gt;&gt; </span>str(<span class="hljs-string">b'hello'</span>)</span><br><span class="line"><span class="hljs-string">"b'hello'"</span></span><br></pre></td></tr></table></figure>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2019/07/17/190717-Python-内置函数之str/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -1675,7 +1674,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/archives">
                     <p class="title has-text-weight-normal">
-                        436
+                        437
                     </p>
                     </a>
                 </div>
@@ -1889,6 +1888,19 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-03-15T11:11:33.000Z">2021-03-15</time></div>
+                    <a href="/hexblog/2021/03/15/210315-域名解析命令/" class="has-link-black-ter is-size-6">210315-域名解析命令</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-03-10T07:59:58.000Z">2021-03-10</time></div>
                     <a href="/hexblog/2021/03/10/210310-ZooKeeper安装及初体验/" class="has-link-black-ter is-size-6">210310-ZooKeeper安装及初体验</a>
                     <p class="is-size-7 is-uppercase">
@@ -1932,19 +1944,6 @@ var _hmt = _hmt || [];
                     <a href="/hexblog/2021/02/24/210224-ssh防掉线设置/" class="has-link-black-ter is-size-6">210224-ssh防掉线设置</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/hexblog/categories/Shell/">Shell</a> / <a class="has-link-grey -link" href="/hexblog/categories/Shell/环境搭建/">环境搭建</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-02-23T03:43:05.000Z">2021-02-23</time></div>
-                    <a href="/hexblog/2021/02/23/200223-docker-批量删除命令小记/" class="has-link-black-ter is-size-6">200223-docker 批量删除命令小记</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/hexblog/categories/Shell/">Shell</a> / <a class="has-link-grey -link" href="/hexblog/categories/Shell/Docker/">Docker</a>
                     </p>
                 </div>
             </div>
@@ -3344,7 +3343,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -4466,7 +4465,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>

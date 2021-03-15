@@ -2,7 +2,7 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-<title>标签: MongoDb - 一灰灰Blog</title>
+<title>标签: MongoDB - 一灰灰Blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
@@ -10,7 +10,7 @@
     <meta name="description" content="好好学习，努力搬砖，Java,Shell,Spring,Mysql,DB,MVC,Servlet,Redis也需了解一二">
 <meta property="og:type" content="website">
 <meta property="og:title" content="一灰灰Blog">
-<meta property="og:url" content="https://blog.hhui.top/hexblog/tags/MongoDb/index.html">
+<meta property="og:url" content="https://blog.hhui.top/hexblog/tags/MongoDB/index.html">
 <meta property="og:site_name" content="一灰灰Blog">
 <meta property="og:description" content="好好学习，努力搬砖，Java,Shell,Spring,Mysql,DB,MVC,Servlet,Redis也需了解一二">
 <meta property="og:locale" content="zh-CN">
@@ -172,7 +172,7 @@ var _hmt = _hmt || [];
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/hexblog/tags">标签</a></li>
-            <li class="is-active"><a href="#" aria-current="page">MongoDb</a></li>
+            <li class="is-active"><a href="#" aria-current="page">MongoDB</a></li>
         </ul>
         </nav>
     </div>
@@ -180,11 +180,11 @@ var _hmt = _hmt || [];
 
     <div class="card">
     
-        <a href="/hexblog/2020/03/31/200331-MongoDb系列教程十-文档-Document-查询高级篇/">
+        <a href="/hexblog/2020/04/18/200418-MongoDb系列教程十三-索引/">
             <div class="thumbnail default_logo">
                 <br>
                 <span>
-                200331-MongoDb系列教程十：文档 Document 查询高级篇
+                200418-MongoDb系列教程十三：索引
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span style="font-size:0.7em">by 一灰灰</span>
@@ -197,7 +197,7 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-31T13:50:13.000Z">2020-03-31</time>
+                <time class="level-item has-text-grey" datetime="2020-04-18T00:55:17.000Z">2020-04-18</time>
                 
                 <div class="level-item">
                 <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
@@ -207,7 +207,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey" style="font-size: 1.2em;">
                     
                     
-                    10 分钟 读完 (大约 1490 个字)
+                    11 分钟 读完 (大约 1716 个字)
                 </span>
                 
                 
@@ -217,18 +217,88 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/hexblog/2020/03/31/200331-MongoDb系列教程十-文档-Document-查询高级篇/">200331-MongoDb系列教程十：文档 Document 查询高级篇</a>
+                <a class="has-link-black-ter" href="/hexblog/2020/04/18/200418-MongoDb系列教程十三-索引/">200418-MongoDb系列教程十三：索引</a>
             
         </h1>
         <div class="content">
             
 
-            <p>上一篇的mongodb查询，主要介绍的是一些基本操作，当然有基本就高阶操作；</p>
-<p>本文将带来更多的查询姿势</p>
+            <p>索引一般用来提高查询效率，避免全集合搜索，那么在mongodb中，支持索引么？如果支持，如何定义索引，如何使用索引，如何确定一个sql是否走索引？</p>
+
+            
+        </div>
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/hexblog/2020/04/18/200418-MongoDb系列教程十三-索引/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
+        <a href="/hexblog/2020/04/10/200410-MongoDB系列教程十二-文档更新删除之非典型篇/">
+            <div class="thumbnail default_logo">
+                <br>
+                <span>
+                200410-MongoDB系列教程十二：文档更新删除之非典型篇
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="font-size:0.7em">by 一灰灰</span>
+                </span>
+            </div>
+            </a>
+    
+
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2020-04-10T01:13:52.000Z">2020-04-10</time>
+                
+                <div class="level-item">
+                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey" style="font-size: 1.2em;">
+                    
+                    
+                    8 分钟 读完 (大约 1267 个字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/hexblog/2020/04/10/200410-MongoDB系列教程十二-文档更新删除之非典型篇/">200410-MongoDB系列教程十二：文档更新删除之非典型篇</a>
+            
+        </h1>
+        <div class="content">
+            
+
+            <p>前面介绍document的新增、删除、更新都处于相对常见和基础的说明，但是考虑到mongodb非结构化的特点，它的一些特性是我们的mysql不会遇到的，本文将针对这些特殊场景给出示例说明</p>
 <ul>
-<li>排序</li>
-<li>分页</li>
-<li>聚合</li>
+<li>在现有文档中，增加一个field</li>
+<li>删除文档中的某个field</li>
+<li>重命名文档的field</li>
+<li>在文档的数组orObject中，添加/删除/更新数据</li>
 </ul>
 
             
@@ -238,7 +308,7 @@ var _hmt = _hmt || [];
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/31/200331-MongoDb系列教程十-文档-Document-查询高级篇/#more">阅读更多</a>
+                <a class="button is-size-7 is-light" href="/hexblog/2020/04/10/200410-MongoDB系列教程十二-文档更新删除之非典型篇/#more">阅读更多</a>
                 </div>
             </div>
         </div>
@@ -256,11 +326,11 @@ var _hmt = _hmt || [];
 
     <div class="card">
     
-        <a href="/hexblog/2020/03/28/200328-MongoDb系列教程九-文档-Document-查询基础篇/">
+        <a href="/hexblog/2020/04/08/200408-MongoDb系列教程十一-文档-Document-查询非典型篇/">
             <div class="thumbnail default_logo">
                 <br>
                 <span>
-                200328-MongoDb系列教程九：文档 Document 查询基础篇
+                200408-MongoDb系列教程十一：文档 Document 查询非典型篇
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span style="font-size:0.7em">by 一灰灰</span>
@@ -273,7 +343,7 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-28T11:27:12.000Z">2020-03-28</time>
+                <time class="level-item has-text-grey" datetime="2020-04-08T13:12:29.000Z">2020-04-08</time>
                 
                 <div class="level-item">
                 <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
@@ -283,7 +353,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey" style="font-size: 1.2em;">
                     
                     
-                    7 分钟 读完 (大约 1051 个字)
+                    6 分钟 读完 (大约 897 个字)
                 </span>
                 
                 
@@ -293,13 +363,13 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/hexblog/2020/03/28/200328-MongoDb系列教程九-文档-Document-查询基础篇/">200328-MongoDb系列教程九：文档 Document 查询基础篇</a>
+                <a class="has-link-black-ter" href="/hexblog/2020/04/08/200408-MongoDb系列教程十一-文档-Document-查询非典型篇/">200408-MongoDb系列教程十一：文档 Document 查询非典型篇</a>
             
         </h1>
         <div class="content">
             
 
-            <p>MongoDb文档查询，主要借助find方法来完成，在实际的业务开发中，为了满足各种复杂的业务场景，查询的姿势也是各种各样，本篇则主要介绍基本的使用姿势，不涉及到聚合、排序、分页相关内容</p>
+            <p>前面介绍的查询可以说是常见的典型case，但是mongodb中有两个比价特殊的数据类型，数组 + 对象，自然的也会有一些非典型的查询case，下面主要针对这两种数据类型的查询姿势，给出实例讲解</p>
 
             
         </div>
@@ -308,7 +378,7 @@ var _hmt = _hmt || [];
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/28/200328-MongoDb系列教程九-文档-Document-查询基础篇/#more">阅读更多</a>
+                <a class="button is-size-7 is-light" href="/hexblog/2020/04/08/200408-MongoDb系列教程十一-文档-Document-查询非典型篇/#more">阅读更多</a>
                 </div>
             </div>
         </div>
@@ -326,11 +396,11 @@ var _hmt = _hmt || [];
 
     <div class="card">
     
-        <a href="/hexblog/2020/03/27/200327-MongoDb系列教程八-文档-Document-更新姿势/">
+        <a href="/hexblog/2020/03/19/200319-MongoDb系列教程零-环境安装与初始化/">
             <div class="thumbnail default_logo">
                 <br>
                 <span>
-                200327-MongoDb系列教程八：文档 Document 更新姿势
+                200319-MongoDb系列教程零：环境安装与初始化
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span style="font-size:0.7em">by 一灰灰</span>
@@ -343,7 +413,7 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-27T03:04:36.000Z">2020-03-27</time>
+                <time class="level-item has-text-grey" datetime="2020-03-19T12:13:29.000Z">2020-03-19</time>
                 
                 <div class="level-item">
                 <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
@@ -353,7 +423,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey" style="font-size: 1.2em;">
                     
                     
-                    4 分钟 读完 (大约 608 个字)
+                    4 分钟 读完 (大约 657 个字)
                 </span>
                 
                 
@@ -363,13 +433,17 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/hexblog/2020/03/27/200327-MongoDb系列教程八-文档-Document-更新姿势/">200327-MongoDb系列教程八：文档 Document 更新姿势</a>
+                <a class="has-link-black-ter" href="/hexblog/2020/03/19/200319-MongoDb系列教程零-环境安装与初始化/">200319-MongoDb系列教程零：环境安装与初始化</a>
             
         </h1>
         <div class="content">
             
 
-            <p>本篇介绍update/save两种方法提供的更新姿势</p>
+            <blockquote>
+<p>MongoDB 是一个基于分布式文件存储的数据库。由 C++ 语言编写。旨在为 WEB 应用提供可扩展的高性能数据存储解决方案。</p>
+</blockquote>
+<p>MongoDB 是一个介于关系数据库和非关系数据库之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。</p>
+<p>本篇为mongodb系列教程第一篇，环境安装与连接设置</p>
 
             
         </div>
@@ -378,505 +452,7 @@ var _hmt = _hmt || [];
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/27/200327-MongoDb系列教程八-文档-Document-更新姿势/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2020/03/26/200326-MongoDb系列教程七-文档-Document-删除姿势/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                200326-MongoDb系列教程七：文档 Document 删除姿势
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-26T10:02:03.000Z">2020-03-26</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    3 分钟 读完 (大约 404 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2020/03/26/200326-MongoDb系列教程七-文档-Document-删除姿势/">200326-MongoDb系列教程七：文档 Document 删除姿势</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>前面一篇介绍了插入文档的使用姿势，这一篇则主要介绍删除的使用case</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/26/200326-MongoDb系列教程七-文档-Document-删除姿势/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2020/03/26/200326-MongoDb系列教程六-文档-Document-插入姿势/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                200326-MongoDb系列教程六：文档 Document 插入姿势
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-26T09:04:06.000Z">2020-03-26</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    5 分钟 读完 (大约 775 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2020/03/26/200326-MongoDb系列教程六-文档-Document-插入姿势/">200326-MongoDb系列教程六：文档 Document 插入姿势</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>文档相当于关系数据库中数据行，也是我们最关心的数据本身；以BSON格式存储（和json区别不大）</p>
-<p>我们通常所说业务开发者的CURD四大技能，在mongodb中，就是针对Document而言，接下来我们先看一下文档的新增使用姿势</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/26/200326-MongoDb系列教程六-文档-Document-插入姿势/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2020/03/26/200326-MongoDb系列教程五-集合-Collection/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                200326-MongoDb系列教程五：集合 Collection
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-26T08:52:20.000Z">2020-03-26</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    3 分钟 读完 (大约 473 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2020/03/26/200326-MongoDb系列教程五-集合-Collection/">200326-MongoDb系列教程五：集合 Collection</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>集合，相当于关系型数据库中的table，在mongodb中，集合的概念非常贴切，属于文档(Document)的集合</p>
-<p>其最大的特点是：</p>
-<ul>
-<li>没有固定的结构</li>
-</ul>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/26/200326-MongoDb系列教程五-集合-Collection/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2020/03/26/200326-MongoDb系列教程四-数据库-Database/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                200326-MongoDb系列教程四：数据库 Database
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-26T08:49:32.000Z">2020-03-26</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    5 分钟 读完 (大约 689 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2020/03/26/200326-MongoDb系列教程四-数据库-Database/">200326-MongoDb系列教程四：数据库 Database</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>我们通常把mongodb叫文档型数据库，mysql叫关系型数据库，influxdb叫时序数据库，如果熟悉这三个的话，会发现他们都有一个<code>database</code>，它是<code>collection/table/measurement</code>的上一级，可以简单的把它理解为更高层级的集合，方便统一管理/权限划分/业务拆分</p>
-<p>下面简单介绍一下database的基础操作</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/26/200326-MongoDb系列教程四-数据库-Database/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2020/03/25/200325-MongoDb系列教程三-基本工具介绍/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                200325-MongoDb系列教程三：基本工具介绍
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-25T13:32:39.000Z">2020-03-25</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    5 分钟 读完 (大约 743 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2020/03/25/200325-MongoDb系列教程三-基本工具介绍/">200325-MongoDb系列教程三：基本工具介绍</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>mongodb服务器安装完毕之后，提供了一些配套的操作工具，接下来我们有必要认识一下它们，并了解基本用法</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/25/200325-MongoDb系列教程三-基本工具介绍/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2020/03/22/200322-MongoDb系列教程二-连接/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                200322-MongoDb系列教程二：连接
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-22T14:11:09.000Z">2020-03-22</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    3 分钟 读完 (大约 437 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2020/03/22/200322-MongoDb系列教程二-连接/">200322-MongoDb系列教程二：连接</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>后续的所有文章的基础，都是需要先连上mongodb，然后才能执行各种命令操作；</p>
-<p>本文将介绍一下如何连接一个已经启动的mongodb服务器</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/22/200322-MongoDb系列教程二-连接/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2020/03/21/200321-MongoDb系列教程一-基本概念/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                200321-MongoDb系列教程一：基本概念
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-03-21T11:40:22.000Z">2020-03-21</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/DB/">DB</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/DB/Mongo/">Mongo</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    4 分钟 读完 (大约 614 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2020/03/21/200321-MongoDb系列教程一-基本概念/">200321-MongoDb系列教程一：基本概念</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>mongodb和我们通常使用的关系型数据库如mysql，在一些基本概念上有相同之处，但也有一些区别，在进行mongodb的语言介绍之前，有必要先了解一些基础概念</p>
-<p>本文将对比sql对一些基础概念进行解释说明</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/03/21/200321-MongoDb系列教程一-基本概念/#more">阅读更多</a>
+                <a class="button is-size-7 is-light" href="/hexblog/2020/03/19/200319-MongoDb系列教程零-环境安装与初始化/#more">阅读更多</a>
                 </div>
             </div>
         </div>
@@ -937,7 +513,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/archives">
                     <p class="title has-text-weight-normal">
-                        436
+                        437
                     </p>
                     </a>
                 </div>
@@ -1151,6 +727,19 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-03-15T11:11:33.000Z">2021-03-15</time></div>
+                    <a href="/hexblog/2021/03/15/210315-域名解析命令/" class="has-link-black-ter is-size-6">210315-域名解析命令</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-03-10T07:59:58.000Z">2021-03-10</time></div>
                     <a href="/hexblog/2021/03/10/210310-ZooKeeper安装及初体验/" class="has-link-black-ter is-size-6">210310-ZooKeeper安装及初体验</a>
                     <p class="is-size-7 is-uppercase">
@@ -1194,19 +783,6 @@ var _hmt = _hmt || [];
                     <a href="/hexblog/2021/02/24/210224-ssh防掉线设置/" class="has-link-black-ter is-size-6">210224-ssh防掉线设置</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/hexblog/categories/Shell/">Shell</a> / <a class="has-link-grey -link" href="/hexblog/categories/Shell/环境搭建/">环境搭建</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-02-23T03:43:05.000Z">2021-02-23</time></div>
-                    <a href="/hexblog/2021/02/23/200223-docker-批量删除命令小记/" class="has-link-black-ter is-size-6">200223-docker 批量删除命令小记</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/hexblog/categories/Shell/">Shell</a> / <a class="has-link-grey -link" href="/hexblog/categories/Shell/Docker/">Docker</a>
                     </p>
                 </div>
             </div>
@@ -2606,7 +2182,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -3728,7 +3304,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -4109,6 +3685,425 @@ var _hmt = _hmt || [];
         
         <li>
             <a class="level is-marginless" href="/hexblog/archives/2018/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">16</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">10</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">13</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/hexblog/">
+                
+                    <img src="/hexblog/images/avatar.jpg" alt="一灰灰Blog" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 YiHui&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/liuyueyi">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Chart in Weibo" href="https://weibo.com/p/1005052169825577/home">
+                        
+                        <i class="fab fa-weibo"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Frends with me" href="/hexblog/imgs/info/wx.jpg">
+                        
+                        <i class="fab fa-weixin"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div id="foot-pannel">
+        <div class="outer">
+            <div class="foot-column">
+                <!--关注我们-->
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">更多平台</h3>
+                    <div class="widget">
+                        <ul>
+                            <li>
+                                <a href="//blog.hhui.top/">一灰灰Blog</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//juejin.im/user/5a2a4b095188252ae93adbbf/posts">掘金</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//my.oschina.net/u/566591">开源中国</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//blog.csdn.net/liuyueyi25">CSDN</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//www.jianshu.com/u/5902ab08e670">简书</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//cloud.tencent.com/developer/column/1847">云+</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//www.toutiao.com/c/user/69862071663/#mid=1579653107239950">头条</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//github.com/liuyueyi">GitHub</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//gitee.com/liuyueyi">Gitee</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="foot-column">
+                <!--联系合作-->
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">一灰灰Blog</h3>
+                    <div class="widget">
+                        <ul>
+                            
+                                <li>
+                                    <a href="#">QQ : 3302797840</a>
+                                </li>
+                            
+                                <li>
+                                    <a href="#">微信 : liuyueyi25</a>
+                                </li>
+                            
+                                <li>
+                                    <a href="#">邮箱 : bangzewu@126.com</a>
+                                </li>
+                            
+                                <li>
+                                    <a href="#">微博 : 一灰灰blog</a>
+                                </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">友情链接</h3>
+                    <div class="widget">
+                        <ul>
+                            
+                                <span class="label">
+                                    <a target="_blank" href="//zweb.hhui.top">zweb多媒体工具页</a>
+                                </span>
+                            
+                                <span class="label">
+                                    <a target="_blank" href="//mweb.hhui.top">mweb古诗选</a>
+                                </span>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="foot-column">
+                <!--友情链接-->
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">知识星球</h3>
+                    <div class="widget">
+                        <img style="width: 200px;" src="/hexblog/imgs/info/xingqiu.png">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="foot-column">
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">公众号</h3>
+                    <div class="widget">
+                        <img style="width: 200px;" src="/hexblog/imgs/info/wx.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding-top:20em">
+        <hr>
+        <div id="foot-info">
+            <span style="margin:4px;font-size:1em">
+                &copy; 2021 <a target="_blank" href="https://github.com/liuyueyi">一灰灰Blog</a> 版权所有 | <a href="http://www.beian.miit.gov.cn" target="_blank">鄂ICP备18017282号</a>
+            </span>
+            <br>
+            <span style="margin:4px;font-size:1em">
+                <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1278691600'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278691600%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+            </span>
+            <span style="margin:1em;font-size:1.4em">
+                <label id="self_count_cnt"><br>本站总访量: <span class="visit_cnt">69330</span> | 总访问人次: <span class="visit_cnt">11586</span> | 恭喜您为第 <span class="visit_cnt">10840</span> 访问者</label>
+            </span>
+            <script src="/hexblog/js/count.js"></script>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/hexblog/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/hexblog/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/hexblog/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/hexblog/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/hexblog/js/main.js" defer></script>
+
+<script data-ad-client="ca-pub-5592000528061748" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/hexblog/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/hexblog/js/insight.js" defer></script>
+<link rel="stylesheet" href="/hexblog/css/search.css">
+<link rel="stylesheet" href="/hexblog/css/insight.css">
+    
+</body>
+</html>nless" href="/hexblog/archives/2018/03/">
                 <span class="level-start">
                     <span class="level-item">三月 2018</span>
                 </span>
