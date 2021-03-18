@@ -170,6 +170,159 @@ var _hmt = _hmt || [];
                 <div class="column is-8-tablet is-8-desktop is-7-widescreen has-order-2 column-main">
     <div class="card">
     
+        <a href="/hexblog/2018/05/31/180531-Spring中JavaConfig知识小结/">
+            <div class="thumbnail default_logo">
+                <br>
+                <span>
+                180531-Spring中JavaConfig知识小结
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="font-size:0.7em">by 一灰灰</span>
+                </span>
+            </div>
+            </a>
+    
+
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-05-31T11:52:41.000Z">2018-05-31</time>
+                
+                <div class="level-item">
+                <a class="has-link-black -link" href="/hexblog/categories/开源/">开源</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/开源/Spring/">Spring</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/开源/Spring/使用小结/">使用小结</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey" style="font-size: 1.2em;">
+                    
+                    
+                    13 分钟 读完 (大约 1929 个字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/hexblog/2018/05/31/180531-Spring中JavaConfig知识小结/">180531-Spring中JavaConfig知识小结</a>
+            
+        </h1>
+        <div class="content">
+            
+
+            <h1 id="Sring中JavaConfig使用姿势"><a href="#Sring中JavaConfig使用姿势" class="headerlink" title="Sring中JavaConfig使用姿势"></a>Sring中JavaConfig使用姿势</h1><p>去掉xml的配置方式，改成用Java来配置，最常见的就是将xml中的 bean定义， scanner包扫描，属性文件的配置信息读取等</p>
+<h2 id="I-几个基本注解"><a href="#I-几个基本注解" class="headerlink" title="I. 几个基本注解"></a>I. 几个基本注解</h2><h3 id="1-Configuration注解"><a href="#1-Configuration注解" class="headerlink" title="1. Configuration注解"></a>1. Configuration注解</h3><p>在javaConfig中注解<code>@Configuration</code>用来代替一个xml文件，可以简单的理解他们的作用是相等的，一般bean的定义也都是放在被这个注解修饰的类中</p>
+<p>如一个基本的配置文件如下</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Configuration</span></span><br><span class="line"><span class="hljs-meta">@ComponentScan</span>(<span class="hljs-string">"com.git.hui.rabbit.spring"</span>)</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpringConfig</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">private</span> Environment environment;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Autowired</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setEnvironment</span><span class="hljs-params">(Environment environment)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.environment = environment;</span><br><span class="line">        System.out.println(<span class="hljs-string">"then env: "</span> + environment);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Bean</span>(name=<span class="hljs-string">"connectionFactory"</span>)</span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> ConnectionFactory <span class="hljs-title">connectionFactory</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        CachingConnectionFactory factory = <span class="hljs-keyword">new</span> CachingConnectionFactory();</span><br><span class="line">        factory.setHost(<span class="hljs-string">"127.0.0.1"</span>);</span><br><span class="line">        factory.setPort(<span class="hljs-number">5672</span>);</span><br><span class="line">        factory.setUsername(<span class="hljs-string">"admin"</span>);</span><br><span class="line">        factory.setPassword(<span class="hljs-string">"admin"</span>);</span><br><span class="line">        factory.setVirtualHost(<span class="hljs-string">"/"</span>);</span><br><span class="line">        <span class="hljs-keyword">return</span> factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Bean</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> RabbitAdmin <span class="hljs-title">rabbitAdmin</span><span class="hljs-params">(ConnectionFactory connectionFactory)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> RabbitAdmin(connectionFactory);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-Bean-注解"><a href="#2-Bean-注解" class="headerlink" title="2. Bean 注解"></a>2. Bean 注解</h3><p>上面的例子中，在方法上添加了@Bean注解，这个就相当于传统的</p>
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">bean</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"rabbitAdmin"</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"org.springframework.amqp.rabbit.core.RabbitAdmin"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>因此在需要引入rabbitAdmin实例的地方，可以如下使用</p>
+<p>a. 属性字段上添加 <code>@Autowired</code>注解</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RConsumer</span> </span>&#123;</span><br><span class="line">  <span class="hljs-meta">@Autowired</span></span><br><span class="line">  <span class="hljs-keyword">private</span> RabbitAdmin rabbitAdmin;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>b. 设置方法上添加 <code>@Autowired</code>注解</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RConsumer</span> </span>&#123;</span><br><span class="line">  <span class="hljs-keyword">private</span> RabbitAdmin rabbitAdmin;</span><br><span class="line">  </span><br><span class="line">  <span class="hljs-meta">@Autowired</span></span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">setRabbitAdmin</span><span class="hljs-params">(RabbitAdmin rabbitAdmin)</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">this</span>.rabbitAdmin = rabbitAdmin;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>c. 使用构造器的方式</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RConsumer</span> </span>&#123;</span><br><span class="line">  <span class="hljs-keyword">private</span> RabbitAdmin rabbitAdmin;</span><br><span class="line">  <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">RConsumer</span><span class="hljs-params">(RabbitAdmin rabbitAdmin)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.rabbitAdmin = rabbitAdmin;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面就是Spring容器支持的几种典型的IoC方式</p>
+<h3 id="3-ComponentScan"><a href="#3-ComponentScan" class="headerlink" title="3. ComponentScan"></a>3. ComponentScan</h3><p>这个类似于xml中的 <code>&lt;context:component-scan&quot;/&gt;</code> 标签</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@ComponentScan</span>(<span class="hljs-string">"com.git.hui.rabbit.spring"</span>)</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpringConfig</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的这个配置，表示自动扫描包 <code>com.git.hui.rabbit.spring</code> 下面的bean （要求类上添加了 @Component, @Repository, @Service）</p>
+<p><strong>那么一个问题来了，如果一个类既被自动扫描加载，又显示定义了bean，会怎样?</strong></p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">package</span> com.git.hui.rabbit.spring;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@Component</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestBean</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> AtomicInteger count = <span class="hljs-keyword">new</span> AtomicInteger(<span class="hljs-number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">TestBean</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="hljs-string">"testBean count: "</span> + count.getAndAdd(<span class="hljs-number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的JavaConfig</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Configuration</span></span><br><span class="line"><span class="hljs-meta">@ComponentScan</span>(<span class="hljs-string">"com.git.hui.rabbit.spring"</span>)</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SpringConfig</span> </span>&#123;</span><br><span class="line">    <span class="hljs-meta">@Bean</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> TestBean <span class="hljs-title">testBean</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> TestBean();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实际测试，发现这个bean只会有一个实例，即输出计数只会有一条，实际查看<code>ApplicationContext</code>中的内容，TestBean的实例，也确实只有一个，如果改成下面这种场景呢</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Bean</span>(name=<span class="hljs-string">"testBean2"</span>)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> TestBean <span class="hljs-title">testBean</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> TestBean();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>会有两条记录输出，实际查看容器中的Bean对象,会有两个实例如下</p>
+<p><img src="https://raw.githubusercontent.com/liuyueyi/Source/master/img/blog/daywork/180531_JavaConfig01.jpg" alt="image1"></p>
+<p>这和我们的预期也是一样的，因为一个类我可能需要多个不同的Bean实例来干一些事情</p>
+<p><strong>那么出现这种JavaConfig定义的beanName与自动扫描的冲突的情况会怎样呢？</strong></p>
+<p>新增一个NewBean对象，</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">NewBean</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> AtomicInteger count = <span class="hljs-keyword">new</span> AtomicInteger(<span class="hljs-number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">NewBean</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="hljs-string">" newbean count: "</span> + count.getAndAdd(<span class="hljs-number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在JavaConfig中新加一个bean定义，但是BeanName与自动扫描的TestBean重复了</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Bean</span>(name=<span class="hljs-string">"testBean"</span>)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> NewBean <span class="hljs-title">newBean</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> NewBean();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时发现有意思的事情了，从Spring容器中，将查不到TestBean的实例，但是可以查到NewBean的实例</p>
+<p><img src="https://raw.githubusercontent.com/liuyueyi/Source/master/img/blog/daywork/180531_JavaConfig02.jpg" alt="image1"></p>
+<p>这个的表现是：</p>
+<ul>
+<li>当beanName出现冲突时，JavaConfig的优先级会高于自动加载的，导致自动加载的Bean不会被加载到容器内</li>
+</ul>
+<p><strong>那么跟着来的一个问题就是如果JavaConfig中定义了两个相同的BeanName的bean呢?</strong></p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Bean</span>(name = <span class="hljs-string">"testBean2"</span>)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> NewBean <span class="hljs-title">newBean</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> NewBean();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@Bean</span>(name = <span class="hljs-string">"testBean2"</span>)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> TestBean <span class="hljs-title">testBean</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> TestBean();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为我们TestBean上加了<code>@Component</code>注解,因此容器中至少有一个，但是否会有testBean2这个实例呢？ 通过实际查看是没有的，testBean2这个名被 <code>NewBean</code> 占领了</p>
+<p><img src="https://raw.githubusercontent.com/liuyueyi/Source/master/img/blog/daywork/180531_JavaConfig03.jpg" alt="image1"></p>
+<p>so，表现上看，加上实测，将上面的定义换个位置，得出下面的结论</p>
+<ul>
+<li>当出现beanName重名时，先定义的Bean占优</li>
+</ul>
+<p><strong>然后就是最后一个问题了，当自动扫描时，两个类包不同，但是类名相同，会怎样？</strong></p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">package</span> com.git.hui.rabbit.spring.demo;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@Component</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TestBean</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> AtomicInteger count = <span class="hljs-keyword">new</span> AtomicInteger(<span class="hljs-number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">TestBean</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="hljs-string">" demo.TestBean count: "</span> + count.getAndAdd(<span class="hljs-number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实测，会抛出一个异常，在使用xml的配置方式时，经常见到的一个BeanName冲突的异常</p>
+<figure class="highlight sh hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.context.annotation.ConflictingBeanDefinitionException: Annotation-specified bean name <span class="hljs-string">'testBean'</span> <span class="hljs-keyword">for</span> bean class [com.git.hui.rabbit.spring.demo.TestBean] conflicts with existing, non-compatible bean definition of same name and class [com.git.hui.rabbit.spring.TestBean]</span><br></pre></td></tr></table></figure>
+<p><strong>小结：</strong></p>
+<ul>
+<li>JavaConfig 定义的BeanName与自动扫描的BeanName冲突时，JavaConfig的定义的会被实例化</li>
+<li>JavaConfig 中定义了BeanName相同的Bean时，优先定义的有效（这里不抛异常不太能理解）</li>
+<li>自动扫描的Bean，不支持类名相同，但是包路径不同的场景（会抛异常）</li>
+</ul>
+<h3 id="4-Import"><a href="#4-Import" class="headerlink" title="4. Import"></a>4. Import</h3><p>在xml配置中，另一个常见的case就是引入另一个xml配置，在JavaConfig中代替的就是Import注解</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Configuration</span></span><br><span class="line"><span class="hljs-meta">@ComponentScan</span>(<span class="hljs-string">"com.git.hui.rabbit.spring"</span>)</span><br><span class="line"><span class="hljs-meta">@Import</span>(&#123;DirectConsumerConfig<span class="hljs-class">.<span class="hljs-keyword">class</span>, <span class="hljs-title">FanoutConsumerConfig</span>.<span class="hljs-title">class</span>, <span class="hljs-title">TopicConsumerConfig</span>.<span class="hljs-title">class</span>&#125;)</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-title">public</span> <span class="hljs-title">class</span> <span class="hljs-title">SpringConfig</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个就等同于xml中常见的：</p>
+<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">import</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">"service.xml"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="II-实例测试"><a href="#II-实例测试" class="headerlink" title="II. 实例测试"></a>II. 实例测试</h2><h3 id="1-xml单测姿势"><a href="#1-xml单测姿势" class="headerlink" title="1. xml单测姿势"></a>1. xml单测姿势</h3><p>上面说了用JavaConfig代替xml配置的方式，另一个关键的地方就是测试用例的写法了，对于之前的xml，有两种常见的使用姿势</p>
+<p><strong>case1:</strong> 注解方式</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@RunWith</span>(SpringJUnit4ClassRunner<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span></span><br><span class="line">@ContextConfiguration("classpath*:*.xml")</span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BeanTest</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>case2:</strong> 主动加载容器方式</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> ServiceA serviceA;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@Before</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    ApplicationContext apc = <span class="hljs-keyword">new</span> ClassPathXmlApplicationContext(<span class="hljs-string">"classpath:*.xml"</span>);</span><br><span class="line">    serviceA = (ServiceA) apc.getBean(<span class="hljs-string">"serviceA"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-JavaConfig单测使用姿势"><a href="#2-JavaConfig单测使用姿势" class="headerlink" title="2. JavaConfig单测使用姿势"></a>2. JavaConfig单测使用姿势</h3><p>那么替换成JavaConfig的用法，也有两种</p>
+<p><strong>case1:</strong> 注解方式，指定内部classes值</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@RunWith</span>(SpringJUnit4ClassRunner<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span></span><br><span class="line"><span class="hljs-class">@<span class="hljs-title">ContextConfiguration</span>(<span class="hljs-title">classes</span> </span>= SpringConfig<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span></span><br><span class="line"><span class="hljs-class"><span class="hljs-title">public</span> <span class="hljs-title">class</span> <span class="hljs-title">SprintUnit</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>case2:</strong> 主动加载容器，改为<code>AnnotationConfigApplicationContext</code></p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Test</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testServiceA</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    ApplicationContext context = <span class="hljs-keyword">new</span> AnnotationConfigApplicationContext(BeansConfiguration<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;</span><br><span class="line">    ServiceA serviceA = (ServiceA) context.getBean(<span class="hljs-string">"serviceA"</span>);</span><br><span class="line">    serviceA.print();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="III-小结"><a href="#III-小结" class="headerlink" title="III. 小结"></a>III. 小结</h2><h3 id="1-注解映射关系"><a href="#1-注解映射关系" class="headerlink" title="1. 注解映射关系"></a>1. 注解映射关系</h3><p>JavaConfig方式基本上采用的是替换的思路来取代xml，即原xml中的一些东西，可以直接通过注解来代替，如</p>
+<ul>
+<li>@Configuration 修饰类，与传统的xml文件作用相同</li>
+<li>@Bean注解，修饰方法，表示声明一个Bean，与原来的xml中的 <code>&lt;bean&gt;</code> 标签作用相同</li>
+<li>@ComponentScan注解，自动扫描包，类似xml中的 <code>&lt;context:component-scan&gt;</code></li>
+<li>@Import注解，与xml中的<code>&lt;import&gt;</code>标签类似，引入其他的配置信息</li>
+</ul>
+<h3 id="2-BeanName重名规则"><a href="#2-BeanName重名规则" class="headerlink" title="2. BeanName重名规则"></a>2. BeanName重名规则</h3><p>在实际使用中，有一点需要额外注意，对于beanName相同的情况，通过测试的规则如下（没有看源码，不保证完全准确，仅为测试后得出的依据）：</p>
+<ul>
+<li>JavaConfig 定义的BeanName与自动扫描的BeanName冲突时，JavaConfig的定义的会被实例化</li>
+<li>JavaConfig 中定义了BeanName相同的Bean时，优先定义的有效（这里不抛异常不太能理解）</li>
+<li>自动扫描的Bean，不支持类名相同，但是包路径不同的场景（会抛异常）</li>
+</ul>
+<h3 id="3-测试姿势"><a href="#3-测试姿势" class="headerlink" title="3. 测试姿势"></a>3. 测试姿势</h3><p>最简单的就是修改原来的注解<code>@ContextConfiguration</code>中的值</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@ContextConfiguration</span>(classes = SpringConfig<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span></span><br></pre></td></tr></table></figure>
+<h2 id="II-其他"><a href="#II-其他" class="headerlink" title="II. 其他"></a>II. 其他</h2><h3 id="一灰灰Blog：-https-liuyueyi-github-io-hexblog"><a href="#一灰灰Blog：-https-liuyueyi-github-io-hexblog" class="headerlink" title="一灰灰Blog： https://liuyueyi.github.io/hexblog"></a><a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">一灰灰Blog</a>： <a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">https://liuyueyi.github.io/hexblog</a></h3><p>一灰灰的个人博客，记录所有学习和工作中的博文，欢迎大家前去逛逛</p>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因个人能力有限，难免有疏漏和错误之处，如发现bug或者有更好的建议，欢迎批评指正，不吝感激</p>
+<ul>
+<li>微博地址: <a href="https://weibo.com/p/1005052169825577/home" target="_blank" rel="noopener">小灰灰Blog</a></li>
+<li>QQ： 一灰灰/3302797840</li>
+</ul>
+<h3 id="扫描关注"><a href="#扫描关注" class="headerlink" title="扫描关注"></a>扫描关注</h3><p><img src="https://raw.githubusercontent.com/liuyueyi/Source/master/img/info/blogInfoV2.png" alt="QrCode"></p>
+
+
+            
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
         <a href="/hexblog/2018/05/30/180530-通过反射获取泛型类的实际参数/">
             <div class="thumbnail default_logo">
                 <br>
@@ -1677,76 +1830,6 @@ var _hmt = _hmt || [];
 
 
 
-    <div class="card">
-    
-        <a href="/hexblog/2018/04/01/Css学习手册之基本篇/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                Css学习手册之基本篇
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-04-01T01:29:21.000Z">2018-04-01</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/前端/">前端</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/前端/Css/">Css</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    32 分钟 读完 (大约 4841 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/04/01/Css学习手册之基本篇/">Css学习手册之基本篇</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <h1 id="Css学习手册之基本篇"><a href="#Css学习手册之基本篇" class="headerlink" title="Css学习手册之基本篇"></a>Css学习手册之基本篇</h1><p>每次写前端都是一个痛苦的过程，总是静不下来，彻底的研究下前端的技术，导致每次套页面都是直接采用一些封装好的控件，而有时对这些样式不满意时，又得百度一下该怎么用，低效且不愉快，强制自己好好的学习下基本功</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/04/01/Css学习手册之基本篇/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -1821,7 +1904,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/archives">
                     <p class="title has-text-weight-normal">
-                        437
+                        438
                     </p>
                     </a>
                 </div>
@@ -1834,7 +1917,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/categories">
                         <p class="title has-text-weight-normal">
-                            90
+                            91
                         </p>
                     </a>
                 </div>
@@ -1847,7 +1930,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/tags">
                     <p class="title has-text-weight-normal">
-                        105
+                        106
                     </p>
                     </a>
                 </div>
@@ -2035,6 +2118,19 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-03-18T11:53:17.000Z">2021-03-18</time></div>
+                    <a href="/hexblog/2021/03/18/210318-linux-grafana大盘接入mysql/" class="has-link-black-ter is-size-6">210318-linux grafana大盘接入mysql</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/hexblog/categories/开源/">开源</a> / <a class="has-link-grey -link" href="/hexblog/categories/开源/运维/">运维</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-03-15T11:11:33.000Z">2021-03-15</time></div>
                     <a href="/hexblog/2021/03/15/210315-域名解析命令/" class="has-link-black-ter is-size-6">210315-域名解析命令</a>
                     <p class="is-size-7 is-uppercase">
@@ -2083,19 +2179,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-02-24T11:58:43.000Z">2021-02-24</time></div>
-                    <a href="/hexblog/2021/02/24/210224-ssh防掉线设置/" class="has-link-black-ter is-size-6">210224-ssh防掉线设置</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/hexblog/categories/Shell/">Shell</a> / <a class="has-link-grey -link" href="/hexblog/categories/Shell/环境搭建/">环境搭建</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -2106,7 +2189,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/hexblog/tags/AES/" style="font-size: 10px;">AES</a> <a href="/hexblog/tags/Android/" style="font-size: 11.25px;">Android</a> <a href="/hexblog/tags/AutoCloseable/" style="font-size: 10px;">AutoCloseable</a> <a href="/hexblog/tags/BloomFilter/" style="font-size: 10px;">BloomFilter</a> <a href="/hexblog/tags/BugFix/" style="font-size: 10.63px;">BugFix</a> <a href="/hexblog/tags/Bugfix/" style="font-size: 10.63px;">Bugfix</a> <a href="/hexblog/tags/CURL/" style="font-size: 10.63px;">CURL</a> <a href="/hexblog/tags/Chrome/" style="font-size: 10.63px;">Chrome</a> <a href="/hexblog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/hexblog/tags/Docker/" style="font-size: 12.5px;">Docker</a> <a href="/hexblog/tags/Dubbo/" style="font-size: 10px;">Dubbo</a> <a href="/hexblog/tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="/hexblog/tags/FastJson/" style="font-size: 10px;">FastJson</a> <a href="/hexblog/tags/Git/" style="font-size: 11.25px;">Git</a> <a href="/hexblog/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/hexblog/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/hexblog/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/hexblog/tags/Guava/" style="font-size: 11.25px;">Guava</a> <a href="/hexblog/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/hexblog/tags/IDEA/" style="font-size: 10.63px;">IDEA</a> <a href="/hexblog/tags/IO/" style="font-size: 10.63px;">IO</a> <a href="/hexblog/tags/ImageMagic/" style="font-size: 10.63px;">ImageMagic</a> <a href="/hexblog/tags/InfluxDB/" style="font-size: 16.25px;">InfluxDB</a> <a href="/hexblog/tags/InputStream/" style="font-size: 10px;">InputStream</a> <a href="/hexblog/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/hexblog/tags/JDK/" style="font-size: 15px;">JDK</a> <a href="/hexblog/tags/JVM/" style="font-size: 11.25px;">JVM</a> <a href="/hexblog/tags/Java/" style="font-size: 19.38px;">Java</a> <a href="/hexblog/tags/JavaAgent/" style="font-size: 10.63px;">JavaAgent</a> <a href="/hexblog/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/hexblog/tags/JavaWeb/" style="font-size: 10.63px;">JavaWeb</a> <a href="/hexblog/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/hexblog/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/hexblog/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/hexblog/tags/List/" style="font-size: 10px;">List</a> <a href="/hexblog/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/hexblog/tags/Map/" style="font-size: 10px;">Map</a> <a href="/hexblog/tags/Maven/" style="font-size: 10.63px;">Maven</a> <a href="/hexblog/tags/Mongo/" style="font-size: 10.63px;">Mongo</a> <a href="/hexblog/tags/MongoDB/" style="font-size: 11.88px;">MongoDB</a> <a href="/hexblog/tags/MongoDb/" style="font-size: 14.38px;">MongoDb</a> <a href="/hexblog/tags/MySql/" style="font-size: 11.88px;">MySql</a> <a href="/hexblog/tags/Mybatis/" style="font-size: 10.63px;">Mybatis</a> <a href="/hexblog/tags/Mysql/" style="font-size: 15.63px;">Mysql</a> <a href="/hexblog/tags/Nginx/" style="font-size: 13.13px;">Nginx</a> <a href="/hexblog/tags/Node/" style="font-size: 10px;">Node</a> <a href="/hexblog/tags/OGNL/" style="font-size: 11.25px;">OGNL</a> <a href="/hexblog/tags/ProtoStuff/" style="font-size: 10.63px;">ProtoStuff</a> <a href="/hexblog/tags/Python/" style="font-size: 20px;">Python</a> <a href="/hexblog/tags/QuickAlarm/" style="font-size: 10px;">QuickAlarm</a> <a href="/hexblog/tags/QuickMedia/" style="font-size: 10.63px;">QuickMedia</a> <a href="/hexblog/tags/RabbitMQ/" style="font-size: 13.75px;">RabbitMQ</a> <a href="/hexblog/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/hexblog/tags/Redis/" style="font-size: 13.75px;">Redis</a> <a href="/hexblog/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/hexblog/tags/Shell/" style="font-size: 16.88px;">Shell</a> <a href="/hexblog/tags/Socket/" style="font-size: 10.63px;">Socket</a> <a href="/hexblog/tags/Solr/" style="font-size: 10px;">Solr</a> <a href="/hexblog/tags/Spring/" style="font-size: 18.75px;">Spring</a> <a href="/hexblog/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/hexblog/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/hexblog/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/hexblog/tags/WebView/" style="font-size: 10.63px;">WebView</a> <a href="/hexblog/tags/Yaml/" style="font-size: 10px;">Yaml</a> <a href="/hexblog/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/hexblog/tags/css/" style="font-size: 11.25px;">css</a> <a href="/hexblog/tags/dns/" style="font-size: 10px;">dns</a> <a href="/hexblog/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/hexblog/tags/git/" style="font-size: 10px;">git</a> <a href="/hexblog/tags/gitalk/" style="font-size: 10px;">gitalk</a> <a href="/hexblog/tags/google/" style="font-size: 10px;">google</a> <a href="/hexblog/tags/grep/" style="font-size: 10px;">grep</a> <a href="/hexblog/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexblog/tags/hostname/" style="font-size: 10px;">hostname</a> <a href="/hexblog/tags/jdk/" style="font-size: 10px;">jdk</a> <a href="/hexblog/tags/logger/" style="font-size: 10px;">logger</a> <a href="/hexblog/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/hexblog/tags/named/" style="font-size: 10px;">named</a> <a href="/hexblog/tags/python/" style="font-size: 10.63px;">python</a> <a href="/hexblog/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/hexblog/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/hexblog/tags/time/" style="font-size: 10px;">time</a> <a href="/hexblog/tags/tmux/" style="font-size: 10.63px;">tmux</a> <a href="/hexblog/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/hexblog/tags/专业词汇/" style="font-size: 10px;">专业词汇</a> <a href="/hexblog/tags/乱码/" style="font-size: 10px;">乱码</a> <a href="/hexblog/tags/二维码/" style="font-size: 11.25px;">二维码</a> <a href="/hexblog/tags/代理/" style="font-size: 10px;">代理</a> <a href="/hexblog/tags/内购/" style="font-size: 10px;">内购</a> <a href="/hexblog/tags/分库分表/" style="font-size: 10px;">分库分表</a> <a href="/hexblog/tags/反射/" style="font-size: 11.25px;">反射</a> <a href="/hexblog/tags/吐槽/" style="font-size: 10px;">吐槽</a> <a href="/hexblog/tags/工具/" style="font-size: 12.5px;">工具</a> <a href="/hexblog/tags/并发/" style="font-size: 11.25px;">并发</a> <a href="/hexblog/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/hexblog/tags/手记/" style="font-size: 13.13px;">手记</a> <a href="/hexblog/tags/技术方案/" style="font-size: 18.13px;">技术方案</a> <a href="/hexblog/tags/指南/" style="font-size: 13.13px;">指南</a> <a href="/hexblog/tags/教程/" style="font-size: 17.5px;">教程</a> <a href="/hexblog/tags/方案设计/" style="font-size: 10px;">方案设计</a> <a href="/hexblog/tags/时区/" style="font-size: 10px;">时区</a> <a href="/hexblog/tags/时间窗口/" style="font-size: 11.25px;">时间窗口</a> <a href="/hexblog/tags/爬虫/" style="font-size: 12.5px;">爬虫</a> <a href="/hexblog/tags/问题记录/" style="font-size: 10px;">问题记录</a> <a href="/hexblog/tags/随笔/" style="font-size: 10px;">随笔</a>
+        <a href="/hexblog/tags/AES/" style="font-size: 10px;">AES</a> <a href="/hexblog/tags/Android/" style="font-size: 11.25px;">Android</a> <a href="/hexblog/tags/AutoCloseable/" style="font-size: 10px;">AutoCloseable</a> <a href="/hexblog/tags/BloomFilter/" style="font-size: 10px;">BloomFilter</a> <a href="/hexblog/tags/BugFix/" style="font-size: 10.63px;">BugFix</a> <a href="/hexblog/tags/Bugfix/" style="font-size: 10.63px;">Bugfix</a> <a href="/hexblog/tags/CURL/" style="font-size: 10.63px;">CURL</a> <a href="/hexblog/tags/Chrome/" style="font-size: 10.63px;">Chrome</a> <a href="/hexblog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/hexblog/tags/Docker/" style="font-size: 12.5px;">Docker</a> <a href="/hexblog/tags/Dubbo/" style="font-size: 10px;">Dubbo</a> <a href="/hexblog/tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="/hexblog/tags/FastJson/" style="font-size: 10px;">FastJson</a> <a href="/hexblog/tags/Git/" style="font-size: 11.25px;">Git</a> <a href="/hexblog/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/hexblog/tags/Grafana/" style="font-size: 10px;">Grafana</a> <a href="/hexblog/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/hexblog/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/hexblog/tags/Guava/" style="font-size: 11.25px;">Guava</a> <a href="/hexblog/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/hexblog/tags/IDEA/" style="font-size: 10.63px;">IDEA</a> <a href="/hexblog/tags/IO/" style="font-size: 10.63px;">IO</a> <a href="/hexblog/tags/ImageMagic/" style="font-size: 10.63px;">ImageMagic</a> <a href="/hexblog/tags/InfluxDB/" style="font-size: 16.25px;">InfluxDB</a> <a href="/hexblog/tags/InputStream/" style="font-size: 10px;">InputStream</a> <a href="/hexblog/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/hexblog/tags/JDK/" style="font-size: 15px;">JDK</a> <a href="/hexblog/tags/JVM/" style="font-size: 11.25px;">JVM</a> <a href="/hexblog/tags/Java/" style="font-size: 19.38px;">Java</a> <a href="/hexblog/tags/JavaAgent/" style="font-size: 10.63px;">JavaAgent</a> <a href="/hexblog/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/hexblog/tags/JavaWeb/" style="font-size: 10.63px;">JavaWeb</a> <a href="/hexblog/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/hexblog/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/hexblog/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/hexblog/tags/List/" style="font-size: 10px;">List</a> <a href="/hexblog/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/hexblog/tags/Map/" style="font-size: 10px;">Map</a> <a href="/hexblog/tags/Maven/" style="font-size: 10.63px;">Maven</a> <a href="/hexblog/tags/Mongo/" style="font-size: 10.63px;">Mongo</a> <a href="/hexblog/tags/MongoDB/" style="font-size: 11.88px;">MongoDB</a> <a href="/hexblog/tags/MongoDb/" style="font-size: 14.38px;">MongoDb</a> <a href="/hexblog/tags/MySql/" style="font-size: 11.88px;">MySql</a> <a href="/hexblog/tags/Mybatis/" style="font-size: 10.63px;">Mybatis</a> <a href="/hexblog/tags/Mysql/" style="font-size: 15.63px;">Mysql</a> <a href="/hexblog/tags/Nginx/" style="font-size: 13.13px;">Nginx</a> <a href="/hexblog/tags/Node/" style="font-size: 10px;">Node</a> <a href="/hexblog/tags/OGNL/" style="font-size: 11.25px;">OGNL</a> <a href="/hexblog/tags/ProtoStuff/" style="font-size: 10.63px;">ProtoStuff</a> <a href="/hexblog/tags/Python/" style="font-size: 20px;">Python</a> <a href="/hexblog/tags/QuickAlarm/" style="font-size: 10px;">QuickAlarm</a> <a href="/hexblog/tags/QuickMedia/" style="font-size: 10.63px;">QuickMedia</a> <a href="/hexblog/tags/RabbitMQ/" style="font-size: 13.75px;">RabbitMQ</a> <a href="/hexblog/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/hexblog/tags/Redis/" style="font-size: 13.75px;">Redis</a> <a href="/hexblog/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/hexblog/tags/Shell/" style="font-size: 16.88px;">Shell</a> <a href="/hexblog/tags/Socket/" style="font-size: 10.63px;">Socket</a> <a href="/hexblog/tags/Solr/" style="font-size: 10px;">Solr</a> <a href="/hexblog/tags/Spring/" style="font-size: 18.75px;">Spring</a> <a href="/hexblog/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/hexblog/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/hexblog/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/hexblog/tags/WebView/" style="font-size: 10.63px;">WebView</a> <a href="/hexblog/tags/Yaml/" style="font-size: 10px;">Yaml</a> <a href="/hexblog/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/hexblog/tags/css/" style="font-size: 11.25px;">css</a> <a href="/hexblog/tags/dns/" style="font-size: 10px;">dns</a> <a href="/hexblog/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/hexblog/tags/git/" style="font-size: 10px;">git</a> <a href="/hexblog/tags/gitalk/" style="font-size: 10px;">gitalk</a> <a href="/hexblog/tags/google/" style="font-size: 10px;">google</a> <a href="/hexblog/tags/grep/" style="font-size: 10px;">grep</a> <a href="/hexblog/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexblog/tags/hostname/" style="font-size: 10px;">hostname</a> <a href="/hexblog/tags/jdk/" style="font-size: 10px;">jdk</a> <a href="/hexblog/tags/logger/" style="font-size: 10px;">logger</a> <a href="/hexblog/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/hexblog/tags/named/" style="font-size: 10px;">named</a> <a href="/hexblog/tags/python/" style="font-size: 10.63px;">python</a> <a href="/hexblog/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/hexblog/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/hexblog/tags/time/" style="font-size: 10px;">time</a> <a href="/hexblog/tags/tmux/" style="font-size: 10.63px;">tmux</a> <a href="/hexblog/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/hexblog/tags/专业词汇/" style="font-size: 10px;">专业词汇</a> <a href="/hexblog/tags/乱码/" style="font-size: 10px;">乱码</a> <a href="/hexblog/tags/二维码/" style="font-size: 11.25px;">二维码</a> <a href="/hexblog/tags/代理/" style="font-size: 10px;">代理</a> <a href="/hexblog/tags/内购/" style="font-size: 10px;">内购</a> <a href="/hexblog/tags/分库分表/" style="font-size: 10px;">分库分表</a> <a href="/hexblog/tags/反射/" style="font-size: 11.25px;">反射</a> <a href="/hexblog/tags/吐槽/" style="font-size: 10px;">吐槽</a> <a href="/hexblog/tags/工具/" style="font-size: 12.5px;">工具</a> <a href="/hexblog/tags/并发/" style="font-size: 11.25px;">并发</a> <a href="/hexblog/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/hexblog/tags/手记/" style="font-size: 13.13px;">手记</a> <a href="/hexblog/tags/技术方案/" style="font-size: 18.13px;">技术方案</a> <a href="/hexblog/tags/指南/" style="font-size: 13.13px;">指南</a> <a href="/hexblog/tags/教程/" style="font-size: 17.5px;">教程</a> <a href="/hexblog/tags/方案设计/" style="font-size: 10px;">方案设计</a> <a href="/hexblog/tags/时区/" style="font-size: 10px;">时区</a> <a href="/hexblog/tags/时间窗口/" style="font-size: 11.25px;">时间窗口</a> <a href="/hexblog/tags/爬虫/" style="font-size: 12.5px;">爬虫</a> <a href="/hexblog/tags/问题记录/" style="font-size: 10px;">问题记录</a> <a href="/hexblog/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
 </div>
 
@@ -2220,6 +2303,13 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/hexblog/tags/GitHub/">
                         <span class="tag">GitHub</span>
+                        <span class="tag is-grey">1</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/hexblog/tags/Grafana/">
+                        <span class="tag">Grafana</span>
                         <span class="tag is-grey">1</span>
                     </a>
                 </div>
@@ -3316,7 +3406,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">开源</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">51</span>
+                <span class="level-item tag">52</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/hexblog/categories/开源/Dubbo/">
@@ -3430,6 +3520,14 @@ var _hmt = _hmt || [];
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/开源/运维/">
+            <span class="level-start">
+                <span class="level-item">运维</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
         </a></li></ul></li><li>
         <a class="level is-marginless" href="/hexblog/categories/火花/">
             <span class="level-start">
@@ -3490,7 +3588,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">3</span>
+                    <span class="level-item tag">4</span>
                 </span>
             </a>
         </li>
@@ -4438,7 +4536,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">开源</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">51</span>
+                <span class="level-item tag">52</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/hexblog/categories/开源/Dubbo/">
@@ -4552,6 +4650,14 @@ var _hmt = _hmt || [];
             <span class="level-end">
                 <span class="level-item tag">1</span>
             </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/开源/运维/">
+            <span class="level-start">
+                <span class="level-item">运维</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
         </a></li></ul></li><li>
         <a class="level is-marginless" href="/hexblog/categories/火花/">
             <span class="level-start">
@@ -4612,7 +4718,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">三月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">3</span>
+                    <span class="level-item tag">4</span>
                 </span>
             </a>
         </li>
