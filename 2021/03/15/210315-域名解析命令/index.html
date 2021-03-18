@@ -15,7 +15,7 @@
 <meta property="og:description" content="1. 配置文件域名相关的两个配置文件 linux  /etc/hosts: ip -&amp;gt; 域名 /etc/resolv.conf: 设置dns服务器ip地址 /etc/host.conf: 制定域名解析顺序（本地hosts文件，dns解析)  win  C:\Windows\System32\drivers\etc\hosts: ip -&amp;gt; 域名 dns: 控制面板 -&amp;gt; 网络和共">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://blog.hhui.top/hexblog/images/og_image.png">
-<meta property="og:updated_time" content="2021-03-15T13:31:35.000Z">
+<meta property="og:updated_time" content="2021-03-18T11:01:08.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="210315-域名解析命令">
 <meta name="twitter:description" content="1. 配置文件域名相关的两个配置文件 linux  /etc/hosts: ip -&amp;gt; 域名 /etc/resolv.conf: 设置dns服务器ip地址 /etc/host.conf: 制定域名解析顺序（本地hosts文件，dns解析)  win  C:\Windows\System32\drivers\etc\hosts: ip -&amp;gt; 域名 dns: 控制面板 -&amp;gt; 网络和共">
@@ -193,7 +193,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey" style="font-size: 1.2em;">
                     
                     
-                    2 分钟 读完 (大约 346 个字)
+                    2 分钟 读完 (大约 347 个字)
                 </span>
                 
                 
@@ -235,6 +235,7 @@ var _hmt = _hmt || [];
 <li><code>C:\Windows\System32\drivers\etc\hosts</code>: ip -&gt; 域名</li>
 <li>dns: 控制面板 -&gt; 网络和共享中心 -&gt; 以太网 -&gt; 属性 -&gt; ipv4 -&gt; dns</li>
 </ul>
+<a id="more"></a>
 <h3 id="2-DNS查询指令"><a href="#2-DNS查询指令" class="headerlink" title="2. DNS查询指令"></a>2. DNS查询指令</h3><p>常见的几个dns命令，如 host, nslookup, dig</p>
 <h4 id="2-1-host"><a href="#2-1-host" class="headerlink" title="2.1 host"></a>2.1 host</h4><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">host hhui.top</span><br></pre></td></tr></table></figure>
 <h4 id="2-2-nslookup"><a href="#2-2-nslookup" class="headerlink" title="2.2 nslookup"></a>2.2 nslookup</h4><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">nslookup hhui.top</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment"># 输出</span></span><br><span class="line">Server:  UnKnown</span><br><span class="line">Address:  10.224.10.8</span><br><span class="line"></span><br><span class="line">Non-authoritative answer:</span><br><span class="line">Name:    hhui.top</span><br><span class="line">Address:  47.98.136.120</span><br></pre></td></tr></table></figure>
