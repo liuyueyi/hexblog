@@ -2,7 +2,7 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-<title>标签: JDK - 一灰灰Blog</title>
+<title>标签: jdk - 一灰灰Blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
@@ -10,7 +10,7 @@
     <meta name="description" content="好好学习，努力搬砖，Java,Shell,Spring,Mysql,DB,MVC,Servlet,Redis也需了解一二">
 <meta property="og:type" content="website">
 <meta property="og:title" content="一灰灰Blog">
-<meta property="og:url" content="https://blog.hhui.top/hexblog/tags/JDK/index.html">
+<meta property="og:url" content="https://blog.hhui.top/hexblog/tags/jdk/index.html">
 <meta property="og:site_name" content="一灰灰Blog">
 <meta property="og:description" content="好好学习，努力搬砖，Java,Shell,Spring,Mysql,DB,MVC,Servlet,Redis也需了解一二">
 <meta property="og:locale" content="zh-CN">
@@ -172,7 +172,7 @@ var _hmt = _hmt || [];
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/hexblog/tags">标签</a></li>
-            <li class="is-active"><a href="#" aria-current="page">JDK</a></li>
+            <li class="is-active"><a href="#" aria-current="page">jdk</a></li>
         </ul>
         </nav>
     </div>
@@ -180,11 +180,11 @@ var _hmt = _hmt || [];
 
     <div class="card">
     
-        <a href="/hexblog/2021/04/12/210412-JDK-常见并发控制手段/">
+        <a href="/hexblog/2019/06/18/190618-JDK的一次排序采坑记录/">
             <div class="thumbnail default_logo">
                 <br>
                 <span>
-                210412-JDK 常见并发控制手段
+                190618-JDK的一次排序采坑记录
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span style="font-size:0.7em">by 一灰灰</span>
@@ -197,17 +197,17 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2021-04-12T14:16:35.000Z">2021-04-12</time>
+                <time class="level-item has-text-grey" datetime="2019-06-18T11:48:09.000Z">2019-06-18</time>
                 
                 <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/">JDK</a>
+                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/问题记录/">问题记录</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey" style="font-size: 1.2em;">
                     
                     
-                    11 分钟 读完 (大约 1620 个字)
+                    9 分钟 读完 (大约 1311 个字)
                 </span>
                 
                 
@@ -217,19 +217,14 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/hexblog/2021/04/12/210412-JDK-常见并发控制手段/">210412-JDK 常见并发控制手段</a>
+                <a class="has-link-black-ter" href="/hexblog/2019/06/18/190618-JDK的一次排序采坑记录/">190618-JDK的一次排序采坑记录</a>
             
         </h1>
         <div class="content">
             
 
-            <p>单实例的并发控制，主要是针对JVM内，我们常规的手段即可满足需求，常见的手段大概有下面这些</p>
-<ul>
-<li>同步代码块</li>
-<li>CAS自旋</li>
-<li>锁</li>
-<li>阻塞队列，令牌桶等</li>
-</ul>
+            <p>列表排序，我们可以说是用的比较多了，写起来也很溜，继承<code>Comparable</code>接口，实现<code>compareTo</code>方法，然后直接使用<code>java.util.List#sort</code>即可</p>
+<p>虽说如此简单，今天却是一脚踩进去，花了不少时间才爬出来，下面复盘一下这个现场</p>
 
             
         </div>
@@ -238,805 +233,7 @@ var _hmt = _hmt || [];
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2021/04/12/210412-JDK-常见并发控制手段/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2020/01/11/200111-老哥，你真的知道HashMap初始化大小如何设置么/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                200111-老哥，你真的知道HashMap初始化大小如何设置么
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2020-01-11T08:15:55.000Z">2020-01-11</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/">JDK</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    8 分钟 读完 (大约 1158 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2020/01/11/200111-老哥，你真的知道HashMap初始化大小如何设置么/">200111-老哥，你真的知道HashMap初始化大小如何设置么</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>HashMap对于javer而言，可以说是非常非常熟悉的一个容器类了，可以说99.99%的java开发者都用过它，那么你知道怎样创建一个HashMap是最优雅的方式呢？</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2020/01/11/200111-老哥，你真的知道HashMap初始化大小如何设置么/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2019/05/15/190515-老哥你真的知道ArrayList-sublist的正确用法么/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                190515-老哥你真的知道ArrayList#sublist的正确用法么
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-05-15T12:22:39.000Z">2019-05-15</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/">JDK</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/容器/">容器</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    11 分钟 读完 (大约 1606 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2019/05/15/190515-老哥你真的知道ArrayList-sublist的正确用法么/">190515-老哥你真的知道ArrayList#sublist的正确用法么</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>我们有这么一个场景，给你一个列表，可以动态的新增，但是最终要求列表升序，要求长度小于20，可以怎么做？</p>
-<p>这个还不简单，几行代码就可以了</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title">trimList</span><span class="hljs-params">(List&lt;Integer&gt; list, <span class="hljs-keyword">int</span> add)</span> </span>&#123;</span><br><span class="line">    list.add(add);</span><br><span class="line">    list.sort(<span class="hljs-keyword">null</span>);</span><br><span class="line">    <span class="hljs-keyword">if</span> (list.size() &gt; <span class="hljs-number">20</span>) &#123;</span><br><span class="line">        list = list.subList(<span class="hljs-number">0</span>, <span class="hljs-number">20</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="hljs-keyword">return</span> list;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2019/05/15/190515-老哥你真的知道ArrayList-sublist的正确用法么/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2018/09/26/180926-Java之数值型的字面值中使用下划线/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                180926-Java之数值型的字面值中使用下划线
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-09-25T17:13:36.000Z">2018-09-26</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/">JDK</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    4 分钟 读完 (大约 561 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/09/26/180926-Java之数值型的字面值中使用下划线/">180926-Java之数值型的字面值中使用下划线</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>之前偶然在一个开源项目中看到下面这种写法，深感惊奇，当时没有记录，后来果不其然就忘掉了这种写法，现在又看到这种写法，特此记录</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">long</span> price = <span class="hljs-number">1_000_123L</span>;</span><br></pre></td></tr></table></figure>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/09/26/180926-Java之数值型的字面值中使用下划线/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2018/09/18/180918-JDK之Deflater压缩与Inflater解压/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                180918-JDK之Deflater压缩与Inflater解压
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-09-18T08:53:13.000Z">2018-09-18</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/">JDK</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    8 分钟 读完 (大约 1238 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/09/18/180918-JDK之Deflater压缩与Inflater解压/">180918-JDK之Deflater压缩与Inflater解压</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <h1 id="JDK-压缩与解压工具类"><a href="#JDK-压缩与解压工具类" class="headerlink" title="JDK 压缩与解压工具类"></a>JDK 压缩与解压工具类</h1><p>在实际的应用场景中，特别是对外传输数据时，将原始数据压缩之后丢出去，可以说是非常常见的一个case了，平常倒是没有直接使用JDK原生的压缩工具类，使用Protosutff和Kryo的机会较多,正好在实际的工作场景中遇到了，现在简单的看下使用姿势</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/09/18/180918-JDK之Deflater压缩与Inflater解压/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2018/09/11/180911-获取应用中所有线程/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                180911-获取应用中所有线程
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-09-11T13:20:20.000Z">2018-09-11</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/">JDK</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/并发/">并发</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    2 分钟 读完 (大约 295 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/09/11/180911-获取应用中所有线程/">180911-获取应用中所有线程</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>如何获取应用中，所有活动的线程？</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ThreadGroup group = Thread.currentThread().getThreadGroup();</span><br><span class="line"><span class="hljs-comment">// 激活的线程数加倍</span></span><br><span class="line"><span class="hljs-keyword">int</span> estimatedSize = group.activeCount() * <span class="hljs-number">2</span>;</span><br><span class="line">Thread[] slackList = <span class="hljs-keyword">new</span> Thread[estimatedSize];</span><br></pre></td></tr></table></figure>
-<p>上面是获取当前线程所在的ThreadGroup, 然后将这个分组内的所有线程丢到slackList数组中，实际测试时，数组大小可能是大于实际的线程数的（而且可能性特别大）</p>
-<p>通过ThreadGroup，还可以获取上一层的Group, 然后遍历所有的线程</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/09/11/180911-获取应用中所有线程/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2018/05/14/ConcurrentHashMap之1-7与1-8小结/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                ConcurrentHashMap之1.7与1.8小结
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-05-14T02:01:40.000Z">2018-05-14</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/">JDK</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/容器/">容器</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    11 分钟 读完 (大约 1684 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/05/14/ConcurrentHashMap之1-7与1-8小结/">ConcurrentHashMap之1.7与1.8小结</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <h2 id="I-ConcurrentHashMap-两种实现方式小结"><a href="#I-ConcurrentHashMap-两种实现方式小结" class="headerlink" title="I. ConcurrentHashMap 两种实现方式小结"></a>I. ConcurrentHashMap 两种实现方式小结</h2><h3 id="1-锁分段机制"><a href="#1-锁分段机制" class="headerlink" title="1. 锁分段机制"></a>1. 锁分段机制</h3><p>HashMap的底层数据结构是数组+hash链表的方式，非线程安全</p>
-<p>ConcurrentHashMap 采用锁分段机制，底层数据结构为二维数组，其中第一层是Segment的数组，每个Segment持有一把独立的锁，而Segment的结构和HashMap很相似；这就是锁分段机制；线程安全</p>
-<p>关注几个点：</p>
-<ul>
-<li>ConcurrentHashMap 如何定位 Segment, 如何定位 HashEntry</li>
-<li>修改的加锁逻辑，如何进行扩容</li>
-<li>读数据时，如何做到不加锁但保证线程安全的？</li>
-</ul>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/05/14/ConcurrentHashMap之1-7与1-8小结/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2018/03/15/JVM学习之垃圾回收机制/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                JVM学习之垃圾回收机制
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-03-15T12:18:44.000Z">2018-03-15</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JVM/">JVM</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    21 分钟 读完 (大约 3125 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/03/15/JVM学习之垃圾回收机制/">JVM学习之垃圾回收机制</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <p>jvm的垃圾回收算法，除了我们熟悉的引用计数判断对象是否活着之外，其他还有那些有意思的东西呢？</p>
-<p>总是听到的年轻代年老代又是啥？</p>
-<p>传说中的YoungGC(MinorGC) 和 FullGC的时机是什么，又干了些啥？</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/03/15/JVM学习之垃圾回收机制/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2018/03/13/JVM学习之内存结构/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                JVM学习之内存结构
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-03-13T08:00:31.000Z">2018-03-13</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JVM/">JVM</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    6 分钟 读完 (大约 959 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/03/13/JVM学习之内存结构/">JVM学习之内存结构</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <h1 id="JVM学习之内存结构"><a href="#JVM学习之内存结构" class="headerlink" title="JVM学习之内存结构"></a>JVM学习之内存结构</h1><p>java运行时对象创建在什么地方？堆和栈空间又有什么区别？听闻已久的Young,Old区又是什么鬼？听说有个常量池，这个又是啥</p>
-<p>要想在脑海中清晰的布局一个java类在加载到使用的过程中，整个类生命周期中，各项数据究竟最终落在哪个板块上，就需要了解下JVM的内存区域了</p>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/03/13/JVM学习之内存结构/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2018/03/13/JVM学习之Java类的加载机制/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                JVM学习之Java类的加载机制
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-03-13T06:26:40.000Z">2018-03-13</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JVM/">JVM</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    17 分钟 读完 (大约 2491 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/03/13/JVM学习之Java类的加载机制/">JVM学习之Java类的加载机制</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <h1 id="JVM学习之Java类的加载机制"><a href="#JVM学习之Java类的加载机制" class="headerlink" title="JVM学习之Java类的加载机制"></a>JVM学习之Java类的加载机制</h1><p>平常我们使用java的多，深入到jvm层的机会却很少，平时若不关注，也不会清楚java文件编译后的class文件是如何被jvm加载到内存，如何进行初始化，如何进行运行的</p>
-<p>因此这里主要学习的目标就是class文件的加载，会包含以下内容：</p>
-<ul>
-<li>什么是类加载</li>
-<li>类加载的过程</li>
-<li>什么时候触发类加载</li>
-<li>类加载器</li>
-<li>双亲委托机制</li>
-</ul>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/03/13/JVM学习之Java类的加载机制/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2018/02/07/Java中变量的初始化顺序/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                Java中变量的初始化顺序
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-02-07T04:28:12.000Z">2018-02-07</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JVM/">JVM</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    11 分钟 读完 (大约 1716 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/02/07/Java中变量的初始化顺序/">Java中变量的初始化顺序</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <h1 id="Java中变量的初始化顺序"><a href="#Java中变量的初始化顺序" class="headerlink" title="Java中变量的初始化顺序"></a>Java中变量的初始化顺序</h1><blockquote>
-<p>在写一个通用的报警模块时，遇到一个有意思的问题，在调用静态方法时，发现静态方法内部对静态变量引用时，居然抛出了npe，仿佛是因为这个静态变量的初始化在静态方法被调用时，还没有触发，从而导致这个问题，因此今天专门来学习下静态成员的初始化顺序，以及上面这个问题导致的原因</p>
-</blockquote>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/02/07/Java中变量的初始化顺序/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-        <a href="/hexblog/2018/01/03/jvm调优的工具介绍/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                jvm调优的工具介绍
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-01-03T06:18:35.000Z">2018-01-03</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JVM/">JVM</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    16 分钟 读完 (大约 2448 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/01/03/jvm调优的工具介绍/">jvm调优的工具介绍</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <h1 id="jvm调优实战笔记之基础知识简介"><a href="#jvm调优实战笔记之基础知识简介" class="headerlink" title="jvm调优实战笔记之基础知识简介"></a>jvm调优实战笔记之基础知识简介</h1><h2 id="I-背景"><a href="#I-背景" class="headerlink" title="I. 背景"></a>I. 背景</h2><blockquote>
-<p>java后端，提供了一个svg渲染的服务，在qps较大时，会出现频繁的gc，而此时的服务器性能本身并没有达到瓶颈（cpu,load,io都不太高）因此考虑调整一下jvm的相关参数，看是否可以提升服务性能</p>
-</blockquote>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/01/03/jvm调优的工具介绍/#more">阅读更多</a>
+                <a class="button is-size-7 is-light" href="/hexblog/2019/06/18/190618-JDK的一次排序采坑记录/#more">阅读更多</a>
                 </div>
             </div>
         </div>
@@ -1097,7 +294,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/archives">
                     <p class="title has-text-weight-normal">
-                        443
+                        444
                     </p>
                     </a>
                 </div>
@@ -1311,6 +508,19 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-05-09T06:58:52.000Z">2021-05-09</time></div>
+                    <a href="/hexblog/2021/05/09/210509-spring-boot启动类启动-错误-找不到或无法加载主类-xxx-xxxx-Application-的解决方法/" class="has-link-black-ter is-size-6">210509-spring boot启动类启动 错误: 找不到或无法加载主类 xxx.xxxx.Application 的解决方法</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/hexblog/categories/开源/">开源</a> / <a class="has-link-grey -link" href="/hexblog/categories/开源/Spring/">Spring</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-04-12T14:16:35.000Z">2021-04-12</time></div>
                     <a href="/hexblog/2021/04/12/210412-JDK-常见并发控制手段/" class="has-link-black-ter is-size-6">210412-JDK 常见并发控制手段</a>
                     <p class="is-size-7 is-uppercase">
@@ -1359,19 +569,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-03-29T10:49:05.000Z">2021-03-29</time></div>
-                    <a href="/hexblog/2021/03/29/210329-Elastic-Kibana安装与基本使用/" class="has-link-black-ter is-size-6">210329-Elastic &amp; Kibana安装与基本使用</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/hexblog/categories/开源/">开源</a> / <a class="has-link-grey -link" href="/hexblog/categories/开源/ElasticSearch/">ElasticSearch</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -1382,7 +579,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/hexblog/tags/AES/" style="font-size: 10px;">AES</a> <a href="/hexblog/tags/Android/" style="font-size: 11.18px;">Android</a> <a href="/hexblog/tags/AutoCloseable/" style="font-size: 10px;">AutoCloseable</a> <a href="/hexblog/tags/BeanUtil/" style="font-size: 10.59px;">BeanUtil</a> <a href="/hexblog/tags/BloomFilter/" style="font-size: 10px;">BloomFilter</a> <a href="/hexblog/tags/BugFix/" style="font-size: 10.59px;">BugFix</a> <a href="/hexblog/tags/Bugfix/" style="font-size: 10.59px;">Bugfix</a> <a href="/hexblog/tags/CURL/" style="font-size: 10.59px;">CURL</a> <a href="/hexblog/tags/Chrome/" style="font-size: 10.59px;">Chrome</a> <a href="/hexblog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/hexblog/tags/Docker/" style="font-size: 12.35px;">Docker</a> <a href="/hexblog/tags/Dubbo/" style="font-size: 10px;">Dubbo</a> <a href="/hexblog/tags/ElasticSearch/" style="font-size: 11.18px;">ElasticSearch</a> <a href="/hexblog/tags/FastJson/" style="font-size: 10px;">FastJson</a> <a href="/hexblog/tags/Git/" style="font-size: 11.18px;">Git</a> <a href="/hexblog/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/hexblog/tags/Grafana/" style="font-size: 10px;">Grafana</a> <a href="/hexblog/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/hexblog/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/hexblog/tags/Guava/" style="font-size: 11.18px;">Guava</a> <a href="/hexblog/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/hexblog/tags/IDEA/" style="font-size: 10.59px;">IDEA</a> <a href="/hexblog/tags/IO/" style="font-size: 10.59px;">IO</a> <a href="/hexblog/tags/ImageMagic/" style="font-size: 10.59px;">ImageMagic</a> <a href="/hexblog/tags/InfluxDB/" style="font-size: 16.47px;">InfluxDB</a> <a href="/hexblog/tags/InputStream/" style="font-size: 10px;">InputStream</a> <a href="/hexblog/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/hexblog/tags/JDK/" style="font-size: 15.29px;">JDK</a> <a href="/hexblog/tags/JVM/" style="font-size: 11.18px;">JVM</a> <a href="/hexblog/tags/Java/" style="font-size: 19.41px;">Java</a> <a href="/hexblog/tags/JavaAgent/" style="font-size: 10.59px;">JavaAgent</a> <a href="/hexblog/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/hexblog/tags/JavaWeb/" style="font-size: 10.59px;">JavaWeb</a> <a href="/hexblog/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/hexblog/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/hexblog/tags/Linux/" style="font-size: 14.71px;">Linux</a> <a href="/hexblog/tags/List/" style="font-size: 10px;">List</a> <a href="/hexblog/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/hexblog/tags/Map/" style="font-size: 10px;">Map</a> <a href="/hexblog/tags/Maven/" style="font-size: 10.59px;">Maven</a> <a href="/hexblog/tags/Mongo/" style="font-size: 10.59px;">Mongo</a> <a href="/hexblog/tags/MongoDB/" style="font-size: 11.76px;">MongoDB</a> <a href="/hexblog/tags/MongoDb/" style="font-size: 14.12px;">MongoDb</a> <a href="/hexblog/tags/MySql/" style="font-size: 11.76px;">MySql</a> <a href="/hexblog/tags/Mybatis/" style="font-size: 10.59px;">Mybatis</a> <a href="/hexblog/tags/Mysql/" style="font-size: 15.88px;">Mysql</a> <a href="/hexblog/tags/Nginx/" style="font-size: 12.94px;">Nginx</a> <a href="/hexblog/tags/Node/" style="font-size: 10px;">Node</a> <a href="/hexblog/tags/OGNL/" style="font-size: 11.18px;">OGNL</a> <a href="/hexblog/tags/ProtoStuff/" style="font-size: 10.59px;">ProtoStuff</a> <a href="/hexblog/tags/Python/" style="font-size: 20px;">Python</a> <a href="/hexblog/tags/QuickAlarm/" style="font-size: 10px;">QuickAlarm</a> <a href="/hexblog/tags/QuickMedia/" style="font-size: 10.59px;">QuickMedia</a> <a href="/hexblog/tags/RabbitMQ/" style="font-size: 13.53px;">RabbitMQ</a> <a href="/hexblog/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/hexblog/tags/Redis/" style="font-size: 13.53px;">Redis</a> <a href="/hexblog/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/hexblog/tags/Shell/" style="font-size: 17.06px;">Shell</a> <a href="/hexblog/tags/Socket/" style="font-size: 10.59px;">Socket</a> <a href="/hexblog/tags/Solr/" style="font-size: 10px;">Solr</a> <a href="/hexblog/tags/Spring/" style="font-size: 18.82px;">Spring</a> <a href="/hexblog/tags/SpringBoot/" style="font-size: 10px;">SpringBoot</a> <a href="/hexblog/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/hexblog/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/hexblog/tags/WebView/" style="font-size: 10.59px;">WebView</a> <a href="/hexblog/tags/Yaml/" style="font-size: 10px;">Yaml</a> <a href="/hexblog/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/hexblog/tags/css/" style="font-size: 11.18px;">css</a> <a href="/hexblog/tags/dns/" style="font-size: 10px;">dns</a> <a href="/hexblog/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/hexblog/tags/git/" style="font-size: 10px;">git</a> <a href="/hexblog/tags/gitalk/" style="font-size: 10px;">gitalk</a> <a href="/hexblog/tags/google/" style="font-size: 10px;">google</a> <a href="/hexblog/tags/grep/" style="font-size: 10px;">grep</a> <a href="/hexblog/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexblog/tags/hostname/" style="font-size: 10px;">hostname</a> <a href="/hexblog/tags/jdk/" style="font-size: 10px;">jdk</a> <a href="/hexblog/tags/logger/" style="font-size: 10px;">logger</a> <a href="/hexblog/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/hexblog/tags/named/" style="font-size: 10px;">named</a> <a href="/hexblog/tags/python/" style="font-size: 10.59px;">python</a> <a href="/hexblog/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/hexblog/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/hexblog/tags/time/" style="font-size: 10px;">time</a> <a href="/hexblog/tags/tmux/" style="font-size: 10.59px;">tmux</a> <a href="/hexblog/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/hexblog/tags/专业词汇/" style="font-size: 10px;">专业词汇</a> <a href="/hexblog/tags/乱码/" style="font-size: 10px;">乱码</a> <a href="/hexblog/tags/二维码/" style="font-size: 11.18px;">二维码</a> <a href="/hexblog/tags/代理/" style="font-size: 10px;">代理</a> <a href="/hexblog/tags/内购/" style="font-size: 10px;">内购</a> <a href="/hexblog/tags/分库分表/" style="font-size: 10px;">分库分表</a> <a href="/hexblog/tags/反射/" style="font-size: 11.18px;">反射</a> <a href="/hexblog/tags/吐槽/" style="font-size: 10px;">吐槽</a> <a href="/hexblog/tags/工具/" style="font-size: 12.35px;">工具</a> <a href="/hexblog/tags/并发/" style="font-size: 11.18px;">并发</a> <a href="/hexblog/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/hexblog/tags/手记/" style="font-size: 12.94px;">手记</a> <a href="/hexblog/tags/技术方案/" style="font-size: 18.24px;">技术方案</a> <a href="/hexblog/tags/指南/" style="font-size: 12.94px;">指南</a> <a href="/hexblog/tags/教程/" style="font-size: 17.65px;">教程</a> <a href="/hexblog/tags/方案设计/" style="font-size: 10px;">方案设计</a> <a href="/hexblog/tags/时区/" style="font-size: 10px;">时区</a> <a href="/hexblog/tags/时间窗口/" style="font-size: 11.18px;">时间窗口</a> <a href="/hexblog/tags/爬虫/" style="font-size: 12.35px;">爬虫</a> <a href="/hexblog/tags/问题记录/" style="font-size: 10px;">问题记录</a> <a href="/hexblog/tags/随笔/" style="font-size: 10px;">随笔</a>
+        <a href="/hexblog/tags/AES/" style="font-size: 10px;">AES</a> <a href="/hexblog/tags/Android/" style="font-size: 11.18px;">Android</a> <a href="/hexblog/tags/AutoCloseable/" style="font-size: 10px;">AutoCloseable</a> <a href="/hexblog/tags/BeanUtil/" style="font-size: 10.59px;">BeanUtil</a> <a href="/hexblog/tags/BloomFilter/" style="font-size: 10px;">BloomFilter</a> <a href="/hexblog/tags/BugFix/" style="font-size: 10.59px;">BugFix</a> <a href="/hexblog/tags/Bugfix/" style="font-size: 10.59px;">Bugfix</a> <a href="/hexblog/tags/CURL/" style="font-size: 10.59px;">CURL</a> <a href="/hexblog/tags/Chrome/" style="font-size: 10.59px;">Chrome</a> <a href="/hexblog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/hexblog/tags/Docker/" style="font-size: 12.35px;">Docker</a> <a href="/hexblog/tags/Dubbo/" style="font-size: 10px;">Dubbo</a> <a href="/hexblog/tags/ElasticSearch/" style="font-size: 11.18px;">ElasticSearch</a> <a href="/hexblog/tags/FastJson/" style="font-size: 10px;">FastJson</a> <a href="/hexblog/tags/Git/" style="font-size: 11.18px;">Git</a> <a href="/hexblog/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/hexblog/tags/Grafana/" style="font-size: 10px;">Grafana</a> <a href="/hexblog/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/hexblog/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/hexblog/tags/Guava/" style="font-size: 11.18px;">Guava</a> <a href="/hexblog/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/hexblog/tags/IDEA/" style="font-size: 10.59px;">IDEA</a> <a href="/hexblog/tags/IO/" style="font-size: 10.59px;">IO</a> <a href="/hexblog/tags/ImageMagic/" style="font-size: 10.59px;">ImageMagic</a> <a href="/hexblog/tags/InfluxDB/" style="font-size: 16.47px;">InfluxDB</a> <a href="/hexblog/tags/InputStream/" style="font-size: 10px;">InputStream</a> <a href="/hexblog/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/hexblog/tags/JDK/" style="font-size: 15.29px;">JDK</a> <a href="/hexblog/tags/JVM/" style="font-size: 11.18px;">JVM</a> <a href="/hexblog/tags/Java/" style="font-size: 19.41px;">Java</a> <a href="/hexblog/tags/JavaAgent/" style="font-size: 10.59px;">JavaAgent</a> <a href="/hexblog/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/hexblog/tags/JavaWeb/" style="font-size: 10.59px;">JavaWeb</a> <a href="/hexblog/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/hexblog/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/hexblog/tags/Linux/" style="font-size: 14.71px;">Linux</a> <a href="/hexblog/tags/List/" style="font-size: 10px;">List</a> <a href="/hexblog/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/hexblog/tags/Map/" style="font-size: 10px;">Map</a> <a href="/hexblog/tags/Maven/" style="font-size: 10.59px;">Maven</a> <a href="/hexblog/tags/Mongo/" style="font-size: 10.59px;">Mongo</a> <a href="/hexblog/tags/MongoDB/" style="font-size: 11.76px;">MongoDB</a> <a href="/hexblog/tags/MongoDb/" style="font-size: 14.12px;">MongoDb</a> <a href="/hexblog/tags/MySql/" style="font-size: 11.76px;">MySql</a> <a href="/hexblog/tags/Mybatis/" style="font-size: 10.59px;">Mybatis</a> <a href="/hexblog/tags/Mysql/" style="font-size: 15.88px;">Mysql</a> <a href="/hexblog/tags/Nginx/" style="font-size: 12.94px;">Nginx</a> <a href="/hexblog/tags/Node/" style="font-size: 10px;">Node</a> <a href="/hexblog/tags/OGNL/" style="font-size: 11.18px;">OGNL</a> <a href="/hexblog/tags/ProtoStuff/" style="font-size: 10.59px;">ProtoStuff</a> <a href="/hexblog/tags/Python/" style="font-size: 20px;">Python</a> <a href="/hexblog/tags/QuickAlarm/" style="font-size: 10px;">QuickAlarm</a> <a href="/hexblog/tags/QuickMedia/" style="font-size: 10.59px;">QuickMedia</a> <a href="/hexblog/tags/RabbitMQ/" style="font-size: 13.53px;">RabbitMQ</a> <a href="/hexblog/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/hexblog/tags/Redis/" style="font-size: 13.53px;">Redis</a> <a href="/hexblog/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/hexblog/tags/Shell/" style="font-size: 17.06px;">Shell</a> <a href="/hexblog/tags/Socket/" style="font-size: 10.59px;">Socket</a> <a href="/hexblog/tags/Solr/" style="font-size: 10px;">Solr</a> <a href="/hexblog/tags/Spring/" style="font-size: 18.82px;">Spring</a> <a href="/hexblog/tags/SpringBoot/" style="font-size: 10.59px;">SpringBoot</a> <a href="/hexblog/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/hexblog/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/hexblog/tags/WebView/" style="font-size: 10.59px;">WebView</a> <a href="/hexblog/tags/Yaml/" style="font-size: 10px;">Yaml</a> <a href="/hexblog/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/hexblog/tags/css/" style="font-size: 11.18px;">css</a> <a href="/hexblog/tags/dns/" style="font-size: 10px;">dns</a> <a href="/hexblog/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/hexblog/tags/git/" style="font-size: 10px;">git</a> <a href="/hexblog/tags/gitalk/" style="font-size: 10px;">gitalk</a> <a href="/hexblog/tags/google/" style="font-size: 10px;">google</a> <a href="/hexblog/tags/grep/" style="font-size: 10px;">grep</a> <a href="/hexblog/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexblog/tags/hostname/" style="font-size: 10px;">hostname</a> <a href="/hexblog/tags/jdk/" style="font-size: 10px;">jdk</a> <a href="/hexblog/tags/logger/" style="font-size: 10px;">logger</a> <a href="/hexblog/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/hexblog/tags/named/" style="font-size: 10px;">named</a> <a href="/hexblog/tags/python/" style="font-size: 10.59px;">python</a> <a href="/hexblog/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/hexblog/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/hexblog/tags/time/" style="font-size: 10px;">time</a> <a href="/hexblog/tags/tmux/" style="font-size: 10.59px;">tmux</a> <a href="/hexblog/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/hexblog/tags/专业词汇/" style="font-size: 10px;">专业词汇</a> <a href="/hexblog/tags/乱码/" style="font-size: 10px;">乱码</a> <a href="/hexblog/tags/二维码/" style="font-size: 11.18px;">二维码</a> <a href="/hexblog/tags/代理/" style="font-size: 10px;">代理</a> <a href="/hexblog/tags/内购/" style="font-size: 10px;">内购</a> <a href="/hexblog/tags/分库分表/" style="font-size: 10px;">分库分表</a> <a href="/hexblog/tags/反射/" style="font-size: 11.18px;">反射</a> <a href="/hexblog/tags/吐槽/" style="font-size: 10px;">吐槽</a> <a href="/hexblog/tags/工具/" style="font-size: 12.35px;">工具</a> <a href="/hexblog/tags/并发/" style="font-size: 11.18px;">并发</a> <a href="/hexblog/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/hexblog/tags/手记/" style="font-size: 12.94px;">手记</a> <a href="/hexblog/tags/技术方案/" style="font-size: 18.24px;">技术方案</a> <a href="/hexblog/tags/指南/" style="font-size: 12.94px;">指南</a> <a href="/hexblog/tags/教程/" style="font-size: 17.65px;">教程</a> <a href="/hexblog/tags/方案设计/" style="font-size: 10px;">方案设计</a> <a href="/hexblog/tags/时区/" style="font-size: 10px;">时区</a> <a href="/hexblog/tags/时间窗口/" style="font-size: 11.18px;">时间窗口</a> <a href="/hexblog/tags/爬虫/" style="font-size: 12.35px;">爬虫</a> <a href="/hexblog/tags/问题记录/" style="font-size: 10px;">问题记录</a> <a href="/hexblog/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
 </div>
 
@@ -1825,7 +1022,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/hexblog/tags/SpringBoot/">
                         <span class="tag">SpringBoot</span>
-                        <span class="tag is-grey">1</span>
+                        <span class="tag is-grey">2</span>
                     </a>
                 </div>
                 
@@ -2606,7 +1803,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">开源</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">54</span>
+                <span class="level-item tag">55</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/hexblog/categories/开源/Dubbo/">
@@ -2702,7 +1899,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">Spring</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">24</span>
+                <span class="level-item tag">25</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/hexblog/categories/开源/Yaml/">
@@ -2781,6 +1978,17 @@ var _hmt = _hmt || [];
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2021/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/hexblog/archives/2021/04/">
@@ -3747,7 +2955,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">开源</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">54</span>
+                <span class="level-item tag">55</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/hexblog/categories/开源/Dubbo/">
@@ -3843,7 +3051,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">Spring</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">24</span>
+                <span class="level-item tag">25</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/hexblog/categories/开源/Yaml/">
@@ -3922,6 +3130,937 @@ var _hmt = _hmt || [];
             归档
         </h3>
         <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2021/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2021/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2021/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2021/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">7</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2021/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">8</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/11/">
+                <span class="level-start">
+                    <span class="level-item">十一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/10/">
+                <span class="level-start">
+                    <span class="level-item">十月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">7</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">9</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">15</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2020/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2020</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/11/">
+                <span class="level-start">
+                    <span class="level-item">十一月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/10/">
+                <span class="level-start">
+                    <span class="level-item">十月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">81</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">17</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">12</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">7</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">30</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2019/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2019</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">14</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">8</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/11/">
+                <span class="level-start">
+                    <span class="level-item">十一月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">10</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/10/">
+                <span class="level-start">
+                    <span class="level-item">十月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">13</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">11</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">23</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">22</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">11</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/04/">
+                <span class="level-start">
+                    <span class="level-item">四月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">11</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/03/">
+                <span class="level-start">
+                    <span class="level-item">三月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">16</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/02/">
+                <span class="level-start">
+                    <span class="level-item">二月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">10</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2018/01/">
+                <span class="level-start">
+                    <span class="level-item">一月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">13</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/12/">
+                <span class="level-start">
+                    <span class="level-item">十二月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">6</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/09/">
+                <span class="level-start">
+                    <span class="level-item">九月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/08/">
+                <span class="level-start">
+                    <span class="level-item">八月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">3</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/07/">
+                <span class="level-start">
+                    <span class="level-item">七月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/06/">
+                <span class="level-start">
+                    <span class="level-item">六月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">2</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2017/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2017</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+    
+</div>
+
+            </div>
+        </div>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/hexblog/">
+                
+                    <img src="/hexblog/images/avatar.jpg" alt="一灰灰Blog" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2021 YiHui&nbsp;
+                Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
+                
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="https://github.com/liuyueyi">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Chart in Weibo" href="https://weibo.com/p/1005052169825577/home">
+                        
+                        <i class="fab fa-weibo"></i>
+                        
+                    </a>
+                </p>
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Frends with me" href="/hexblog/imgs/info/wx.jpg">
+                        
+                        <i class="fab fa-weixin"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div id="foot-pannel">
+        <div class="outer">
+            <div class="foot-column">
+                <!--关注我们-->
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">更多平台</h3>
+                    <div class="widget">
+                        <ul>
+                            <li>
+                                <a href="//blog.hhui.top/">一灰灰Blog</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//juejin.im/user/5a2a4b095188252ae93adbbf/posts">掘金</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//my.oschina.net/u/566591">开源中国</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//blog.csdn.net/liuyueyi25">CSDN</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//www.jianshu.com/u/5902ab08e670">简书</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//cloud.tencent.com/developer/column/1847">云+</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//www.toutiao.com/c/user/69862071663/#mid=1579653107239950">头条</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//github.com/liuyueyi">GitHub</a>
+                            </li>
+                        
+                            <li>
+                                <a href="//gitee.com/liuyueyi">Gitee</a>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="foot-column">
+                <!--联系合作-->
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">一灰灰Blog</h3>
+                    <div class="widget">
+                        <ul>
+                            
+                                <li>
+                                    <a href="#">QQ : 3302797840</a>
+                                </li>
+                            
+                                <li>
+                                    <a href="#">微信 : liuyueyi25</a>
+                                </li>
+                            
+                                <li>
+                                    <a href="#">邮箱 : bangzewu@126.com</a>
+                                </li>
+                            
+                                <li>
+                                    <a href="#">微博 : 一灰灰blog</a>
+                                </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">友情链接</h3>
+                    <div class="widget">
+                        <ul>
+                            
+                                <span class="label">
+                                    <a target="_blank" href="//zweb.hhui.top">zweb多媒体工具页</a>
+                                </span>
+                            
+                                <span class="label">
+                                    <a target="_blank" href="//mweb.hhui.top">mweb古诗选</a>
+                                </span>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="foot-column">
+                <!--友情链接-->
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">知识星球</h3>
+                    <div class="widget">
+                        <img style="width: 200px;" src="/hexblog/imgs/info/xingqiu.png">
+                    </div>
+                </div>
+                
+            </div>
+            <div class="foot-column">
+                <div class="widget-wrap widget-list">
+                    <h3 class="widget-title">公众号</h3>
+                    <div class="widget">
+                        <img style="width: 200px;" src="/hexblog/imgs/info/wx.jpg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding-top:20em">
+        <hr>
+        <div id="foot-info">
+            <span style="margin:4px;font-size:1em">
+                &copy; 2021 <a target="_blank" href="https://github.com/liuyueyi">一灰灰Blog</a> 版权所有 | <a href="http://www.beian.miit.gov.cn" target="_blank">鄂ICP备18017282号</a>
+            </span>
+            <br>
+            <span style="margin:4px;font-size:1em">
+                <script type="text/javascript">document.write(unescape("%3Cspan id='cnzz_stat_icon_1278691600'%3E%3C/span%3E%3Cscript src='https://s9.cnzz.com/z_stat.php%3Fid%3D1278691600%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));</script>
+            </span>
+            <span style="margin:1em;font-size:1.4em">
+                <label id="self_count_cnt"><br>本站总访量: <span class="visit_cnt">69330</span> | 总访问人次: <span class="visit_cnt">11586</span> | 恭喜您为第 <span class="visit_cnt">10840</span> 访问者</label>
+            </span>
+            <script src="/hexblog/js/count.js"></script>
+        </div>
+    </div>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
+
+
+    
+    
+    
+    <script src="/hexblog/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/hexblog/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/hexblog/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/hexblog/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/hexblog/js/main.js" defer></script>
+
+<script data-ad-client="ca-pub-5592000528061748" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/hexblog/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/hexblog/js/insight.js" defer></script>
+<link rel="stylesheet" href="/hexblog/css/search.css">
+<link rel="stylesheet" href="/hexblog/css/insight.css">
+    
+</body>
+</html>less" href="/hexblog/categories/开源/Solr/">
+            <span class="level-start">
+                <span class="level-item">Solr</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/开源/Spring/">
+            <span class="level-start">
+                <span class="level-item">Spring</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">25</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/开源/Yaml/">
+            <span class="level-start">
+                <span class="level-item">Yaml</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/开源/ZooKeeper/">
+            <span class="level-start">
+                <span class="level-item">ZooKeeper</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/开源/运维/">
+            <span class="level-start">
+                <span class="level-item">运维</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/火花/">
+            <span class="level-start">
+                <span class="level-item">火花</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">4</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/随笔/">
+            <span class="level-start">
+                <span class="level-item">随笔</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">9</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/hexblog/categories/随笔/GitHub/">
+            <span class="level-start">
+                <span class="level-item">GitHub</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/随笔/idea/">
+            <span class="level-start">
+                <span class="level-item">idea</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/随笔/吐槽/">
+            <span class="level-start">
+                <span class="level-item">吐槽</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">2</span>
+            </span>
+        </a></li></ul></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/hexblog/archives/2021/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2021</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">1</span>
+                </span>
+            </a>
+        </li>
         
         <li>
             <a class="level is-marginless" href="/hexblog/archives/2021/04/">
