@@ -2,7 +2,7 @@
 <html lang="zh">
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-<title>标签: BugFix - 一灰灰Blog</title>
+<title>标签: Bugfix - 一灰灰Blog</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 
@@ -10,7 +10,7 @@
     <meta name="description" content="好好学习，努力搬砖，Java,Shell,Spring,Mysql,DB,MVC,Servlet,Redis也需了解一二">
 <meta property="og:type" content="website">
 <meta property="og:title" content="一灰灰Blog">
-<meta property="og:url" content="https://blog.hhui.top/hexblog/tags/BugFix/index.html">
+<meta property="og:url" content="https://blog.hhui.top/hexblog/tags/Bugfix/index.html">
 <meta property="og:site_name" content="一灰灰Blog">
 <meta property="og:description" content="好好学习，努力搬砖，Java,Shell,Spring,Mysql,DB,MVC,Servlet,Redis也需了解一二">
 <meta property="og:locale" content="zh-CN">
@@ -172,7 +172,7 @@ var _hmt = _hmt || [];
         <nav class="breadcrumb" aria-label="breadcrumbs">
         <ul>
             <li><a href="/hexblog/tags">标签</a></li>
-            <li class="is-active"><a href="#" aria-current="page">BugFix</a></li>
+            <li class="is-active"><a href="#" aria-current="page">Bugfix</a></li>
         </ul>
         </nav>
     </div>
@@ -180,11 +180,11 @@ var _hmt = _hmt || [];
 
     <div class="card">
     
-        <a href="/hexblog/2018/09/15/180915-ReactJs之Fix-uncaught-at-check-call-argument-object-Promise-is-not-a-function/">
+        <a href="/hexblog/2018/06/06/180606-Linux下jdk中文乱码问题解决/">
             <div class="thumbnail default_logo">
                 <br>
                 <span>
-                180915-ReactJs之Fix:uncaught at check call argument [object Promise] is not a function
+                180606-Linux下jdk中文乱码问题解决
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span style="font-size:0.7em">by 一灰灰</span>
@@ -197,17 +197,17 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-09-15T01:49:24.000Z">2018-09-15</time>
+                <time class="level-item has-text-grey" datetime="2018-06-06T13:39:58.000Z">2018-06-06</time>
                 
                 <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/前端/">前端</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/前端/ReactJS/">ReactJS</a>
+                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/JDK/">JDK</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey" style="font-size: 1.2em;">
                     
                     
-                    2 分钟 读完 (大约 298 个字)
+                    2 分钟 读完 (大约 366 个字)
                 </span>
                 
                 
@@ -217,34 +217,29 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/hexblog/2018/09/15/180915-ReactJs之Fix-uncaught-at-check-call-argument-object-Promise-is-not-a-function/">180915-ReactJs之Fix:uncaught at check call argument [object Promise] is not a function</a>
+                <a class="has-link-black-ter" href="/hexblog/2018/06/06/180606-Linux下jdk中文乱码问题解决/">180606-Linux下jdk中文乱码问题解决</a>
             
         </h1>
         <div class="content">
             
 
-            <h1 id="Fix-uncaught-at-check-call-argument-object-Promise-is-not-a-function"><a href="#Fix-uncaught-at-check-call-argument-object-Promise-is-not-a-function" class="headerlink" title="Fix uncaught at check call: argument [object Promise] is not a function"></a>Fix uncaught at check call: argument [object Promise] is not a function</h1><p>在使用ANTD的魔板套前端页面的时候，遇到了一个诡异的问题，记录下</p>
-<p>在modal中的写法如下</p>
-<figure class="highlight js hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">* addGroup(&#123;payload&#125;, &#123;call, put&#125;) &#123;</span><br><span class="line">	<span class="hljs-keyword">yield</span> call(addGroup(payload));</span><br><span class="line">	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"add group over!"</span>);</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>在执行时，控制台报错</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uncaught at check call: argument [object Promise] is not a function</span><br></pre></td></tr></table></figure>
-<p>主要原因在 <code>yield call(addGroup(payload));</code> 的使用姿势问题，对于需要传递参数的去哪个，不能直接这么干，应该改为</p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yield call(addGroup, payload);</span><br></pre></td></tr></table></figure>
-<h2 id="II-其他"><a href="#II-其他" class="headerlink" title="II. 其他"></a>II. 其他</h2><h3 id="1-一灰灰Blog：-https-liuyueyi-github-io-hexblog"><a href="#1-一灰灰Blog：-https-liuyueyi-github-io-hexblog" class="headerlink" title="1. 一灰灰Blog： https://liuyueyi.github.io/hexblog"></a>1. <a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">一灰灰Blog</a>： <a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">https://liuyueyi.github.io/hexblog</a></h3><p>一灰灰的个人博客，记录所有学习和工作中的博文，欢迎大家前去逛逛</p>
-<h3 id="2-声明"><a href="#2-声明" class="headerlink" title="2. 声明"></a>2. 声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因个人能力有限，难免有疏漏和错误之处，如发现bug或者有更好的建议，欢迎批评指正，不吝感激</p>
+            <h1 id="linux下jdk中文乱码问题解决"><a href="#linux下jdk中文乱码问题解决" class="headerlink" title="linux下jdk中文乱码问题解决"></a>linux下jdk中文乱码问题解决</h1><p>之前遇到过一次中文乱码问题，是通过在jdk的jre目录下的lib/fonts文件中添加simsun.ttf字体文件解决，但是这次遇到一个奇怪的问题，同样的字体拷贝过去后，中文不乱但是英文乱码了</p>
+<p>记录一下解决过程：</p>
 <ul>
-<li>微博地址: <a href="https://weibo.com/p/1005052169825577/home" target="_blank" rel="noopener">小灰灰Blog</a></li>
-<li>QQ： 一灰灰/3302797840</li>
+<li>主要思路就是给系统安装中文字体，让系统本身就支持中文即可</li>
 </ul>
-<h3 id="3-扫描关注"><a href="#3-扫描关注" class="headerlink" title="3. 扫描关注"></a>3. 扫描关注</h3><p><strong>一灰灰blog</strong></p>
-<p><img src="https://raw.githubusercontent.com/liuyueyi/Source/master/img/info/blogInfoV2.png" alt="QrCode"></p>
-<p><strong>知识星球</strong></p>
-<p><img src="https://raw.githubusercontent.com/liuyueyi/Source/master/img/info/goals.png" alt="goals"></p>
-
 
             
         </div>
         
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/hexblog/2018/06/06/180606-Linux下jdk中文乱码问题解决/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
         
         
     </div>
@@ -259,11 +254,11 @@ var _hmt = _hmt || [];
 
     <div class="card">
     
-        <a href="/hexblog/2018/01/22/兼容ImageIO读取jpeg图片变红/">
+        <a href="/hexblog/2018/01/20/Batik渲染png图片异常的bug修复/">
             <div class="thumbnail default_logo">
                 <br>
                 <span>
-                兼容ImageIO读取jpeg图片变红
+                Batik渲染png图片异常的bug修复
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <span style="font-size:0.7em">by 一灰灰</span>
@@ -276,7 +271,7 @@ var _hmt = _hmt || [];
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-01-22T06:38:39.000Z">2018-01-22</time>
+                <time class="level-item has-text-grey" datetime="2018-01-20T12:36:56.000Z">2018-01-20</time>
                 
                 <div class="level-item">
                 <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/Bugfix/">Bugfix</a>
@@ -286,7 +281,7 @@ var _hmt = _hmt || [];
                 <span class="level-item has-text-grey" style="font-size: 1.2em;">
                     
                     
-                    3 分钟 读完 (大约 509 个字)
+                    12 分钟 读完 (大约 1815 个字)
                 </span>
                 
                 
@@ -296,15 +291,14 @@ var _hmt = _hmt || [];
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                <a class="has-link-black-ter" href="/hexblog/2018/01/22/兼容ImageIO读取jpeg图片变红/">兼容ImageIO读取jpeg图片变红</a>
+                <a class="has-link-black-ter" href="/hexblog/2018/01/20/Batik渲染png图片异常的bug修复/">Batik渲染png图片异常的bug修复</a>
             
         </h1>
         <div class="content">
             
 
-            <h1 id="兼容ImageIO读取jpeg图片变红"><a href="#兼容ImageIO读取jpeg图片变红" class="headerlink" title="兼容ImageIO读取jpeg图片变红"></a>兼容ImageIO读取jpeg图片变红</h1><blockquote>
-<p>使用ImageIO.read()方法，加载图片为BufferedImage对象时，对于某些图片，会出现变红的case</p>
-</blockquote>
+            <h1 id="Batik渲染png图片异常的bug修复"><a href="#Batik渲染png图片异常的bug修复" class="headerlink" title="Batik渲染png图片异常的bug修复"></a>Batik渲染png图片异常的bug修复</h1><p>batik是apache的一个开源项目，可以实现svg的渲染，后端借助它可以比较简单的实现图片渲染，当然和java一贯处理图片不太方便一样，使用起来也有不少坑</p>
+<p>下面记录一个bug的修复过程</p>
 
             
         </div>
@@ -313,7 +307,7 @@ var _hmt = _hmt || [];
         <div class="level is-mobile">
             <div class="level-start">
                 <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/01/22/兼容ImageIO读取jpeg图片变红/#more">阅读更多</a>
+                <a class="button is-size-7 is-light" href="/hexblog/2018/01/20/Batik渲染png图片异常的bug修复/#more">阅读更多</a>
                 </div>
             </div>
         </div>
@@ -374,7 +368,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/archives">
                     <p class="title has-text-weight-normal">
-                        445
+                        446
                     </p>
                     </a>
                 </div>
@@ -387,7 +381,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/categories">
                         <p class="title has-text-weight-normal">
-                            91
+                            93
                         </p>
                     </a>
                 </div>
@@ -588,6 +582,19 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-05-13T12:31:17.000Z">2021-05-13</time></div>
+                    <a href="/hexblog/2021/05/13/210514-IDEA代码修改不生效-需要mvn-install问题记录/" class="has-link-black-ter is-size-6">210514-IDEA代码修改不生效,需要mvn install问题记录</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/hexblog/categories/JAVA/">JAVA</a> / <a class="has-link-grey -link" href="/hexblog/categories/JAVA/问题记录/">问题记录</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-05-12T04:39:34.000Z">2021-05-12</time></div>
                     <a href="/hexblog/2021/05/12/210512-IDEA-项目module无法导入问题记录/" class="has-link-black-ter is-size-6">210512-IDEA 项目module无法导入问题记录</a>
                     <p class="is-size-7 is-uppercase">
@@ -636,19 +643,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-04-08T11:01:01.000Z">2021-04-08</time></div>
-                    <a href="/hexblog/2021/04/08/210408-常见Bean拷贝框架使用姿势及性能对比/" class="has-link-black-ter is-size-6">210408-常见Bean拷贝框架使用姿势及性能对比</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/hexblog/categories/工具/">工具</a> / <a class="has-link-grey -link" href="/hexblog/categories/工具/工具类/">工具类</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -659,7 +653,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/hexblog/tags/AES/" style="font-size: 10px;">AES</a> <a href="/hexblog/tags/Android/" style="font-size: 11.18px;">Android</a> <a href="/hexblog/tags/AutoCloseable/" style="font-size: 10px;">AutoCloseable</a> <a href="/hexblog/tags/BeanUtil/" style="font-size: 10.59px;">BeanUtil</a> <a href="/hexblog/tags/BloomFilter/" style="font-size: 10px;">BloomFilter</a> <a href="/hexblog/tags/BugFix/" style="font-size: 10.59px;">BugFix</a> <a href="/hexblog/tags/Bugfix/" style="font-size: 10.59px;">Bugfix</a> <a href="/hexblog/tags/CURL/" style="font-size: 10.59px;">CURL</a> <a href="/hexblog/tags/Chrome/" style="font-size: 10.59px;">Chrome</a> <a href="/hexblog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/hexblog/tags/Docker/" style="font-size: 12.35px;">Docker</a> <a href="/hexblog/tags/Dubbo/" style="font-size: 10px;">Dubbo</a> <a href="/hexblog/tags/ElasticSearch/" style="font-size: 11.18px;">ElasticSearch</a> <a href="/hexblog/tags/FastJson/" style="font-size: 10px;">FastJson</a> <a href="/hexblog/tags/Git/" style="font-size: 11.18px;">Git</a> <a href="/hexblog/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/hexblog/tags/Grafana/" style="font-size: 10px;">Grafana</a> <a href="/hexblog/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/hexblog/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/hexblog/tags/Guava/" style="font-size: 11.18px;">Guava</a> <a href="/hexblog/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/hexblog/tags/IDEA/" style="font-size: 11.18px;">IDEA</a> <a href="/hexblog/tags/IO/" style="font-size: 10.59px;">IO</a> <a href="/hexblog/tags/ImageMagic/" style="font-size: 10.59px;">ImageMagic</a> <a href="/hexblog/tags/InfluxDB/" style="font-size: 16.47px;">InfluxDB</a> <a href="/hexblog/tags/InputStream/" style="font-size: 10px;">InputStream</a> <a href="/hexblog/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/hexblog/tags/JDK/" style="font-size: 15.29px;">JDK</a> <a href="/hexblog/tags/JVM/" style="font-size: 11.18px;">JVM</a> <a href="/hexblog/tags/Java/" style="font-size: 19.41px;">Java</a> <a href="/hexblog/tags/JavaAgent/" style="font-size: 10.59px;">JavaAgent</a> <a href="/hexblog/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/hexblog/tags/JavaWeb/" style="font-size: 10.59px;">JavaWeb</a> <a href="/hexblog/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/hexblog/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/hexblog/tags/Linux/" style="font-size: 14.71px;">Linux</a> <a href="/hexblog/tags/List/" style="font-size: 10px;">List</a> <a href="/hexblog/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/hexblog/tags/Map/" style="font-size: 10px;">Map</a> <a href="/hexblog/tags/Maven/" style="font-size: 10.59px;">Maven</a> <a href="/hexblog/tags/Mongo/" style="font-size: 10.59px;">Mongo</a> <a href="/hexblog/tags/MongoDB/" style="font-size: 11.76px;">MongoDB</a> <a href="/hexblog/tags/MongoDb/" style="font-size: 14.12px;">MongoDb</a> <a href="/hexblog/tags/MySql/" style="font-size: 11.76px;">MySql</a> <a href="/hexblog/tags/Mybatis/" style="font-size: 10.59px;">Mybatis</a> <a href="/hexblog/tags/Mysql/" style="font-size: 15.88px;">Mysql</a> <a href="/hexblog/tags/Nginx/" style="font-size: 12.94px;">Nginx</a> <a href="/hexblog/tags/Node/" style="font-size: 10px;">Node</a> <a href="/hexblog/tags/OGNL/" style="font-size: 11.18px;">OGNL</a> <a href="/hexblog/tags/ProtoStuff/" style="font-size: 10.59px;">ProtoStuff</a> <a href="/hexblog/tags/Python/" style="font-size: 20px;">Python</a> <a href="/hexblog/tags/QuickAlarm/" style="font-size: 10px;">QuickAlarm</a> <a href="/hexblog/tags/QuickMedia/" style="font-size: 10.59px;">QuickMedia</a> <a href="/hexblog/tags/RabbitMQ/" style="font-size: 13.53px;">RabbitMQ</a> <a href="/hexblog/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/hexblog/tags/Redis/" style="font-size: 13.53px;">Redis</a> <a href="/hexblog/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/hexblog/tags/Shell/" style="font-size: 17.06px;">Shell</a> <a href="/hexblog/tags/Socket/" style="font-size: 10.59px;">Socket</a> <a href="/hexblog/tags/Solr/" style="font-size: 10px;">Solr</a> <a href="/hexblog/tags/Spring/" style="font-size: 18.82px;">Spring</a> <a href="/hexblog/tags/SpringBoot/" style="font-size: 10.59px;">SpringBoot</a> <a href="/hexblog/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/hexblog/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/hexblog/tags/WebView/" style="font-size: 10.59px;">WebView</a> <a href="/hexblog/tags/Yaml/" style="font-size: 10px;">Yaml</a> <a href="/hexblog/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/hexblog/tags/css/" style="font-size: 11.18px;">css</a> <a href="/hexblog/tags/dns/" style="font-size: 10px;">dns</a> <a href="/hexblog/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/hexblog/tags/git/" style="font-size: 10px;">git</a> <a href="/hexblog/tags/gitalk/" style="font-size: 10px;">gitalk</a> <a href="/hexblog/tags/google/" style="font-size: 10px;">google</a> <a href="/hexblog/tags/grep/" style="font-size: 10px;">grep</a> <a href="/hexblog/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexblog/tags/hostname/" style="font-size: 10px;">hostname</a> <a href="/hexblog/tags/jdk/" style="font-size: 10px;">jdk</a> <a href="/hexblog/tags/logger/" style="font-size: 10px;">logger</a> <a href="/hexblog/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/hexblog/tags/named/" style="font-size: 10px;">named</a> <a href="/hexblog/tags/python/" style="font-size: 10.59px;">python</a> <a href="/hexblog/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/hexblog/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/hexblog/tags/time/" style="font-size: 10px;">time</a> <a href="/hexblog/tags/tmux/" style="font-size: 10.59px;">tmux</a> <a href="/hexblog/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/hexblog/tags/专业词汇/" style="font-size: 10px;">专业词汇</a> <a href="/hexblog/tags/乱码/" style="font-size: 10px;">乱码</a> <a href="/hexblog/tags/二维码/" style="font-size: 11.18px;">二维码</a> <a href="/hexblog/tags/代理/" style="font-size: 10px;">代理</a> <a href="/hexblog/tags/内购/" style="font-size: 10px;">内购</a> <a href="/hexblog/tags/分库分表/" style="font-size: 10px;">分库分表</a> <a href="/hexblog/tags/反射/" style="font-size: 11.18px;">反射</a> <a href="/hexblog/tags/吐槽/" style="font-size: 10px;">吐槽</a> <a href="/hexblog/tags/工具/" style="font-size: 12.35px;">工具</a> <a href="/hexblog/tags/并发/" style="font-size: 11.18px;">并发</a> <a href="/hexblog/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/hexblog/tags/手记/" style="font-size: 12.94px;">手记</a> <a href="/hexblog/tags/技术方案/" style="font-size: 18.24px;">技术方案</a> <a href="/hexblog/tags/指南/" style="font-size: 12.94px;">指南</a> <a href="/hexblog/tags/教程/" style="font-size: 17.65px;">教程</a> <a href="/hexblog/tags/方案设计/" style="font-size: 10px;">方案设计</a> <a href="/hexblog/tags/时区/" style="font-size: 10px;">时区</a> <a href="/hexblog/tags/时间窗口/" style="font-size: 11.18px;">时间窗口</a> <a href="/hexblog/tags/爬虫/" style="font-size: 12.35px;">爬虫</a> <a href="/hexblog/tags/问题记录/" style="font-size: 10px;">问题记录</a> <a href="/hexblog/tags/随笔/" style="font-size: 10px;">随笔</a>
+        <a href="/hexblog/tags/AES/" style="font-size: 10px;">AES</a> <a href="/hexblog/tags/Android/" style="font-size: 11.18px;">Android</a> <a href="/hexblog/tags/AutoCloseable/" style="font-size: 10px;">AutoCloseable</a> <a href="/hexblog/tags/BeanUtil/" style="font-size: 10.59px;">BeanUtil</a> <a href="/hexblog/tags/BloomFilter/" style="font-size: 10px;">BloomFilter</a> <a href="/hexblog/tags/BugFix/" style="font-size: 10.59px;">BugFix</a> <a href="/hexblog/tags/Bugfix/" style="font-size: 10.59px;">Bugfix</a> <a href="/hexblog/tags/CURL/" style="font-size: 10.59px;">CURL</a> <a href="/hexblog/tags/Chrome/" style="font-size: 10.59px;">Chrome</a> <a href="/hexblog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/hexblog/tags/Docker/" style="font-size: 12.35px;">Docker</a> <a href="/hexblog/tags/Dubbo/" style="font-size: 10px;">Dubbo</a> <a href="/hexblog/tags/ElasticSearch/" style="font-size: 11.18px;">ElasticSearch</a> <a href="/hexblog/tags/FastJson/" style="font-size: 10px;">FastJson</a> <a href="/hexblog/tags/Git/" style="font-size: 11.18px;">Git</a> <a href="/hexblog/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/hexblog/tags/Grafana/" style="font-size: 10px;">Grafana</a> <a href="/hexblog/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/hexblog/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/hexblog/tags/Guava/" style="font-size: 11.18px;">Guava</a> <a href="/hexblog/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/hexblog/tags/IDEA/" style="font-size: 11.76px;">IDEA</a> <a href="/hexblog/tags/IO/" style="font-size: 10.59px;">IO</a> <a href="/hexblog/tags/ImageMagic/" style="font-size: 10.59px;">ImageMagic</a> <a href="/hexblog/tags/InfluxDB/" style="font-size: 16.47px;">InfluxDB</a> <a href="/hexblog/tags/InputStream/" style="font-size: 10px;">InputStream</a> <a href="/hexblog/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/hexblog/tags/JDK/" style="font-size: 15.29px;">JDK</a> <a href="/hexblog/tags/JVM/" style="font-size: 11.18px;">JVM</a> <a href="/hexblog/tags/Java/" style="font-size: 19.41px;">Java</a> <a href="/hexblog/tags/JavaAgent/" style="font-size: 10.59px;">JavaAgent</a> <a href="/hexblog/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/hexblog/tags/JavaWeb/" style="font-size: 10.59px;">JavaWeb</a> <a href="/hexblog/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/hexblog/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/hexblog/tags/Linux/" style="font-size: 14.71px;">Linux</a> <a href="/hexblog/tags/List/" style="font-size: 10px;">List</a> <a href="/hexblog/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/hexblog/tags/Map/" style="font-size: 10px;">Map</a> <a href="/hexblog/tags/Maven/" style="font-size: 10.59px;">Maven</a> <a href="/hexblog/tags/Mongo/" style="font-size: 10.59px;">Mongo</a> <a href="/hexblog/tags/MongoDB/" style="font-size: 11.76px;">MongoDB</a> <a href="/hexblog/tags/MongoDb/" style="font-size: 14.12px;">MongoDb</a> <a href="/hexblog/tags/MySql/" style="font-size: 11.76px;">MySql</a> <a href="/hexblog/tags/Mybatis/" style="font-size: 10.59px;">Mybatis</a> <a href="/hexblog/tags/Mysql/" style="font-size: 15.88px;">Mysql</a> <a href="/hexblog/tags/Nginx/" style="font-size: 12.94px;">Nginx</a> <a href="/hexblog/tags/Node/" style="font-size: 10px;">Node</a> <a href="/hexblog/tags/OGNL/" style="font-size: 11.18px;">OGNL</a> <a href="/hexblog/tags/ProtoStuff/" style="font-size: 10.59px;">ProtoStuff</a> <a href="/hexblog/tags/Python/" style="font-size: 20px;">Python</a> <a href="/hexblog/tags/QuickAlarm/" style="font-size: 10px;">QuickAlarm</a> <a href="/hexblog/tags/QuickMedia/" style="font-size: 10.59px;">QuickMedia</a> <a href="/hexblog/tags/RabbitMQ/" style="font-size: 13.53px;">RabbitMQ</a> <a href="/hexblog/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/hexblog/tags/Redis/" style="font-size: 13.53px;">Redis</a> <a href="/hexblog/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/hexblog/tags/Shell/" style="font-size: 17.06px;">Shell</a> <a href="/hexblog/tags/Socket/" style="font-size: 10.59px;">Socket</a> <a href="/hexblog/tags/Solr/" style="font-size: 10px;">Solr</a> <a href="/hexblog/tags/Spring/" style="font-size: 18.82px;">Spring</a> <a href="/hexblog/tags/SpringBoot/" style="font-size: 10.59px;">SpringBoot</a> <a href="/hexblog/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/hexblog/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/hexblog/tags/WebView/" style="font-size: 10.59px;">WebView</a> <a href="/hexblog/tags/Yaml/" style="font-size: 10px;">Yaml</a> <a href="/hexblog/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/hexblog/tags/css/" style="font-size: 11.18px;">css</a> <a href="/hexblog/tags/dns/" style="font-size: 10px;">dns</a> <a href="/hexblog/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/hexblog/tags/git/" style="font-size: 10px;">git</a> <a href="/hexblog/tags/gitalk/" style="font-size: 10px;">gitalk</a> <a href="/hexblog/tags/google/" style="font-size: 10px;">google</a> <a href="/hexblog/tags/grep/" style="font-size: 10px;">grep</a> <a href="/hexblog/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexblog/tags/hostname/" style="font-size: 10px;">hostname</a> <a href="/hexblog/tags/jdk/" style="font-size: 10px;">jdk</a> <a href="/hexblog/tags/logger/" style="font-size: 10px;">logger</a> <a href="/hexblog/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/hexblog/tags/named/" style="font-size: 10px;">named</a> <a href="/hexblog/tags/python/" style="font-size: 10.59px;">python</a> <a href="/hexblog/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/hexblog/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/hexblog/tags/time/" style="font-size: 10px;">time</a> <a href="/hexblog/tags/tmux/" style="font-size: 10.59px;">tmux</a> <a href="/hexblog/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/hexblog/tags/专业词汇/" style="font-size: 10px;">专业词汇</a> <a href="/hexblog/tags/乱码/" style="font-size: 10px;">乱码</a> <a href="/hexblog/tags/二维码/" style="font-size: 11.18px;">二维码</a> <a href="/hexblog/tags/代理/" style="font-size: 10px;">代理</a> <a href="/hexblog/tags/内购/" style="font-size: 10px;">内购</a> <a href="/hexblog/tags/分库分表/" style="font-size: 10px;">分库分表</a> <a href="/hexblog/tags/反射/" style="font-size: 11.18px;">反射</a> <a href="/hexblog/tags/吐槽/" style="font-size: 10px;">吐槽</a> <a href="/hexblog/tags/工具/" style="font-size: 12.35px;">工具</a> <a href="/hexblog/tags/并发/" style="font-size: 11.18px;">并发</a> <a href="/hexblog/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/hexblog/tags/手记/" style="font-size: 12.94px;">手记</a> <a href="/hexblog/tags/技术方案/" style="font-size: 18.24px;">技术方案</a> <a href="/hexblog/tags/指南/" style="font-size: 12.94px;">指南</a> <a href="/hexblog/tags/教程/" style="font-size: 17.65px;">教程</a> <a href="/hexblog/tags/方案设计/" style="font-size: 10px;">方案设计</a> <a href="/hexblog/tags/时区/" style="font-size: 10px;">时区</a> <a href="/hexblog/tags/时间窗口/" style="font-size: 11.18px;">时间窗口</a> <a href="/hexblog/tags/爬虫/" style="font-size: 12.35px;">爬虫</a> <a href="/hexblog/tags/问题记录/" style="font-size: 10px;">问题记录</a> <a href="/hexblog/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
 </div>
 
@@ -822,7 +816,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/hexblog/tags/IDEA/">
                         <span class="tag">IDEA</span>
-                        <span class="tag is-grey">3</span>
+                        <span class="tag is-grey">4</span>
                     </a>
                 </div>
                 
@@ -1486,6 +1480,22 @@ var _hmt = _hmt || [];
                 <span class="level-item tag">1</span>
             </span>
         </a></li></ul></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/JAVA/">
+            <span class="level-start">
+                <span class="level-item">JAVA</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/hexblog/categories/JAVA/问题记录/">
+            <span class="level-start">
+                <span class="level-item">问题记录</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
         <a class="level is-marginless" href="/hexblog/categories/Java/">
             <span class="level-start">
                 <span class="level-item">Java</span>
@@ -2065,7 +2075,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">五月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -2633,6 +2643,22 @@ var _hmt = _hmt || [];
         <a class="level is-marginless" href="/hexblog/categories/DB/分库分表/">
             <span class="level-start">
                 <span class="level-item">分库分表</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/JAVA/">
+            <span class="level-start">
+                <span class="level-item">JAVA</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/hexblog/categories/JAVA/问题记录/">
+            <span class="level-start">
+                <span class="level-item">问题记录</span>
             </span>
             <span class="level-end">
                 <span class="level-item tag">1</span>
@@ -3217,7 +3243,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">五月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">2</span>
+                    <span class="level-item tag">3</span>
                 </span>
             </a>
         </li>
@@ -3939,6 +3965,106 @@ var _hmt = _hmt || [];
     document.addEventListener("DOMContentLoaded", function () {
         outdatedBrowser({
             bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {
+            matchFontHeight: false
+        },
+        SVG: {
+            matchFontHeight: false
+        },
+        CommonHTML: {
+            matchFontHeight: false
+        },
+        tex2jax: {
+            inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+            ]
+        }
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/hexblog/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
+    <script src="/hexblog/js/clipboard.js" defer></script>
+    
+
+    
+    
+    
+
+
+<script src="/hexblog/js/main.js" defer></script>
+
+<script data-ad-client="ca-pub-5592000528061748" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/hexblog/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/hexblog/js/insight.js" defer></script>
+<link rel="stylesheet" href="/hexblog/css/search.css">
+<link rel="stylesheet" href="/hexblog/css/insight.css">
+    
+</body>
+</html>     bgColor: '#f25648',
             color: '#ffffff',
             lowerThan: 'flex'
         });
