@@ -170,6 +170,77 @@ var _hmt = _hmt || [];
                 <div class="column is-8-tablet is-8-desktop is-7-widescreen has-order-2 column-main">
     <div class="card">
     
+        <a href="/hexblog/2018/09/28/180928-hexo使用本地图片的一种方式/">
+            <div class="thumbnail default_logo">
+                <br>
+                <span>
+                180928-hexo使用本地图片的一种方式
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="font-size:0.7em">by 一灰灰</span>
+                </span>
+            </div>
+            </a>
+    
+
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-09-28T14:34:45.000Z">2018-09-28</time>
+                
+                <div class="level-item">
+                <a class="has-link-black -link" href="/hexblog/categories/开源/">开源</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/开源/Hexo/">Hexo</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey" style="font-size: 1.2em;">
+                    
+                    
+                    6 分钟 读完 (大约 884 个字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/hexblog/2018/09/28/180928-hexo使用本地图片的一种方式/">180928-hexo使用本地图片的一种方式</a>
+            
+        </h1>
+        <div class="content">
+            
+
+            <p>hexo搭建的个人博客中，想引入图片可以怎么搞？</p>
+<p>整个过程中，尝试过一些方法，下面记录一下，并给出现在正使用的方式</p>
+
+            
+        </div>
+        
+        
+        <div class="level is-mobile">
+            <div class="level-start">
+                <div class="level-item">
+                <a class="button is-size-7 is-light" href="/hexblog/2018/09/28/180928-hexo使用本地图片的一种方式/#more">阅读更多</a>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
         <a href="/hexblog/2018/09/26/180926-Java之数值型的字面值中使用下划线/">
             <div class="thumbnail default_logo">
                 <br>
@@ -1567,86 +1638,6 @@ var _hmt = _hmt || [];
 
 
 
-    <div class="card">
-    
-        <a href="/hexblog/2018/08/04/180804-Spring之动态注册bean/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                180804-Spring之动态注册bean
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-08-04T10:52:26.000Z">2018-08-04</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/开源/">开源</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/开源/Spring/">Spring</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/开源/Spring/使用小结/">使用小结</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    4 分钟 读完 (大约 576 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/08/04/180804-Spring之动态注册bean/">180804-Spring之动态注册bean</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <h1 id="Spring之动态注册bean"><a href="#Spring之动态注册bean" class="headerlink" title="Spring之动态注册bean"></a>Spring之动态注册bean</h1><p>什么场景下，需要主动向Spring容器注册bean呢？</p>
-<p>如我之前做个的一个支持扫表的基础平台，使用者只需要添加基础配置 + Groovy任务，就可以丢到这个平台上面来运行了，而这个基础平台是一直都在运行的，所以在新来任务时，最直观需要注册的就是 <code>DataSource</code> 数据源这个bean了，那么可以怎么玩？</p>
-<h2 id="I-主动注册Bean支持"><a href="#I-主动注册Bean支持" class="headerlink" title="I. 主动注册Bean支持"></a>I. 主动注册Bean支持</h2><p>借助<code>BeanDefinition</code>来实现bean的定义，从最终的使用来看，代码比较少，几行而已</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> &lt;T&gt; <span class="hljs-function">T <span class="hljs-title">registerBean</span><span class="hljs-params">(String name, Class&lt;T&gt; clazz, Object... args)</span> </span>&#123;</span><br><span class="line">      BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(clazz);</span><br><span class="line">      <span class="hljs-keyword">if</span> (args.length &gt; <span class="hljs-number">0</span>) &#123;</span><br><span class="line">          <span class="hljs-keyword">for</span> (Object arg : args) &#123;</span><br><span class="line">              beanDefinitionBuilder.addConstructorArgValue(arg);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();</span><br><span class="line">  </span><br><span class="line">      BeanDefinitionRegistry beanFactory = (BeanDefinitionRegistry) applicationContext.getBeanFactory();</span><br><span class="line">      beanFactory.registerBeanDefinition(name, beanDefinition);</span><br><span class="line">      <span class="hljs-keyword">return</span> applicationContext.getBean(name, clazz);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>测试如下</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">import</span> com.github.hui.story.quickstory.server.VisitService;</span><br><span class="line"><span class="hljs-keyword">import</span> lombok.ToString;</span><br><span class="line"><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="hljs-keyword">import</span> org.springframework.beans.factory.config.BeanDefinition;</span><br><span class="line"><span class="hljs-keyword">import</span> org.springframework.beans.factory.support.BeanDefinitionBuilder;</span><br><span class="line"><span class="hljs-keyword">import</span> org.springframework.beans.factory.support.BeanDefinitionRegistry;</span><br><span class="line"><span class="hljs-keyword">import</span> org.springframework.context.ConfigurableApplicationContext;</span><br><span class="line"><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="hljs-meta">@Component</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">BeanHolder</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConfigurableApplicationContext applicationContext;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">BeanHolder</span><span class="hljs-params">(ConfigurableApplicationContext applicationContext)</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">this</span>.applicationContext = applicationContext;</span><br><span class="line">        initSer();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initSer</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        InrSer ser = registerBean(<span class="hljs-string">"test"</span>, InrSer<span class="hljs-class">.<span class="hljs-keyword">class</span>)</span>;</span><br><span class="line">        ser.name = <span class="hljs-string">"一灰"</span>;</span><br><span class="line">        ser.uid = <span class="hljs-number">22</span>;</span><br><span class="line">        System.out.println(ser);</span><br><span class="line"></span><br><span class="line">        InrSer ser2 = registerBean("test2", InrSer.class, "一灰灰Blog", 20);</span><br><span class="line">        System.out.println(ser2);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@ToString</span></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">InrSer</span> </span>&#123;</span><br><span class="line">        <span class="hljs-keyword">private</span> String name;</span><br><span class="line">        <span class="hljs-keyword">private</span> Integer uid;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-meta">@Autowired</span></span><br><span class="line">        <span class="hljs-keyword">private</span> VisitService visitService;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">InrSer</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">InrSer</span><span class="hljs-params">(String name, Integer uid)</span> </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">this</span>.name = name;</span><br><span class="line">            <span class="hljs-keyword">this</span>.uid = uid;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">private</span> &lt;T&gt; <span class="hljs-function">T <span class="hljs-title">registerBean</span><span class="hljs-params">(String name, Class&lt;T&gt; clazz, Object... args)</span> </span>&#123;</span><br><span class="line">        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(clazz);</span><br><span class="line">        <span class="hljs-keyword">if</span> (args.length &gt; <span class="hljs-number">0</span>) &#123;</span><br><span class="line">            <span class="hljs-keyword">for</span> (Object arg : args) &#123;</span><br><span class="line">                beanDefinitionBuilder.addConstructorArgValue(arg);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();</span><br><span class="line"></span><br><span class="line">        BeanDefinitionRegistry beanFactory = (BeanDefinitionRegistry) applicationContext.getBeanFactory();</span><br><span class="line">        beanFactory.registerBeanDefinition(name, beanDefinition);</span><br><span class="line">        <span class="hljs-keyword">return</span> applicationContext.getBean(name, clazz);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出如下</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/1405936-8a8e6b58a93e2e27.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="show"></p>
-<h2 id="II-其他"><a href="#II-其他" class="headerlink" title="II. 其他"></a>II. 其他</h2><h3 id="1-一灰灰Blog：-https-liuyueyi-github-io-hexblog"><a href="#1-一灰灰Blog：-https-liuyueyi-github-io-hexblog" class="headerlink" title="1. 一灰灰Blog： https://liuyueyi.github.io/hexblog"></a>1. <a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">一灰灰Blog</a>： <a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">https://liuyueyi.github.io/hexblog</a></h3><p>一灰灰的个人博客，记录所有学习和工作中的博文，欢迎大家前去逛逛</p>
-<h3 id="2-声明"><a href="#2-声明" class="headerlink" title="2. 声明"></a>2. 声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因个人能力有限，难免有疏漏和错误之处，如发现bug或者有更好的建议，欢迎批评指正，不吝感激</p>
-<ul>
-<li>微博地址: <a href="https://weibo.com/p/1005052169825577/home" target="_blank" rel="noopener">小灰灰Blog</a></li>
-<li>QQ： 一灰灰/3302797840</li>
-</ul>
-<h3 id="3-扫描关注"><a href="#3-扫描关注" class="headerlink" title="3. 扫描关注"></a>3. 扫描关注</h3><p><strong>一灰灰blog</strong></p>
-<p><img src="https://raw.githubusercontent.com/liuyueyi/Source/master/img/info/blogInfoV2.png" alt="QrCode"></p>
-<p><strong>知识星球</strong></p>
-<p><img src="https://raw.githubusercontent.com/liuyueyi/Source/master/img/info/goals.png" alt="goals"></p>
-
-
-            
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -1721,7 +1712,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/archives">
                     <p class="title has-text-weight-normal">
-                        446
+                        447
                     </p>
                     </a>
                 </div>
@@ -1935,6 +1926,19 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-05-18T12:07:44.000Z">2021-05-18</time></div>
+                    <a href="/hexblog/2021/05/18/210518-String-format数量不匹配抛异常/" class="has-link-black-ter is-size-6">210518-String#format数量不匹配抛异常</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/hexblog/categories/Java/">Java</a> / <a class="has-link-grey -link" href="/hexblog/categories/Java/JDK/">JDK</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-05-13T12:31:17.000Z">2021-05-13</time></div>
                     <a href="/hexblog/2021/05/13/210514-IDEA代码修改不生效-需要mvn-install问题记录/" class="has-link-black-ter is-size-6">210514-IDEA代码修改不生效,需要mvn install问题记录</a>
                     <p class="is-size-7 is-uppercase">
@@ -1978,19 +1982,6 @@ var _hmt = _hmt || [];
                     <a href="/hexblog/2021/04/12/210412-JDK-常见并发控制手段/" class="has-link-black-ter is-size-6">210412-JDK 常见并发控制手段</a>
                     <p class="is-size-7 is-uppercase">
                         <a class="has-link-grey -link" href="/hexblog/categories/Java/">Java</a> / <a class="has-link-grey -link" href="/hexblog/categories/Java/JDK/">JDK</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-04-08T11:01:40.000Z">2021-04-08</time></div>
-                    <a href="/hexblog/2021/04/08/210408-常见Bean拷贝框架下划线驼峰互转扩展支持/" class="has-link-black-ter is-size-6">210408-常见Bean拷贝框架下划线驼峰互转扩展支持</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/hexblog/categories/工具/">工具</a> / <a class="has-link-grey -link" href="/hexblog/categories/工具/工具类/">工具类</a>
                     </p>
                 </div>
             </div>
@@ -2225,7 +2216,7 @@ var _hmt = _hmt || [];
                 <div class="control">
                     <a class="tags has-addons" href="/hexblog/tags/Java/">
                         <span class="tag">Java</span>
-                        <span class="tag is-grey">63</span>
+                        <span class="tag is-grey">64</span>
                     </a>
                 </div>
                 
@@ -2854,7 +2845,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">Java</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">64</span>
+                <span class="level-item tag">65</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/hexblog/categories/Java/AES/">
@@ -2902,7 +2893,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">JDK</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">28</span>
+                <span class="level-item tag">29</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/hexblog/categories/Java/JVM/">
@@ -3428,7 +3419,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">五月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">3</span>
+                    <span class="level-item tag">4</span>
                 </span>
             </a>
         </li>
@@ -4022,7 +4013,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">Java</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">64</span>
+                <span class="level-item tag">65</span>
             </span>
         </a><ul><li>
         <a class="level is-marginless" href="/hexblog/categories/Java/AES/">
@@ -4070,7 +4061,7 @@ var _hmt = _hmt || [];
                 <span class="level-item">JDK</span>
             </span>
             <span class="level-end">
-                <span class="level-item tag">28</span>
+                <span class="level-item tag">29</span>
             </span>
         </a></li><li>
         <a class="level is-marginless" href="/hexblog/categories/Java/JVM/">
@@ -4596,7 +4587,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">五月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">3</span>
+                    <span class="level-item tag">4</span>
                 </span>
             </a>
         </li>
