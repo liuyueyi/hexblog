@@ -170,6 +170,127 @@ var _hmt = _hmt || [];
                 <div class="column is-8-tablet is-8-desktop is-7-widescreen has-order-2 column-main">
     <div class="card">
     
+        <a href="/hexblog/2018/03/15/熔断Hystrix使用尝鲜/">
+            <div class="thumbnail default_logo">
+                <br>
+                <span>
+                熔断Hystrix使用尝鲜
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="font-size:0.7em">by 一灰灰</span>
+                </span>
+            </div>
+            </a>
+    
+
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-03-15T04:13:15.000Z">2018-03-15</time>
+                
+                <div class="level-item">
+                <a class="has-link-black -link" href="/hexblog/categories/开源/">开源</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/开源/Hystrix/">Hystrix</a>
+                </div>
+                
+                
+                <span class="level-item has-text-grey" style="font-size: 1.2em;">
+                    
+                    
+                    14 分钟 读完 (大约 2056 个字)
+                </span>
+                
+                
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                <a class="has-link-black-ter" href="/hexblog/2018/03/15/熔断Hystrix使用尝鲜/">熔断Hystrix使用尝鲜</a>
+            
+        </h1>
+        <div class="content">
+            
+
+            <h1 id="熔断Hystrix使用尝鲜"><a href="#熔断Hystrix使用尝鲜" class="headerlink" title="熔断Hystrix使用尝鲜"></a>熔断Hystrix使用尝鲜</h1><p>当服务有较多外部依赖时，如果其中某个服务的不可用，导致整个集群会受到影响（比如超时，导致大量的请求被阻塞，从而导致外部请求无法进来），这种情况下采用hystrix就很有用了</p>
+<p>出于这个目的，了解了下hystrix框架，下面记录下，框架尝新的历程</p>
+<h2 id="I-原理探究"><a href="#I-原理探究" class="headerlink" title="I. 原理探究"></a>I. 原理探究</h2><p>通过官网和相关博文，可以简单的说一下这个工作机制，大致流程如下</p>
+<p>首先是请求过来 -&gt; 判断熔断器是否开 -&gt; 服务调用 -&gt; 异常则走fallback，失败计数+1 -&gt; 结束</p>
+<p>下面是主流程图</p>
+<p><img src="https://s3.mogucdn.com/mlcdn/c45406/180315_117ad445be0bc4iald8g7jebjihl6_1930x566.png" alt="流程图"></p>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    A(请求)--&gt;B&#123;熔断器是否已开&#125;</span><br><span class="line">    B --&gt; | 熔断 | D[fallback逻辑]</span><br><span class="line">    B --&gt; | 未熔断 | E[线程池/Semphore]</span><br><span class="line">    E --&gt; F&#123;线程池满/无可用信号量&#125;</span><br><span class="line">    F --&gt; | yes | D</span><br><span class="line">    F --&gt; | no | G&#123;创建线程执行/本线程运行&#125;</span><br><span class="line">    G --&gt; | yes | I(结束)</span><br><span class="line">    G --&gt; | no | D</span><br><span class="line">    D --&gt; I(结束)</span><br></pre></td></tr></table></figure>
+<p>熔断机制主要提供了两种，一个是基于线程池的隔离方式来做；还有一个则是根据信号量的抢占来做</p>
+<p><strong>线程池方式</strong> ： 支持异步，支持超时设置，支持限流</p>
+<p><strong>信号量方式</strong> ： 本线程执行，无异步，无超时，支持限流，消耗更小</p>
+<p>基本上有上面这个简单的概念之后，开始进入我们的使用测试流程</p>
+<h2 id="II-使用尝鲜"><a href="#II-使用尝鲜" class="headerlink" title="II. 使用尝鲜"></a>II. 使用尝鲜</h2><h3 id="1-引入依赖"><a href="#1-引入依赖" class="headerlink" title="1. 引入依赖"></a>1. 引入依赖</h3><figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.netflix.hystrix<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>hystrix-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>1.5.12<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-简单使用"><a href="#2-简单使用" class="headerlink" title="2. 简单使用"></a>2. 简单使用</h3><p>从官方文档来看，支持两种Command方式，一个是基于观察者模式的ObserverCommand, 一个是基本的Command，先用简单的看以下</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HystrixConfigTest</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HystrixCommand</span>&lt;<span class="hljs-title">String</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">HystrixConfigTest</span><span class="hljs-params">(String name, <span class="hljs-keyword">boolean</span> ans)</span> </span>&#123;</span><br><span class="line"><span class="hljs-comment">//        注意的是同一个任务，</span></span><br><span class="line">        <span class="hljs-keyword">super</span>(Setter.withGroupKey(</span><br><span class="line"><span class="hljs-comment">//                CommandGroup是每个命令最少配置的必选参数，在不指定ThreadPoolKey的情况下，字面值用于对不同依赖的线程池/信号区分</span></span><br><span class="line">                HystrixCommandGroupKey.Factory.asKey(<span class="hljs-string">"CircuitBreakerTestGroup"</span>))</span><br><span class="line"><span class="hljs-comment">//                每个CommandKey代表一个依赖抽象,相同的依赖要使用相同的CommandKey名称。依赖隔离的根本就是对相同CommandKey的依赖做隔离.</span></span><br><span class="line">                        .andCommandKey(HystrixCommandKey.Factory.asKey(<span class="hljs-string">"CircuitBreakerTestKey_"</span> + ans))</span><br><span class="line"><span class="hljs-comment">//                当对同一业务依赖做隔离时使用CommandGroup做区分,但是对同一依赖的不同远程调用如(一个是redis 一个是http),可以使用HystrixThreadPoolKey做隔离区分</span></span><br><span class="line">                        .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey(<span class="hljs-string">"CircuitBreakerTest_"</span> + ans))</span><br><span class="line">                        .andThreadPoolPropertiesDefaults(    <span class="hljs-comment">// 配置线程池</span></span><br><span class="line">                                HystrixThreadPoolProperties.Setter()</span><br><span class="line">                                        .withCoreSize(<span class="hljs-number">12</span>)    <span class="hljs-comment">// 配置线程池里的线程数，设置足够多线程，以防未熔断却打满threadpool</span></span><br><span class="line">                        )</span><br><span class="line">                        .andCommandPropertiesDefaults(    <span class="hljs-comment">// 配置熔断器</span></span><br><span class="line">                                HystrixCommandProperties.Setter()</span><br><span class="line">                                        .withCircuitBreakerEnabled(<span class="hljs-keyword">true</span>)</span><br><span class="line">                                        .withCircuitBreakerRequestVolumeThreshold(<span class="hljs-number">3</span>)</span><br><span class="line">                                        .withCircuitBreakerErrorThresholdPercentage(<span class="hljs-number">80</span>)</span><br><span class="line"><span class="hljs-comment">//                		.withCircuitBreakerForceOpen(true)	// 置为true时，所有请求都将被拒绝，直接到fallback</span></span><br><span class="line"><span class="hljs-comment">//                		.withCircuitBreakerForceClosed(true)	// 置为true时，将忽略错误</span></span><br><span class="line"><span class="hljs-comment">//                                        .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE)    // 信号量隔离</span></span><br><span class="line">                                        .withExecutionIsolationSemaphoreMaxConcurrentRequests(<span class="hljs-number">20</span>)</span><br><span class="line">                                        .withExecutionTimeoutEnabled(<span class="hljs-keyword">true</span>)</span><br><span class="line">                                        .withExecutionTimeoutInMilliseconds(<span class="hljs-number">200</span>)</span><br><span class="line">                                .withCircuitBreakerSleepWindowInMilliseconds(<span class="hljs-number">1000</span>) <span class="hljs-comment">//熔断器打开到关闭的时间窗长度</span></span><br><span class="line"><span class="hljs-comment">//                		.withExecutionTimeoutInMilliseconds(5000)</span></span><br><span class="line">                        )</span><br><span class="line">        );</span><br><span class="line">        <span class="hljs-keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="hljs-meta">@Override</span></span><br><span class="line">    <span class="hljs-function"><span class="hljs-keyword">protected</span> String <span class="hljs-title">run</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(<span class="hljs-string">"running run():"</span> + name + <span class="hljs-string">" thread: "</span> + Thread.currentThread().getName());</span><br><span class="line">        <span class="hljs-keyword">int</span> num = Integer.valueOf(name);</span><br><span class="line">        <span class="hljs-keyword">if</span> (num % <span class="hljs-number">2</span> == <span class="hljs-number">0</span> &amp;&amp; num &lt; <span class="hljs-number">10</span>) &#123;    <span class="hljs-comment">// 直接返回</span></span><br><span class="line">            <span class="hljs-keyword">return</span> name;</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num &lt; <span class="hljs-number">40</span>) &#123;</span><br><span class="line">            Thread.sleep(<span class="hljs-number">300</span>);</span><br><span class="line">            <span class="hljs-keyword">return</span> <span class="hljs-string">"sleep+"</span>+ name;</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;    <span class="hljs-comment">// 无限循环模拟超时</span></span><br><span class="line">            <span class="hljs-keyword">return</span> name;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="hljs-comment">//</span></span><br><span class="line"><span class="hljs-comment">//    @Override</span></span><br><span class="line"><span class="hljs-comment">//    protected String getFallback() &#123;</span></span><br><span class="line"><span class="hljs-comment">//        Throwable t = this.getExecutionException();</span></span><br><span class="line"><span class="hljs-comment">//        if(t instanceof HystrixRuntimeException) &#123;</span></span><br><span class="line"><span class="hljs-comment">//            System.out.println(Thread.currentThread() + " --&gt; " + ((HystrixRuntimeException) t).getFailureType());</span></span><br><span class="line"><span class="hljs-comment">//        &#125; else if (t instanceof HystrixTimeoutException) &#123;</span></span><br><span class="line"><span class="hljs-comment">//            System.out.println(t.getCause());</span></span><br><span class="line"><span class="hljs-comment">//        &#125; else &#123;</span></span><br><span class="line"><span class="hljs-comment">//            t.printStackTrace();</span></span><br><span class="line"><span class="hljs-comment">//        &#125;</span></span><br><span class="line"><span class="hljs-comment">//        System.out.println(Thread.currentThread() + " --&gt; ----------over------------");</span></span><br><span class="line"><span class="hljs-comment">//        return "CircuitBreaker fallback: " + name;</span></span><br><span class="line"><span class="hljs-comment">//    &#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UnitTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="hljs-meta">@Test</span></span><br><span class="line">        <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">testSynchronous</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">50</span>; i++) &#123;</span><br><span class="line">                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">41</span>) &#123;</span><br><span class="line">                    Thread.sleep(<span class="hljs-number">2000</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">                    System.out.println(<span class="hljs-string">"==========="</span> + <span class="hljs-keyword">new</span> HystrixConfigTest(String.valueOf(i), i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>).execute());</span><br><span class="line">                &#125; <span class="hljs-keyword">catch</span> (HystrixRuntimeException e) &#123;</span><br><span class="line">                    System.out.println(i + <span class="hljs-string">" : "</span> + e.getFailureType() + <span class="hljs-string">" &gt;&gt;&gt;&gt; "</span> + e.getCause() + <span class="hljs-string">" &lt;&lt;&lt;&lt;&lt;"</span>);</span><br><span class="line">                &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    System.out.println(<span class="hljs-string">"run()抛出HystrixBadRequestException时，被捕获到这里"</span> + e.getCause());</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            System.out.println(<span class="hljs-string">"------开始打印现有线程---------"</span>);</span><br><span class="line">            Map&lt;Thread, StackTraceElement[]&gt; map = Thread.getAllStackTraces();</span><br><span class="line">            <span class="hljs-keyword">for</span> (Thread thread : map.keySet()) &#123;</span><br><span class="line">                System.out.println(<span class="hljs-string">"---&gt;name--&gt;"</span> + thread.getName());</span><br><span class="line">            &#125;</span><br><span class="line">            System.out.println(<span class="hljs-string">"thread num: "</span> + map.size());</span><br><span class="line"></span><br><span class="line">            System.in.read();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用起来还是比较简单的，一般步骤如下：</p>
+<ul>
+<li>继承 <code>HsytrixCommand</code> 类</li>
+<li>重载构造方法，内部需要指定各种配置</li>
+<li>实现run方法，这个里面主要执行熔断监控的方法</li>
+</ul>
+<p>写上面的代码比较简单，但是有几个地方不太好处理</p>
+<ol>
+<li>配置项的具体含义，又是怎么生效的？</li>
+<li>某些异常不进入熔断逻辑怎么办？</li>
+<li>监控数据如何获取？</li>
+<li>如何模拟各种不同的case（超时？服务异常？熔断已开启？线程池满？无可用信号量？半熔断的重试？）</li>
+</ol>
+<h3 id="3-实测理解"><a href="#3-实测理解" class="headerlink" title="3. 实测理解"></a>3. 实测理解</h3><p>根据上面那一段代码的删删改改，貌似理解了以下几个点，不知道对误</p>
+<h4 id="a-配置相关"><a href="#a-配置相关" class="headerlink" title="a. 配置相关"></a>a. 配置相关</h4><ul>
+<li>groupKey 用于区分线程池和信号量，即一个group对应一个</li>
+<li>commandKey 很重要，这个是用于区分业务<ul>
+<li>简单来讲，group类似提供服务的app，command则对应app提供的service，一个app可以有多个service，这里就是将一个app的所有请求都放在一个线程池（or共享一个信号量）</li>
+</ul>
+</li>
+<li>开启熔断机制，指定触发熔断的最小请求数（10s内），指定打开熔断的条件（失败率）</li>
+<li>设置熔断策略（线程池or信号量）</li>
+<li>设置重试时间（默认熔断开启后5s，放几个请求进去，看服务是否恢复）</li>
+<li>设置线程池大小，设置信号量大小，设置队列大小</li>
+<li>设置超时时间，设置允许超时设置</li>
+</ul>
+<h4 id="b-使用相关"><a href="#b-使用相关" class="headerlink" title="b. 使用相关"></a>b. 使用相关</h4><p>run方法是核心执行服务调用，如果需要某些服务不统计到熔断的失败率（比如因为调用姿势不对导致服务内部的异常抛上来了，但是服务本身是正常的），这个时候，就需要包装下调用逻辑，将不需要的异常包装到 <code>HystrixBadRequestException</code> 类里</p>
+<p>如</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Override</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> String <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">    <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">        <span class="hljs-keyword">return</span> func.apply(route, parameterDescs);</span><br><span class="line">    &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="hljs-keyword">if</span> (exceptionExcept(e)) &#123;</span><br><span class="line">            <span class="hljs-comment">// 如果是不关注的异常case， 不进入熔断逻辑</span></span><br><span class="line">            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> HystrixBadRequestException(<span class="hljs-string">"unexpected exception!"</span>, e);</span><br><span class="line">        &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">            <span class="hljs-keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="c-如何获取失败的原因"><a href="#c-如何获取失败的原因" class="headerlink" title="c. 如何获取失败的原因"></a>c. 如何获取失败的原因</h4><p>当发生失败时，hystrix会把原生的异常包装到 <code>HystrixRuntimeException</code> 这个类里，所以我们可以在调用的地方如下处理</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">try</span> &#123;</span><br><span class="line">    System.out.println(<span class="hljs-string">"==========="</span> + <span class="hljs-keyword">new</span> HystrixConfigTest(String.valueOf(i), i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>).execute());</span><br><span class="line">&#125; <span class="hljs-keyword">catch</span> (HystrixRuntimeException e) &#123;</span><br><span class="line">    System.out.println(i + <span class="hljs-string">" : "</span> + e.getFailureType() + <span class="hljs-string">" &gt;&gt;&gt;&gt; "</span> + e.getCause() + <span class="hljs-string">" &lt;&lt;&lt;&lt;&lt;"</span>);</span><br><span class="line">&#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    System.out.println(<span class="hljs-string">"run()抛出HystrixBadRequestException时，被捕获到这里"</span> + e.getCause());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当定义了fallback逻辑时，异常则不会抛到具体的调用方，所以在 fallback 方法内，则有必要获取对应的异常信息</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">// 获取异常信息</span></span><br><span class="line">Throwable t = <span class="hljs-keyword">this</span>.getExecutionException();</span><br></pre></td></tr></table></figure>
+<p>然后下一步就是需要获取对应的异常原因了，通过FailureType来表明失败的根源</p>
+<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">((HystrixRuntimeException) t).getFailureType()</span><br></pre></td></tr></table></figure>
+<h4 id="d-如何获取统计信息"><a href="#d-如何获取统计信息" class="headerlink" title="d.如何获取统计信息"></a>d.如何获取统计信息</h4><p>hystrix自己提供了一套监控插件，基本上公司内都会有自己的监控统计信息，因此需要对这个数据进行和自定义，目前还没看到可以如何优雅的处理这些统计信息</p>
+<h3 id="4-小结"><a href="#4-小结" class="headerlink" title="4. 小结"></a>4. 小结</h3><p>主要是看了下这个东西可以怎么玩，整个用下来的感觉就是，设计的比较有意思，但是配置参数太多，很多都没有完全摸透</p>
+<p>其次就是一些特殊的case（如监控，报警，特殊情况过滤）需要处理时，用起来并不是很顺手，主要问题还是没有理解清楚这个框架的内部工作机制的问题</p>
+<h2 id="III-其他"><a href="#III-其他" class="headerlink" title="III. 其他"></a>III. 其他</h2><h3 id="个人博客：-Z-blog"><a href="#个人博客：-Z-blog" class="headerlink" title="个人博客： Z+|blog"></a>个人博客： <a href="https://liuyueyi.github.io/hexblog" target="_blank" rel="noopener">Z+|blog</a></h3><p>基于hexo + github pages搭建的个人博客，记录所有学习和工作中的博文，欢迎大家前去逛逛</p>
+<h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><p>尽信书则不如，已上内容，纯属一家之言，因本人能力一般，见识有限，如发现bug或者有更好的建议，随时欢迎批评指正</p>
+<ul>
+<li>微博地址: <a href="https://weibo.com/p/1005052169825577/home" target="_blank" rel="noopener">小灰灰Blog</a></li>
+<li>QQ： 一灰灰/3302797840</li>
+</ul>
+<h3 id="扫描关注"><a href="#扫描关注" class="headerlink" title="扫描关注"></a>扫描关注</h3><p><img src="https://s17.mogucdn.com/mlcdn/c45406/180209_74fic633aebgh5dgfhid2fiiggc99_1220x480.png" alt="QrCode"></p>
+
+
+            
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+
+    <div class="card">
+    
         <a href="/hexblog/2018/03/13/JVM学习之内存结构/">
             <div class="thumbnail default_logo">
                 <br>
@@ -1620,78 +1741,6 @@ var _hmt = _hmt || [];
 
 
 
-    <div class="card">
-    
-        <a href="/hexblog/2018/01/22/兼容ImageIO读取jpeg图片变红/">
-            <div class="thumbnail default_logo">
-                <br>
-                <span>
-                兼容ImageIO读取jpeg图片变红
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <span style="font-size:0.7em">by 一灰灰</span>
-                </span>
-            </div>
-            </a>
-    
-
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-01-22T06:38:39.000Z">2018-01-22</time>
-                
-                <div class="level-item">
-                <a class="has-link-black -link" href="/hexblog/categories/Java/">Java</a>&nbsp;/&nbsp;<a class="has-link-black -link" href="/hexblog/categories/Java/Bugfix/">Bugfix</a>
-                </div>
-                
-                
-                <span class="level-item has-text-grey" style="font-size: 1.2em;">
-                    
-                    
-                    3 分钟 读完 (大约 509 个字)
-                </span>
-                
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/hexblog/2018/01/22/兼容ImageIO读取jpeg图片变红/">兼容ImageIO读取jpeg图片变红</a>
-            
-        </h1>
-        <div class="content">
-            
-
-            <h1 id="兼容ImageIO读取jpeg图片变红"><a href="#兼容ImageIO读取jpeg图片变红" class="headerlink" title="兼容ImageIO读取jpeg图片变红"></a>兼容ImageIO读取jpeg图片变红</h1><blockquote>
-<p>使用ImageIO.read()方法，加载图片为BufferedImage对象时，对于某些图片，会出现变红的case</p>
-</blockquote>
-
-            
-        </div>
-        
-        
-        <div class="level is-mobile">
-            <div class="level-start">
-                <div class="level-item">
-                <a class="button is-size-7 is-light" href="/hexblog/2018/01/22/兼容ImageIO读取jpeg图片变红/#more">阅读更多</a>
-                </div>
-            </div>
-        </div>
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
     
 <div class="card card-transparent">
@@ -1764,7 +1813,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/archives">
                     <p class="title has-text-weight-normal">
-                        447
+                        448
                     </p>
                     </a>
                 </div>
@@ -1777,7 +1826,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/categories">
                         <p class="title has-text-weight-normal">
-                            93
+                            95
                         </p>
                     </a>
                 </div>
@@ -1790,7 +1839,7 @@ var _hmt = _hmt || [];
                     </p>
                     <a href="/hexblog/tags">
                     <p class="title has-text-weight-normal">
-                        107
+                        108
                     </p>
                     </a>
                 </div>
@@ -1978,6 +2027,19 @@ var _hmt = _hmt || [];
             
             <div class="media-content">
                 <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-05-24T05:07:01.000Z">2021-05-24</time></div>
+                    <a href="/hexblog/2021/05/24/210524-win10与ubuntu子系统文件互查/" class="has-link-black-ter is-size-6">210524-win10与ubuntu子系统文件互查</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/hexblog/categories/Win10/">Win10</a> / <a class="has-link-grey -link" href="/hexblog/categories/Win10/开发环境/">开发环境</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <div class="media-content">
+                <div class="content">
                     <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-05-18T12:07:44.000Z">2021-05-18</time></div>
                     <a href="/hexblog/2021/05/18/210518-String-format数量不匹配抛异常/" class="has-link-black-ter is-size-6">210518-String#format数量不匹配抛异常</a>
                     <p class="is-size-7 is-uppercase">
@@ -2026,19 +2088,6 @@ var _hmt = _hmt || [];
             </div>
         </article>
         
-        <article class="media">
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2021-04-12T14:16:35.000Z">2021-04-12</time></div>
-                    <a href="/hexblog/2021/04/12/210412-JDK-常见并发控制手段/" class="has-link-black-ter is-size-6">210412-JDK 常见并发控制手段</a>
-                    <p class="is-size-7 is-uppercase">
-                        <a class="has-link-grey -link" href="/hexblog/categories/Java/">Java</a> / <a class="has-link-grey -link" href="/hexblog/categories/Java/JDK/">JDK</a>
-                    </p>
-                </div>
-            </div>
-        </article>
-        
     </div>
 </div>
 
@@ -2049,7 +2098,7 @@ var _hmt = _hmt || [];
         <h3 class="menu-label">
             标签云
         </h3>
-        <a href="/hexblog/tags/AES/" style="font-size: 10px;">AES</a> <a href="/hexblog/tags/Android/" style="font-size: 11.18px;">Android</a> <a href="/hexblog/tags/AutoCloseable/" style="font-size: 10px;">AutoCloseable</a> <a href="/hexblog/tags/BeanUtil/" style="font-size: 10.59px;">BeanUtil</a> <a href="/hexblog/tags/BloomFilter/" style="font-size: 10px;">BloomFilter</a> <a href="/hexblog/tags/BugFix/" style="font-size: 10.59px;">BugFix</a> <a href="/hexblog/tags/Bugfix/" style="font-size: 10.59px;">Bugfix</a> <a href="/hexblog/tags/CURL/" style="font-size: 10.59px;">CURL</a> <a href="/hexblog/tags/Chrome/" style="font-size: 10.59px;">Chrome</a> <a href="/hexblog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/hexblog/tags/Docker/" style="font-size: 12.35px;">Docker</a> <a href="/hexblog/tags/Dubbo/" style="font-size: 10px;">Dubbo</a> <a href="/hexblog/tags/ElasticSearch/" style="font-size: 11.18px;">ElasticSearch</a> <a href="/hexblog/tags/FastJson/" style="font-size: 10px;">FastJson</a> <a href="/hexblog/tags/Git/" style="font-size: 11.18px;">Git</a> <a href="/hexblog/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/hexblog/tags/Grafana/" style="font-size: 10px;">Grafana</a> <a href="/hexblog/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/hexblog/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/hexblog/tags/Guava/" style="font-size: 11.18px;">Guava</a> <a href="/hexblog/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/hexblog/tags/IDEA/" style="font-size: 11.76px;">IDEA</a> <a href="/hexblog/tags/IO/" style="font-size: 10.59px;">IO</a> <a href="/hexblog/tags/ImageMagic/" style="font-size: 10.59px;">ImageMagic</a> <a href="/hexblog/tags/InfluxDB/" style="font-size: 16.47px;">InfluxDB</a> <a href="/hexblog/tags/InputStream/" style="font-size: 10px;">InputStream</a> <a href="/hexblog/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/hexblog/tags/JDK/" style="font-size: 15.29px;">JDK</a> <a href="/hexblog/tags/JVM/" style="font-size: 11.18px;">JVM</a> <a href="/hexblog/tags/Java/" style="font-size: 19.41px;">Java</a> <a href="/hexblog/tags/JavaAgent/" style="font-size: 10.59px;">JavaAgent</a> <a href="/hexblog/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/hexblog/tags/JavaWeb/" style="font-size: 10.59px;">JavaWeb</a> <a href="/hexblog/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/hexblog/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/hexblog/tags/Linux/" style="font-size: 14.71px;">Linux</a> <a href="/hexblog/tags/List/" style="font-size: 10px;">List</a> <a href="/hexblog/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/hexblog/tags/Map/" style="font-size: 10px;">Map</a> <a href="/hexblog/tags/Maven/" style="font-size: 10.59px;">Maven</a> <a href="/hexblog/tags/Mongo/" style="font-size: 10.59px;">Mongo</a> <a href="/hexblog/tags/MongoDB/" style="font-size: 11.76px;">MongoDB</a> <a href="/hexblog/tags/MongoDb/" style="font-size: 14.12px;">MongoDb</a> <a href="/hexblog/tags/MySql/" style="font-size: 11.76px;">MySql</a> <a href="/hexblog/tags/Mybatis/" style="font-size: 10.59px;">Mybatis</a> <a href="/hexblog/tags/Mysql/" style="font-size: 15.88px;">Mysql</a> <a href="/hexblog/tags/Nginx/" style="font-size: 12.94px;">Nginx</a> <a href="/hexblog/tags/Node/" style="font-size: 10px;">Node</a> <a href="/hexblog/tags/OGNL/" style="font-size: 11.18px;">OGNL</a> <a href="/hexblog/tags/ProtoStuff/" style="font-size: 10.59px;">ProtoStuff</a> <a href="/hexblog/tags/Python/" style="font-size: 20px;">Python</a> <a href="/hexblog/tags/QuickAlarm/" style="font-size: 10px;">QuickAlarm</a> <a href="/hexblog/tags/QuickMedia/" style="font-size: 10.59px;">QuickMedia</a> <a href="/hexblog/tags/RabbitMQ/" style="font-size: 13.53px;">RabbitMQ</a> <a href="/hexblog/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/hexblog/tags/Redis/" style="font-size: 13.53px;">Redis</a> <a href="/hexblog/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/hexblog/tags/Shell/" style="font-size: 17.06px;">Shell</a> <a href="/hexblog/tags/Socket/" style="font-size: 10.59px;">Socket</a> <a href="/hexblog/tags/Solr/" style="font-size: 10px;">Solr</a> <a href="/hexblog/tags/Spring/" style="font-size: 18.82px;">Spring</a> <a href="/hexblog/tags/SpringBoot/" style="font-size: 10.59px;">SpringBoot</a> <a href="/hexblog/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/hexblog/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/hexblog/tags/WebView/" style="font-size: 10.59px;">WebView</a> <a href="/hexblog/tags/Yaml/" style="font-size: 10px;">Yaml</a> <a href="/hexblog/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/hexblog/tags/css/" style="font-size: 11.18px;">css</a> <a href="/hexblog/tags/dns/" style="font-size: 10px;">dns</a> <a href="/hexblog/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/hexblog/tags/git/" style="font-size: 10px;">git</a> <a href="/hexblog/tags/gitalk/" style="font-size: 10px;">gitalk</a> <a href="/hexblog/tags/google/" style="font-size: 10px;">google</a> <a href="/hexblog/tags/grep/" style="font-size: 10px;">grep</a> <a href="/hexblog/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexblog/tags/hostname/" style="font-size: 10px;">hostname</a> <a href="/hexblog/tags/jdk/" style="font-size: 10px;">jdk</a> <a href="/hexblog/tags/logger/" style="font-size: 10px;">logger</a> <a href="/hexblog/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/hexblog/tags/named/" style="font-size: 10px;">named</a> <a href="/hexblog/tags/python/" style="font-size: 10.59px;">python</a> <a href="/hexblog/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/hexblog/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/hexblog/tags/time/" style="font-size: 10px;">time</a> <a href="/hexblog/tags/tmux/" style="font-size: 10.59px;">tmux</a> <a href="/hexblog/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/hexblog/tags/专业词汇/" style="font-size: 10px;">专业词汇</a> <a href="/hexblog/tags/乱码/" style="font-size: 10px;">乱码</a> <a href="/hexblog/tags/二维码/" style="font-size: 11.18px;">二维码</a> <a href="/hexblog/tags/代理/" style="font-size: 10px;">代理</a> <a href="/hexblog/tags/内购/" style="font-size: 10px;">内购</a> <a href="/hexblog/tags/分库分表/" style="font-size: 10px;">分库分表</a> <a href="/hexblog/tags/反射/" style="font-size: 11.18px;">反射</a> <a href="/hexblog/tags/吐槽/" style="font-size: 10px;">吐槽</a> <a href="/hexblog/tags/工具/" style="font-size: 12.35px;">工具</a> <a href="/hexblog/tags/并发/" style="font-size: 11.18px;">并发</a> <a href="/hexblog/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/hexblog/tags/手记/" style="font-size: 12.94px;">手记</a> <a href="/hexblog/tags/技术方案/" style="font-size: 18.24px;">技术方案</a> <a href="/hexblog/tags/指南/" style="font-size: 12.94px;">指南</a> <a href="/hexblog/tags/教程/" style="font-size: 17.65px;">教程</a> <a href="/hexblog/tags/方案设计/" style="font-size: 10px;">方案设计</a> <a href="/hexblog/tags/时区/" style="font-size: 10px;">时区</a> <a href="/hexblog/tags/时间窗口/" style="font-size: 11.18px;">时间窗口</a> <a href="/hexblog/tags/爬虫/" style="font-size: 12.35px;">爬虫</a> <a href="/hexblog/tags/问题记录/" style="font-size: 10px;">问题记录</a> <a href="/hexblog/tags/随笔/" style="font-size: 10px;">随笔</a>
+        <a href="/hexblog/tags/AES/" style="font-size: 10px;">AES</a> <a href="/hexblog/tags/Android/" style="font-size: 11.18px;">Android</a> <a href="/hexblog/tags/AutoCloseable/" style="font-size: 10px;">AutoCloseable</a> <a href="/hexblog/tags/BeanUtil/" style="font-size: 10.59px;">BeanUtil</a> <a href="/hexblog/tags/BloomFilter/" style="font-size: 10px;">BloomFilter</a> <a href="/hexblog/tags/BugFix/" style="font-size: 10.59px;">BugFix</a> <a href="/hexblog/tags/Bugfix/" style="font-size: 10.59px;">Bugfix</a> <a href="/hexblog/tags/CURL/" style="font-size: 10.59px;">CURL</a> <a href="/hexblog/tags/Chrome/" style="font-size: 10.59px;">Chrome</a> <a href="/hexblog/tags/DNS/" style="font-size: 10px;">DNS</a> <a href="/hexblog/tags/Docker/" style="font-size: 12.35px;">Docker</a> <a href="/hexblog/tags/Dubbo/" style="font-size: 10px;">Dubbo</a> <a href="/hexblog/tags/ElasticSearch/" style="font-size: 11.18px;">ElasticSearch</a> <a href="/hexblog/tags/FastJson/" style="font-size: 10px;">FastJson</a> <a href="/hexblog/tags/Git/" style="font-size: 11.18px;">Git</a> <a href="/hexblog/tags/GitHub/" style="font-size: 10px;">GitHub</a> <a href="/hexblog/tags/Grafana/" style="font-size: 10px;">Grafana</a> <a href="/hexblog/tags/Groovy/" style="font-size: 10px;">Groovy</a> <a href="/hexblog/tags/Gson/" style="font-size: 10px;">Gson</a> <a href="/hexblog/tags/Guava/" style="font-size: 11.18px;">Guava</a> <a href="/hexblog/tags/HashMap/" style="font-size: 10px;">HashMap</a> <a href="/hexblog/tags/IDEA/" style="font-size: 11.76px;">IDEA</a> <a href="/hexblog/tags/IO/" style="font-size: 10.59px;">IO</a> <a href="/hexblog/tags/ImageMagic/" style="font-size: 10.59px;">ImageMagic</a> <a href="/hexblog/tags/InfluxDB/" style="font-size: 16.47px;">InfluxDB</a> <a href="/hexblog/tags/InputStream/" style="font-size: 10px;">InputStream</a> <a href="/hexblog/tags/Iterator/" style="font-size: 10px;">Iterator</a> <a href="/hexblog/tags/JDK/" style="font-size: 15.29px;">JDK</a> <a href="/hexblog/tags/JVM/" style="font-size: 11.18px;">JVM</a> <a href="/hexblog/tags/Java/" style="font-size: 19.41px;">Java</a> <a href="/hexblog/tags/JavaAgent/" style="font-size: 10.59px;">JavaAgent</a> <a href="/hexblog/tags/JavaScript/" style="font-size: 10px;">JavaScript</a> <a href="/hexblog/tags/JavaWeb/" style="font-size: 10.59px;">JavaWeb</a> <a href="/hexblog/tags/Jquery/" style="font-size: 10px;">Jquery</a> <a href="/hexblog/tags/LRU/" style="font-size: 10px;">LRU</a> <a href="/hexblog/tags/Linux/" style="font-size: 14.71px;">Linux</a> <a href="/hexblog/tags/List/" style="font-size: 10px;">List</a> <a href="/hexblog/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/hexblog/tags/Map/" style="font-size: 10px;">Map</a> <a href="/hexblog/tags/Maven/" style="font-size: 10.59px;">Maven</a> <a href="/hexblog/tags/Mongo/" style="font-size: 10.59px;">Mongo</a> <a href="/hexblog/tags/MongoDB/" style="font-size: 11.76px;">MongoDB</a> <a href="/hexblog/tags/MongoDb/" style="font-size: 14.12px;">MongoDb</a> <a href="/hexblog/tags/MySql/" style="font-size: 11.76px;">MySql</a> <a href="/hexblog/tags/Mybatis/" style="font-size: 10.59px;">Mybatis</a> <a href="/hexblog/tags/Mysql/" style="font-size: 15.88px;">Mysql</a> <a href="/hexblog/tags/Nginx/" style="font-size: 12.94px;">Nginx</a> <a href="/hexblog/tags/Node/" style="font-size: 10px;">Node</a> <a href="/hexblog/tags/OGNL/" style="font-size: 11.18px;">OGNL</a> <a href="/hexblog/tags/ProtoStuff/" style="font-size: 10.59px;">ProtoStuff</a> <a href="/hexblog/tags/Python/" style="font-size: 20px;">Python</a> <a href="/hexblog/tags/QuickAlarm/" style="font-size: 10px;">QuickAlarm</a> <a href="/hexblog/tags/QuickMedia/" style="font-size: 10.59px;">QuickMedia</a> <a href="/hexblog/tags/RabbitMQ/" style="font-size: 13.53px;">RabbitMQ</a> <a href="/hexblog/tags/ReactJS/" style="font-size: 10px;">ReactJS</a> <a href="/hexblog/tags/Redis/" style="font-size: 13.53px;">Redis</a> <a href="/hexblog/tags/SSL/" style="font-size: 10px;">SSL</a> <a href="/hexblog/tags/Shell/" style="font-size: 17.06px;">Shell</a> <a href="/hexblog/tags/Socket/" style="font-size: 10.59px;">Socket</a> <a href="/hexblog/tags/Solr/" style="font-size: 10px;">Solr</a> <a href="/hexblog/tags/Spring/" style="font-size: 18.82px;">Spring</a> <a href="/hexblog/tags/SpringBoot/" style="font-size: 10.59px;">SpringBoot</a> <a href="/hexblog/tags/Vue/" style="font-size: 10px;">Vue</a> <a href="/hexblog/tags/WebSocket/" style="font-size: 10px;">WebSocket</a> <a href="/hexblog/tags/WebView/" style="font-size: 10.59px;">WebView</a> <a href="/hexblog/tags/Win10/" style="font-size: 10px;">Win10</a> <a href="/hexblog/tags/Yaml/" style="font-size: 10px;">Yaml</a> <a href="/hexblog/tags/ZooKeeper/" style="font-size: 10px;">ZooKeeper</a> <a href="/hexblog/tags/css/" style="font-size: 11.18px;">css</a> <a href="/hexblog/tags/dns/" style="font-size: 10px;">dns</a> <a href="/hexblog/tags/ffmpeg/" style="font-size: 10px;">ffmpeg</a> <a href="/hexblog/tags/git/" style="font-size: 10px;">git</a> <a href="/hexblog/tags/gitalk/" style="font-size: 10px;">gitalk</a> <a href="/hexblog/tags/google/" style="font-size: 10px;">google</a> <a href="/hexblog/tags/grep/" style="font-size: 10px;">grep</a> <a href="/hexblog/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/hexblog/tags/hostname/" style="font-size: 10px;">hostname</a> <a href="/hexblog/tags/jdk/" style="font-size: 10px;">jdk</a> <a href="/hexblog/tags/logger/" style="font-size: 10px;">logger</a> <a href="/hexblog/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/hexblog/tags/named/" style="font-size: 10px;">named</a> <a href="/hexblog/tags/python/" style="font-size: 10.59px;">python</a> <a href="/hexblog/tags/ssh/" style="font-size: 10px;">ssh</a> <a href="/hexblog/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/hexblog/tags/time/" style="font-size: 10px;">time</a> <a href="/hexblog/tags/tmux/" style="font-size: 10.59px;">tmux</a> <a href="/hexblog/tags/zsh/" style="font-size: 10px;">zsh</a> <a href="/hexblog/tags/专业词汇/" style="font-size: 10px;">专业词汇</a> <a href="/hexblog/tags/乱码/" style="font-size: 10px;">乱码</a> <a href="/hexblog/tags/二维码/" style="font-size: 11.18px;">二维码</a> <a href="/hexblog/tags/代理/" style="font-size: 10px;">代理</a> <a href="/hexblog/tags/内购/" style="font-size: 10px;">内购</a> <a href="/hexblog/tags/分库分表/" style="font-size: 10px;">分库分表</a> <a href="/hexblog/tags/反射/" style="font-size: 11.18px;">反射</a> <a href="/hexblog/tags/吐槽/" style="font-size: 10px;">吐槽</a> <a href="/hexblog/tags/工具/" style="font-size: 12.35px;">工具</a> <a href="/hexblog/tags/并发/" style="font-size: 11.18px;">并发</a> <a href="/hexblog/tags/序列化/" style="font-size: 10px;">序列化</a> <a href="/hexblog/tags/手记/" style="font-size: 12.94px;">手记</a> <a href="/hexblog/tags/技术方案/" style="font-size: 18.24px;">技术方案</a> <a href="/hexblog/tags/指南/" style="font-size: 12.94px;">指南</a> <a href="/hexblog/tags/教程/" style="font-size: 17.65px;">教程</a> <a href="/hexblog/tags/方案设计/" style="font-size: 10px;">方案设计</a> <a href="/hexblog/tags/时区/" style="font-size: 10px;">时区</a> <a href="/hexblog/tags/时间窗口/" style="font-size: 11.18px;">时间窗口</a> <a href="/hexblog/tags/爬虫/" style="font-size: 12.35px;">爬虫</a> <a href="/hexblog/tags/问题记录/" style="font-size: 10px;">问题记录</a> <a href="/hexblog/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
 </div>
 
@@ -2514,6 +2563,13 @@ var _hmt = _hmt || [];
                     <a class="tags has-addons" href="/hexblog/tags/WebView/">
                         <span class="tag">WebView</span>
                         <span class="tag is-grey">2</span>
+                    </a>
+                </div>
+                
+                <div class="control">
+                    <a class="tags has-addons" href="/hexblog/tags/Win10/">
+                        <span class="tag">Win10</span>
+                        <span class="tag is-grey">1</span>
                     </a>
                 </div>
                 
@@ -3164,6 +3220,22 @@ var _hmt = _hmt || [];
                 <span class="level-item tag">15</span>
             </span>
         </a></li></ul></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/Win10/">
+            <span class="level-start">
+                <span class="level-item">Win10</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/hexblog/categories/Win10/开发环境/">
+            <span class="level-start">
+                <span class="level-item">开发环境</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
         <a class="level is-marginless" href="/hexblog/categories/其他/">
             <span class="level-start">
                 <span class="level-item">其他</span>
@@ -3471,7 +3543,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">五月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">4</span>
+                    <span class="level-item tag">5</span>
                 </span>
             </a>
         </li>
@@ -4332,6 +4404,22 @@ var _hmt = _hmt || [];
                 <span class="level-item tag">15</span>
             </span>
         </a></li></ul></li><li>
+        <a class="level is-marginless" href="/hexblog/categories/Win10/">
+            <span class="level-start">
+                <span class="level-item">Win10</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a><ul><li>
+        <a class="level is-marginless" href="/hexblog/categories/Win10/开发环境/">
+            <span class="level-start">
+                <span class="level-item">开发环境</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">1</span>
+            </span>
+        </a></li></ul></li><li>
         <a class="level is-marginless" href="/hexblog/categories/其他/">
             <span class="level-start">
                 <span class="level-item">其他</span>
@@ -4639,7 +4727,7 @@ var _hmt = _hmt || [];
                     <span class="level-item">五月 2021</span>
                 </span>
                 <span class="level-end">
-                    <span class="level-item tag">4</span>
+                    <span class="level-item tag">5</span>
                 </span>
             </a>
         </li>
